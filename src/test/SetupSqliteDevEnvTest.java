@@ -1,5 +1,5 @@
 package test;
-import static devops.SetupSqliteDevEnv.createDB;
+import static infra.SetupSqliteDevEnv.createDB;
 
 public class SetupSqliteDevEnvTest {
     public static void main(String[] args) {

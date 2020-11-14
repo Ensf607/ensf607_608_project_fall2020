@@ -1,1 +1,1 @@
-Add this file to the build path
+Add this file to the build path, go to docs/setup_mysql.md for setup notes
