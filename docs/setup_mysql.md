@@ -47,3 +47,27 @@ https://www.youtube.com/watch?v=2i4t-SL1VsU
 ![image-20201114121037816](setup_mysql.assets/image-20201114121037816.png)
 
 go to `file`, `project structure`, then add `jar` to `libraries`
+
+
+# create local user
+
+To unify the development process, let's set username to `testadmin` and password to `passw0rd`:
+
+```
+sudo mysql
+mysql> CREATE USER 'testadmin'@'localhost' IDENTIFIED BY 'passw0rd';
+mysql> GRANT ALL PRIVILEGES ON *.* TO 'testadmin'@'localhost'
+    ->     WITH GRANT OPTION;
+mysql> CREATE USER 'testadmin'@'%' IDENTIFIED BY 'passw0rd';
+mysql> GRANT ALL PRIVILEGES ON *.* TO 'testadmin'@'%'
+    ->     WITH GRANT OPTION;
+```
+
+if all setup processes are successful, then you'll be able to see something like this when running `src/test/JDBCmySQLTest.java`:
+```
+2020-11-14 13:02:38.765 log: a db connection is about to be made to: 	jdbc:mysql://localhost:3306/mysql
+2020-11-14 13:02:38.765 log: The driver name is MySQL Connector/J
+2020-11-14 13:02:38.765 log: Tested connection successful
+
+Process finished with exit code 0
+```

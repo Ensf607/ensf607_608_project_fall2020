@@ -1,4 +1,4 @@
-package infra;
+package test.sqlite;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -8,7 +8,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 
-public class SetupSqliteDevEnv {
+public class CreateSQLiteDev {
     /**
      * TODO: verify it's working then refac this code
      * @author sqlitetutorial.net
