@@ -14,7 +14,7 @@ student 2: Ziad Chemali
 
 # setup
 
-1. this is classic java project. jars needs to be added to class path. 
+1. this is classic java project. `jars/mysql-connector-java-8.0.22.jar` needs to be added to class path. (alternatively, if you're using maven, just use pom.xml to fullfil the dependencies. ) 
 2. using IDE is preferred
 
 
