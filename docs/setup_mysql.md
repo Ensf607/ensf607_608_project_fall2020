@@ -63,7 +63,7 @@ mysql> GRANT ALL PRIVILEGES ON *.* TO 'testadmin'@'%'
     ->     WITH GRANT OPTION;
 ```
 
-if all setup processes are successful, then you'll be able to see something like this:
+if all setup processes are successful, then you'll be able to see something like this when running `src/test/JDBCmySQLTest.java`:
 ```
 2020-11-14 13:02:38.765 log: a db connection is about to be made to: 	jdbc:mysql://localhost:3306/mysql
 2020-11-14 13:02:38.765 log: The driver name is MySQL Connector/J
