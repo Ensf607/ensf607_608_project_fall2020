@@ -1,6 +1,7 @@
 package controller;
 
 import java.sql.*;
+import java.text.MessageFormat;
 
 
 /**
@@ -15,6 +16,10 @@ public class JDBC {
     private Statement stmt;
     private ResultSet rs;
 
+    public void setConn(Connection conn) {
+        this.conn = conn;
+    }
+
     /**
      * Connect db.
      *
@@ -23,6 +28,9 @@ public class JDBC {
      * @param username the username
      * @param password the password
      */
+
+
+
     public void connectDB(String host, String dbname, String username, String password) {
 //        Path filePath = Paths.get(Paths.get(System.getProperty("user.dir")).toString(),host, dbname);
         Timestamp ts = new Timestamp(System.currentTimeMillis());
@@ -34,13 +42,13 @@ public class JDBC {
                 + url);
 //                + filePath;
         try (Connection conn = DriverManager.getConnection(url,username,password)) {
+            setConn(DriverManager.getConnection(url,username,password));
             if (conn != null) {
                 DatabaseMetaData meta = conn.getMetaData();
                 System.out.println(ts +" log: " +
                         "The driver name is " + meta.getDriverName());
                 System.out.println(ts +" log: " +
                         "Tested connection successful");
-                this.conn = conn; // set this.conn to conn if successful
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
@@ -185,6 +193,26 @@ public class JDBC {
         }
     }
 
+    public void selectWithWildCard(String table, String column,String strWithWildcard){
+        try {
+            query("use tool_shop;");
+            String query = "select * from " +
+                    table +
+                    " where " +
+                    column +
+                    " like ?; ";
+            PreparedStatement pStat = conn.prepareStatement(query);
+            pStat.setString(1, strWithWildcard);
+            System.out.print(pStat);
+            rs = pStat.executeQuery();
+            while (rs.next()) {
+                System.out.println(rs.getString("description_name"));
+            }
+            pStat.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 
     /**
      * D2L provided code
