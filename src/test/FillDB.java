@@ -40,9 +40,11 @@ public class FillDB {
 				System.out.println(ts + " log: " + "Tested connection successful");
 				this.con = conn; // set this.conn to conn if successful
 				this.stmt = con.createStatement();
-				createTables();
-				addSupplierList("suppliers.txt");
-				addItemList("Items.txt");
+				//createTables();
+				//addSupplierList("suppliers.txt");
+				//addItemList("Items.txt");
+				// Just pass the connection and the table name to printTable()
+				DBTablePrinter.printTable(conn, "suppliers");
 
 			}
 		} catch (SQLException e) {
