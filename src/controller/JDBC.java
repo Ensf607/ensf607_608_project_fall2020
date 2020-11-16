@@ -9,7 +9,7 @@ import java.sql.*;
  * String username = "admin";
  * String password = "passw0rd";
  */
-public class JDBCmySQL {
+public class JDBC {
 
     private Connection conn;
     private Statement stmt;
@@ -174,6 +174,16 @@ public class JDBCmySQL {
         }
     }
 
+
+    public void query(String sql){
+        try (Statement stmt = conn.createStatement()) {
+//            System.out.println("Querying: \n" +
+//                    "----------"+sql+"\n----------");
+            stmt.executeUpdate(sql);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 
     /**
      * D2L provided code
