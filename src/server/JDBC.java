@@ -249,7 +249,7 @@ public class JDBC {
     }
 
     public void addItemList(String fileName) {
-
+        System.out.print("Filling the table with tools");
         try {
 
             reader = new BufferedReader(new FileReader(fileName));
@@ -289,7 +289,7 @@ public class JDBC {
     }
 
     public void addSupplierList(String fileName) {
-
+        System.out.println("Filling the table with suppliers");
         try {
 
             reader = new BufferedReader(new FileReader(fileName));
@@ -323,8 +323,8 @@ public class JDBC {
         } catch (IOException e) {
             System.out.println("Error reading file");
         }
-
     }
+
 
     // TODO: make ingest supplier to ingest from mysql;
     void ingestSuppliers(Shop shop) {
