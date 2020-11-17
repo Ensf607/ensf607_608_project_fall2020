@@ -8,5 +8,7 @@ class JDBCTest {
         jdbc.connectDB("localhost:3306","mysql","testadmin", "passw0rd");
 //        jdbc.selectWithWildCard("items","description_name","Wi%");
         jdbc.createTables();
+        jdbc.addSupplierList("suppliers.txt");
+        jdbc.addItemList("items.txt");
     }
 }

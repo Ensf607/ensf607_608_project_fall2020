@@ -274,6 +274,7 @@ public class JDBC {
                     preparedStmt.setInt(3, quantity);
                     preparedStmt.setFloat(4, price);
                     preparedStmt.setInt(5, supplierId);
+//                    System.out.println(preparedStmt);
                     preparedStmt.executeUpdate();
                 } catch (SQLException e) {
                     System.out.println(e);
@@ -285,11 +286,11 @@ public class JDBC {
         } catch (IOException e) {
             System.out.println("Error reading file");
         }
-
+        System.out.println("\t--Done");
     }
 
     public void addSupplierList(String fileName) {
-        System.out.println("Filling the table with suppliers");
+        System.out.print("Filling the table with suppliers");
         try {
 
             reader = new BufferedReader(new FileReader(fileName));
@@ -313,6 +314,8 @@ public class JDBC {
                     preparedStmt.setString(3, adress);
                     preparedStmt.setString(4, contact);
                     preparedStmt.executeUpdate();
+//                    System.out.println(preparedStmt);
+
                 } catch (SQLException e) {
                     System.out.println(e);
                 }
@@ -323,6 +326,7 @@ public class JDBC {
         } catch (IOException e) {
             System.out.println("Error reading file");
         }
+        System.out.println("\t--Done");
     }
 
 
