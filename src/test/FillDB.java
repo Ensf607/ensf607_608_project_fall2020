@@ -3,6 +3,11 @@
  */
 package test;
 
+/**
+ * note: this code has been merged into JDBC.java
+ * - Stan
+ */
+
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;

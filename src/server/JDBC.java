@@ -2,6 +2,9 @@ package server;
 
 import server.jdo.Shop;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.sql.*;
 import java.text.MessageFormat;
 
@@ -14,9 +17,12 @@ import java.text.MessageFormat;
  */
 public class JDBC {
 
-    private Connection conn;
+    private PreparedStatement preparedStmt;
     private Statement stmt;
+    private Connection conn;
     private ResultSet rs;
+    private BufferedReader reader;
+
 
     public void setConn(Connection conn) {
         this.conn = conn;
@@ -30,9 +36,6 @@ public class JDBC {
      * @param username the username
      * @param password the password
      */
-
-
-
     public void connectDB(String host, String dbname, String username, String password) {
 //        Path filePath = Paths.get(Paths.get(System.getProperty("user.dir")).toString(),host, dbname);
         Timestamp ts = new Timestamp(System.currentTimeMillis());
@@ -54,6 +57,16 @@ public class JDBC {
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
+        }
+    }
+
+    public void query(String sql){
+        try (Statement stmt = conn.createStatement()) {
+//            System.out.println("Querying: \n" +
+//                    "----------"+sql+"\n----------");
+            stmt.executeUpdate(sql);
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 
@@ -184,17 +197,6 @@ public class JDBC {
         }
     }
 
-
-    public void query(String sql){
-        try (Statement stmt = conn.createStatement()) {
-//            System.out.println("Querying: \n" +
-//                    "----------"+sql+"\n----------");
-            stmt.executeUpdate(sql);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
     public void selectWithWildCard(String table, String column,String strWithWildcard){
         try {
             query("use tool_shop;");
@@ -216,6 +218,83 @@ public class JDBC {
         }
     }
 
+    public void addItemList(String fileName) {
+
+        try {
+
+            reader = new BufferedReader(new FileReader(fileName));
+            String line = reader.readLine();
+            line = reader.readLine();
+            while (line != null) {
+                String temp[];
+
+                temp = line.split("[;]");
+                int id = Integer.parseInt(temp[0]);
+                String description = temp[1];
+                int quantity = Integer.parseInt(temp[2]);
+                float price = Float.parseFloat(temp[3]);
+                int supplierId = Integer.parseInt(temp[4]);
+                String query ="INSERT INTO items(id,description_name,quantity_in_stock,price,supplier_id) VALUES (?,?,?,?,?)";;
+
+
+                try {
+                    preparedStmt = conn.prepareStatement(query);
+                    preparedStmt.setInt(1, id);
+                    preparedStmt.setString(2, description);
+                    preparedStmt.setInt(3, quantity);
+                    preparedStmt.setFloat(4, price);
+                    preparedStmt.setInt(5, supplierId);
+                    preparedStmt.executeUpdate();
+                } catch (SQLException e) {
+                    System.out.println(e);
+                }
+
+                line = reader.readLine();
+            }
+            reader.close();
+        } catch (IOException e) {
+            System.out.println("Error reading file");
+        }
+
+    }
+
+    public void addSupplierList(String fileName) {
+
+        try {
+
+            reader = new BufferedReader(new FileReader(fileName));
+            String line = reader.readLine();
+            line = reader.readLine();//skipping header
+            while (line != null) {
+                String temp[];
+
+                temp = line.split("[;]");
+                int id = Integer.parseInt(temp[0]);
+                String company_name = temp[1];
+                String adress = temp[2];
+                String contact = temp[3];
+
+                String query = "INSERT INTO suppliers(id,company_name,address,sales_contact) " + "VALUES (?,?,?,?)";
+
+                try {
+                    preparedStmt = conn.prepareStatement(query);
+                    preparedStmt.setInt(1, id);
+                    preparedStmt.setString(2, company_name);
+                    preparedStmt.setString(3, adress);
+                    preparedStmt.setString(4, contact);
+                    preparedStmt.executeUpdate();
+                } catch (SQLException e) {
+                    System.out.println(e);
+                }
+
+                line = reader.readLine();
+            }
+            reader.close();
+        } catch (IOException e) {
+            System.out.println("Error reading file");
+        }
+
+    }
 
     // TODO: make ingest supplier to ingest from mysql;
     void ingestSuppliers(Shop shop) {
