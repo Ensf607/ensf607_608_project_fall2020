@@ -23,7 +23,6 @@ public class JDBC {
     private ResultSet rs;
     private BufferedReader reader;
 
-
     public void setConn(Connection conn) {
         this.conn = conn;
     }
@@ -37,23 +36,13 @@ public class JDBC {
      * @param password the password
      */
     public void connectDB(String host, String dbname, String username, String password) {
-//        Path filePath = Paths.get(Paths.get(System.getProperty("user.dir")).toString(),host, dbname);
         Timestamp ts = new Timestamp(System.currentTimeMillis());
         String url = "jdbc:mysql://"+host+"/"+dbname;
-
-        System.out.println(ts
-                +" log: "
-                +"a db connection is about to be made to: \t"
-                + url);
-//                + filePath;
         try (Connection conn = DriverManager.getConnection(url,username,password)) {
             setConn(DriverManager.getConnection(url,username,password));
             if (conn != null) {
                 DatabaseMetaData meta = conn.getMetaData();
-                System.out.println(ts +" log: " +
-                        "The driver name is " + meta.getDriverName());
-                System.out.println(ts +" log: " +
-                        "Tested connection successful");
+                System.out.println(ts+"\nConnected to: "+url);
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
@@ -83,6 +72,47 @@ public class JDBC {
             e.printStackTrace();
         }
     }
+
+    public void createTables() {
+        try {
+            // flushing schema
+            query("drop schema if exists tool_shop;");
+            query("create schema tool_shop;");
+            query("drop table if exists  items;"); // items has to be dropped first due to referential integrity
+            query("drop table if exists  suppliers;");
+            query("use tool_shop;");
+
+            query("create table suppliers" +
+                    "(" +
+                    "id int auto_increment," +
+                    "company_name text null," +
+                    "address text null," +
+                    "sales_contact text null," +
+                    "constraint suppliers_pk " +
+                    "primary key (id)" +
+                    ");");
+            System.out.println("Created Table suppliers");
+            query("create table items" +
+                    "(" +
+                    "id int auto_increment," +
+                    "description_name text null," +
+                    "quantity_in_stock int null," +
+                    "price float null," +
+                    "supplier_id int null," +
+                    "constraint items_pk " +
+                    "primary key (id)," +
+                    "constraint suppliers_suppliers_id_fk " +
+                    "foreign key (supplier_id) references suppliers (id) " +
+                    "on update cascade on delete set null" +
+                    ");");
+            System.out.println("Created Table ToolTable");
+
+        } catch (Exception e) {
+            System.err.println("Cant drop/create tables");
+            return;
+        }
+    }
+
 
     /**
      * D2L provided code
