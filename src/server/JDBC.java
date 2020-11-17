@@ -1,5 +1,7 @@
 package server;
 
+import server.jdo.Shop;
+
 import java.sql.*;
 import java.text.MessageFormat;
 
@@ -213,6 +215,49 @@ public class JDBC {
             e.printStackTrace();
         }
     }
+
+
+    // TODO: make ingest supplier to ingest from mysql;
+    void ingestSuppliers(Shop shop) {
+//        Scanner scanLine= new Scanner(returnData());
+//        if (scanLine.hasNextLine()) {
+//            do {
+//                String[] readLine = scanLine.nextLine().split(";");
+//                Supplier parseSupplier = new Supplier();
+//                parseSupplier.setId(Integer.parseInt(readLine[0]));
+//                parseSupplier.setSupplierName(readLine[1]);
+//                parseSupplier.setSupplierAddress(readLine[2]);
+//                parseSupplier.setSalesPerson(readLine[3]);
+//                shop.getSupplierList().appendToSupplierList(parseSupplier);
+//            } while (scanLine.hasNextLine());
+//        }
+//        scanLine.close();
+    }
+
+
+    // TODO: make ingest items to ingest from mysql;
+    /**
+     * ingest the items from file
+     * @param shop
+     *
+     */
+    void ingestItems(Shop shop) {
+//        Scanner scanLine= new Scanner(returnData());
+//        if (scanLine.hasNextLine()) {
+//            do {
+//                String[] readLine = scanLine.nextLine().split(";");
+//                Item parseItem = new Item();
+//                parseItem.setItemID(Integer.parseInt(readLine[0]));
+//                parseItem.setItemName(readLine[1]);
+//                parseItem.setQuantity(Integer.parseInt(readLine[2]));
+//                parseItem.setPrice(Double.parseDouble(readLine[3]));
+//                parseItem.setSupplierId(Integer.parseInt(readLine[4]));
+//                shop.getItemList().addItem(parseItem);
+//            } while (scanLine.hasNextLine());
+//        }
+//        scanLine.close();
+    }
+
 
     /**
      * D2L provided code

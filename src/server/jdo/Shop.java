@@ -41,21 +41,23 @@ public class Shop {
 		}
 	}
 
+	// TODO: make this method to ingest data from mysql instead,
+	//  this may need to be modified if it's more suitable to query from db directly.
+
 	/**
 	 * Ingest list data.
 	 *
 	 * @throws FileNotFoundException the file not found exception
 	 */
 	public void ingestListData(String itemsPath, String supplierPath) throws FileNotFoundException {
-
-		FileManager file = new FileManager();
-//		itemsPath="TextFiles/items.txt";
-		file.readFileFromPath(itemsPath);
-		file.ingestItems(this);
-//		supplierPath = "TextFiles/suppliers.txt";
-		file.readFileFromPath(supplierPath);
-		file.ingestSuppliers(this);
-		processReferences();
+//		FileManager file = new FileManager();
+////		itemsPath="TextFiles/items.txt";
+//		file.readFileFromPath(itemsPath);
+//		file.ingestItems(this);
+////		supplierPath = "TextFiles/suppliers.txt";
+//		file.readFileFromPath(supplierPath);
+//		file.ingestSuppliers(this);
+//		processReferences();
 
 	}
 
