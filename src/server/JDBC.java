@@ -264,9 +264,10 @@ public class JDBC {
      * The entry point of application.
      * @param args the input arguments
      */
-    public static void main(String[] args) {
+   // public static void main(String[] args) {
 //        MyJDBCApp app = new MyJDBCApp();
 //        app.initializeConnection();
-    }
+  //  }
 
+	
 }
