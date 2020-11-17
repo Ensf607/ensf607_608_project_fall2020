@@ -227,27 +227,6 @@ public class JDBC {
         }
     }
 
-    public void selectWithWildCard(String table, String column,String strWithWildcard){
-        try {
-            query("use tool_shop;");
-            String query = "select * from " +
-                    table +
-                    " where " +
-                    column +
-                    " like ?; ";
-            PreparedStatement pStat = conn.prepareStatement(query);
-            pStat.setString(1, strWithWildcard);
-            System.out.print(pStat);
-            rs = pStat.executeQuery();
-            while (rs.next()) {
-                System.out.println(rs.getString("description_name"));
-            }
-            pStat.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
     public void addItemList(String fileName) {
         System.out.print("Filling the table with tools");
         try {
@@ -329,6 +308,92 @@ public class JDBC {
         System.out.println("\t--Done");
     }
 
+    public void selectWithWildCard(String table, String column,String strWithWildcard, String[] columns){
+        try {
+            query("use tool_shop;");
+            String query = "select * from " +
+                    table +
+                    " where " +
+                    column +
+                    " like ?; ";
+            PreparedStatement pStat = conn.prepareStatement(query);
+            pStat.setString(1, strWithWildcard);
+//            System.out.println(pStat);
+            rs = pStat.executeQuery();
+            if (!rs.next()){
+                System.out.println("Search Failed to find a tool matching "+column + ": "+strWithWildcard);
+                return;
+            } else {
+                System.out.print("Search Result:\t");
+                displayReturnStatement(columns);
+            }
+
+            while (rs.next()) {
+                displayReturnStatement(columns);
+            }
+            System.out.println("\n");
+            pStat.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void displayReturnStatement(String[] columns) throws SQLException {
+        for (int i = 0; i < columns.length; i++)
+            System.out.print (rs.getString(columns[i])+ "\t");
+    }
+
+    public void selectFromItems(){
+        System.out.println("Reading all tools from the table:\nTools:");
+        try {
+            String table = "items";
+            query("use tool_shop;");
+            String query = "select * from " +
+                    table;
+            PreparedStatement pStat = conn.prepareStatement(query);
+            rs = pStat.executeQuery();
+            while (rs.next()) {
+                System.out.print(rs.getString("id")+"\t");
+                System.out.print(rs.getString("description_name")+"\t");
+                System.out.print(rs.getString("quantity_in_stock")+"\t");
+                System.out.print(rs.getString("price")+"\t");
+                System.out.print(rs.getString("supplier_id")+"\n");
+            }
+            pStat.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        System.out.println("\n");
+    }
+
+    public void selectFromSuppliers(){
+        System.out.println("Reading all suppliers from the table:\nSuppliers:");
+        try {
+            String table = "suppliers";
+            query("use tool_shop;");
+            String query = "select * from " +
+                    table;
+            PreparedStatement pStat = conn.prepareStatement(query);
+            rs = pStat.executeQuery();
+            while (rs.next()) {
+                System.out.print(rs.getString("id")+"\t");
+                System.out.print(rs.getString("company_name")+"\t");
+                System.out.print(rs.getString("address")+"\t");
+                System.out.print(rs.getString("sales_contact")+"\n");
+            }
+            pStat.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        System.out.println("\n");
+    }
+
+    public void searchForToolID(int toolID){
+        String [] columns =  {"id", "description_name", "quantity_in_stock", "price", "supplier_id"};
+        selectWithWildCard("items","id", String.valueOf(toolID),columns);
+    }
+
+
 
     // TODO: make ingest supplier to ingest from mysql;
     void ingestSuppliers(Shop shop) {
@@ -381,6 +446,7 @@ public class JDBC {
 //        MyJDBCApp app = new MyJDBCApp();
 //        app.initializeConnection();
   //  }
+
 
 	
 }
