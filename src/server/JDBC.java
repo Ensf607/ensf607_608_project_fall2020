@@ -22,10 +22,16 @@ public class JDBC {
     private ResultSet rs;
     private BufferedReader reader;
 
-    public void setConn(Connection conn) {
+    public Connection getConn() {
+		return conn;
+	}
+ 
+	public void setConn(Connection conn) {
         this.conn = conn;
     }
-
+public JDBC() {
+	connectDB("localhost:3306", "tool_shop", "testadmin", "passw0rd");
+}
     /**
      * Connect db.
      *
@@ -399,9 +405,10 @@ public class JDBC {
         query("drop table if exists  suppliers;");
         System.out.println("Removed Table suppliers");
     }
+		
 
     // TODO: make ingest supplier to ingest from mysql;
-    void ingestSuppliers(Shop shop) {
+    //void ingestSuppliers(Shop shop) {
 //        Scanner scanLine= new Scanner(returnData());
 //        if (scanLine.hasNextLine()) {
 //            do {
@@ -424,7 +431,7 @@ public class JDBC {
      * @param shop
      *
      */
-    void ingestItems(Shop shop) {
+   // void ingestItems(Shop shop) {
 //        Scanner scanLine= new Scanner(returnData());
 //        if (scanLine.hasNextLine()) {
 //            do {
@@ -439,7 +446,7 @@ public class JDBC {
 //            } while (scanLine.hasNextLine());
 //        }
 //        scanLine.close();
-    }
+   // }
 
 
     /**
@@ -454,4 +461,4 @@ public class JDBC {
 
 
 
-}
+
