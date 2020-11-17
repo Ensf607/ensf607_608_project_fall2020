@@ -6,7 +6,6 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.sql.*;
-import java.text.MessageFormat;
 
 
 /**
@@ -308,7 +307,7 @@ public class JDBC {
         System.out.println("\t--Done");
     }
 
-    public void selectWithWildCard(String table, String column,String strWithWildcard, String[] columns){
+    public void searchGeneralPurpose(String table, String column, String strWithWildcard, String[] columns){
         try {
             query("use tool_shop;");
             String query = "select * from " +
@@ -390,10 +389,16 @@ public class JDBC {
 
     public void searchForToolID(int toolID){
         String [] columns =  {"id", "description_name", "quantity_in_stock", "price", "supplier_id"};
-        selectWithWildCard("items","id", String.valueOf(toolID),columns);
+        searchGeneralPurpose("items","id", String.valueOf(toolID),columns);
     }
 
-
+    public void removeTables(){
+        System.out.println("Trying to remove the table");
+        query("drop table if exists  items;"); // items has to be dropped first due to referential integrity
+        System.out.println("Removed Table items");
+        query("drop table if exists  suppliers;");
+        System.out.println("Removed Table suppliers");
+    }
 
     // TODO: make ingest supplier to ingest from mysql;
     void ingestSuppliers(Shop shop) {
@@ -442,11 +447,11 @@ public class JDBC {
      * The entry point of application.
      * @param args the input arguments
      */
-   // public static void main(String[] args) {
+    // public static void main(String[] args) {
 //        MyJDBCApp app = new MyJDBCApp();
 //        app.initializeConnection();
-  //  }
+    //  }
 
 
-	
+
 }
