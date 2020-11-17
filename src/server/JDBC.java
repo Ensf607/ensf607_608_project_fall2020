@@ -1,4 +1,4 @@
-package controller;
+package server;
 
 import java.sql.*;
 import java.text.MessageFormat;

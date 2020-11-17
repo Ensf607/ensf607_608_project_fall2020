@@ -18,7 +18,7 @@ public class CreateSQLiteDev {
         Timestamp ts = new Timestamp(System.currentTimeMillis());
         System.out.println(ts +" log: " +
                 "a db is about to be created under: \n" + filePath.toString());
-        String url = "jdbc:sqlite:" + filePath;
+        String url = "server.jdbc:sqlite:" + filePath;
         try (Connection conn = DriverManager.getConnection(url)) {
             if (conn != null) {
                 DatabaseMetaData meta = conn.getMetaData();
