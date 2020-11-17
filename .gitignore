@@ -25,3 +25,8 @@ hs_err_pid*
 *.db
 .idea
 *.iml
+
+/tmp/
+/.metadata/
+.classpath
+.project
