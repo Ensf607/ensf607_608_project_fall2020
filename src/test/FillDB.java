@@ -45,9 +45,9 @@ public class FillDB {
 				System.out.println(ts + " log: " + "Tested connection successful");
 				this.con = conn; // set this.conn to conn if successful
 				this.stmt = con.createStatement();
-				//createTables();
-				//addSupplierList("suppliers.txt");
-				//addItemList("Items.txt");
+				createTables();
+				addSupplierList("suppliers.txt");
+				addItemList("Items.txt");
 				// Just pass the connection and the table name to printTable()
 				DBTablePrinter.printTable(conn, "suppliers");
 
@@ -63,13 +63,13 @@ public class FillDB {
 
 	private void createTables() {
 		try {
-			stmt.executeUpdate("drop table if exists  suppliers");
-			stmt.executeUpdate("create table suppliers" + "   ( id int auto_increment," + "    company_name text null,"
-					+ "    address text null," + "    sales_contact text null," + "    constraint suppliers_pk"
-					+ "        primary key (id))");
+//			stmt.executeUpdate("drop table if exists  suppliers");
+//			stmt.executeUpdate("create table suppliers" + "   ( id int auto_increment," + "    company_name text null,"
+//					+ "    address text null," + "    sales_contact text null," + "    constraint suppliers_pk"
+//					+ "        primary key (id))");
 			stmt.executeUpdate("drop table if exists  items");
 			stmt.executeUpdate("create table items (" + "id int auto_increment," + "description_name text null,"
-					+ "quantity_in_stock int null," + "price float null,"+ "supplier_id int null," + "    constraint items_pk" + "primary key (id)," + "    constraint items_fk"
+					+ "quantity_in_stock int null," + "price float null,"+ "supplier_id int null," + "primary key (id)," 
 					+ "foreign key (supplier_id) references suppliers (id)" + "on update cascade on delete set null)");
 
 		} catch (Exception e) {
