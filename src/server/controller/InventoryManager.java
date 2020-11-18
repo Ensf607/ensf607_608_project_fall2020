@@ -1,4 +1,4 @@
-package server;
+package server.controller;
 
 import java.io.BufferedReader;
 import java.io.PrintWriter;
@@ -28,10 +28,8 @@ public class InventoryManager implements Runnable{
 		boolean running = true;
 		while (running) {
 			try {
-				System.err.println("here");
 				menu();
 				response=socketIn.readLine();
-				System.err.println(response);
 				//if statments for all USEr Actions in GUI
 				if (Integer.parseInt(response)==1) {
 					
@@ -40,6 +38,7 @@ public class InventoryManager implements Runnable{
 				}
 			}catch (Exception e) {
 				System.out.println("Error reading from sockets");
+				break;
 			}
 	}
 		}

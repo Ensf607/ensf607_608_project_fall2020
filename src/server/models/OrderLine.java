@@ -1,4 +1,4 @@
-package server.jdo;
+package server.models;
 
 /**
  * The type Order line.

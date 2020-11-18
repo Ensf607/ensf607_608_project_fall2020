@@ -62,7 +62,6 @@ public class Client {
 					
 					
 					int temp=scan.nextInt();
-					System.err.println(temp);
 					socketOut.println(temp);
 					
 				}
