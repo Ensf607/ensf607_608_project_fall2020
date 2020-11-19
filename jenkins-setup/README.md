@@ -58,14 +58,3 @@ https://github.com/stancsz/ensf607_608_project_fall2020.git
 # Extra setup guide
 
 [guru99 source](https://www.guru99.com/create-builds-jenkins-freestyle-project.html)
-
-
-
-# Shell script for server to run
-```
-mvn -v
-echo "building maven package"
-mvn package
-echo "initing server"
-java -cp target/toolshop-server-1.0-SNAPSHOT.jar server.controller.ServerController 
-```
