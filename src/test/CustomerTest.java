@@ -1,6 +1,6 @@
 package test;
 
-import client.model.Customer;
+import server.model.Customer;
 
 /**
  * to see a code snippet of how it's done

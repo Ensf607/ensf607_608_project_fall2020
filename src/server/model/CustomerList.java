@@ -3,6 +3,9 @@ package server.model;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 /*
  * Not needed but makes Customer class less messy
  * 
@@ -26,10 +29,20 @@ public class CustomerList {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}}
-	public void updateClass(ResultSet rs) {
-		
-		
-	}
+	public String toJSON(){
+        String json = new String();
+        
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            json = mapper.writeValueAsString(this);
+            System.out.println("ResultingJSONstring = " + json);
+            //System.out.println(json);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        return json;
+    }
+	
 	}
 
 

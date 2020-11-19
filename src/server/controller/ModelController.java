@@ -39,7 +39,12 @@ public class ModelController implements Runnable{
 		
 		//jdbc.updateCustomer(customer info) 
 		//jdbc.updateItems(item,Quantity
-		//update local model might be easier to quary then  get ResulSet then update the class
+		// then update local model
+		
+		//check if we need new orderline
+		//are we updating ItemTable when we generate Order or wait for supplier to ship the items
+			
+			
 		
 		
 		
