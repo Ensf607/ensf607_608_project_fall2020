@@ -1,4 +1,4 @@
-package client.model;
+package server.model;
 
 /**
  * The type Order line.
@@ -11,7 +11,8 @@ public class OrderLine {
 	private String itemName;
 	private int amount;
 	private String supplierName;
-
+	//include date/orderline ID here
+	
 	/**
 	 * Sets item.
 	 *

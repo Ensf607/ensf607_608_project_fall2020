@@ -1,4 +1,4 @@
-package server.models;
+package server.model;
 
 /**
  * The type Item.
@@ -6,7 +6,7 @@ package server.models;
  * @version 1.0
  * @since Oct 13, 2020
  */
-public class Item {
+public abstract class Item {
 	private int itemID;
 	private String itemName;
 	private int quantity;

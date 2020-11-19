@@ -1,6 +1,7 @@
-package client.model;
+package server.model;
 
 import java.io.FileNotFoundException;
+import java.sql.ResultSet;
 
 /**
  * The type Shop.
@@ -9,16 +10,25 @@ import java.io.FileNotFoundException;
  * @since Oct 13, 2020
  */
 public class Shop {
-	private Inventory itemList = new Inventory();
-	private SupplierList supplierList =new SupplierList();
-
+	private Inventory inventory ;
+	private SupplierList supplierList;
+	private CustomerList customerList;
+	private PurchaseList pl;
+	//need a method to checkItems,
+	//return order which is (list ofOrderLine)
 	/**
 	 * Gets item list.
 	 *
 	 * @return the item list
 	 */
-	public Inventory getItemList() {
-		return itemList;
+	public Shop (ResultSet customers,ResultSet itemList,ResultSet suppliers,ResultSet orderList, ResultSet purchaseList) {
+		inventory=new Inventory(itemList, orderList);
+		supplierList=new SupplierList(suppliers);
+		customerList=new CustomerList(customers);
+		pl=new PurchaseList(purchaseList);
+	}
+	public Inventory getinventory() {
+		return inventory;
 	}
 
 	/**
@@ -30,16 +40,16 @@ public class Shop {
 		return supplierList;
 	}
 
-	/**
-	 * Instantiates a new Shop.
-	 */
-	public Shop(String itemsPath, String supplierPath){
-		try {
-			ingestListData(itemsPath,supplierPath);
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		}
-	}
+//	/**
+//	 * Instantiates a new Shop.
+//	 */
+//	public Shop(String itemsPath, String supplierPath){
+//		try {
+//			ingestListData(itemsPath,supplierPath);
+//		} catch (FileNotFoundException e) {
+//			e.printStackTrace();
+//		}
+//	}
 
 	// TODO: make this method to ingest data from mysql instead,
 	//  this may need to be modified if it's more suitable to query from db directly.
@@ -69,11 +79,11 @@ public class Shop {
 		int iSupplier = 0;
 
 
-		while (iItem < itemList.getItemsList().size()) {
+		while (iItem < inventory.getItemsList().size()) {
 			iSupplier = 0;
 			while (iSupplier < supplierList.getSupplierList().size()) {
-				if(itemList.getItemsList().get(iItem).getSupplierId() == supplierList.getSupplierList().get(iSupplier).getId()) {
-				itemList.getItemsList().get(iItem).setSupplier(supplierList.getSupplierList().get(iSupplier));
+				if(inventory.getItemsList().get(iItem).getSupplierId() == supplierList.getSupplierList().get(iSupplier).getId()) {
+				inventory.getItemsList().get(iItem).setSupplier(supplierList.getSupplierList().get(iSupplier));
 				}
 				iSupplier++;
 			}

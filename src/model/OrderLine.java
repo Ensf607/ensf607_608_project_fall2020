@@ -1,4 +1,4 @@
-package server.models;
+package model;
 
 /**
  * The type Order line.

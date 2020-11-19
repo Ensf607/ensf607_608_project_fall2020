@@ -1,4 +1,4 @@
-package client.model;
+package server.model;
 
 import java.util.ArrayList;
 
@@ -8,12 +8,13 @@ import java.util.ArrayList;
  * @version 1.0
  * @since Oct 13, 2020
  */
-public class Supplier {
-	private int id;
-	private String supplierName;
-	private String supplierAddress;
-	private String salesPerson;
-	private ArrayList<Item> itemArrayList = new ArrayList<Item>();
+public abstract class Supplier {
+	protected int id;
+	protected String type;
+	protected String supplierName;
+	protected String supplierAddress;
+	protected String salesPerson;
+	protected ArrayList<Item> itemArrayList = new ArrayList<Item>();
 
 	/**
 	 * Sets id.

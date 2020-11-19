@@ -1,4 +1,4 @@
-package server.models;
+package model;
 
 import java.io.FileNotFoundException;
 
