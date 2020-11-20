@@ -1,4 +1,3 @@
-use tool_shop;
 INSERT INTO suppliers(id,company_name,address,sales_contact) VALUES (8001,'Grommet Builders','788 30th St., SE, Calgary','Fred');
 INSERT INTO suppliers(id,company_name,address,sales_contact) VALUES (8002,'Pong Works','749 Dufferin Blvd., SE, Calgary','Bart');
 INSERT INTO suppliers(id,company_name,address,sales_contact) VALUES (8003,'Wiley Inc.','26 40th St., SE, Calgary','BillyBob');
