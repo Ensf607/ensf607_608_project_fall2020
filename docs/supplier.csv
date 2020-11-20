@@ -1,23 +1,23 @@
-﻿id, company name, address, sales contact,Type,Tax
-8001,Grommet Builders,"788 30th St., SE, Calgary",Fred,Local,null
-8002,Pong Works,"749 Dufferin Blvd., SE, Calgary",Bart,Local,null
-8003,Wiley Inc.,"26 40th St., SE, Calgary",BillyBob,Local,null
-8004,Winork Manufacturing Inc.,"156 51st Ave., SE, Calgary",Marty,Local,null
-8005,Grab Bag Inc.,"138 42nd Ave., NE, Calgary",Monty,Local,null
-8006,Paddy's Manufacturing,"311 McCall Way, NE, Calgary",Barney,Local,null
-8007,Smickles Industries,"966 Smed Lane, SE, Calgary",Lisa,Local,null
-8008,Thangs Inc.,"879 37th Ave., NE, Calgary",Thelma,Local,null
-8009,Flip Works Inc.,"472 Ogden Dale Rd., SE, Calgary",Rory,Local,null
-8010,Irkle Industries,"754 Sunridge Way, NE, Calgary",Irma,Local,null
-8011,Biff Builders,"690 19th St., NE, Calgary",Borjn,Local,null
-8012,Twinkles Inc.,"318 29th St.,NE, Calgary",Barkley,Local,null
-8013,Piddles Industries,"238 112th Ave., NE, Calgary",Parnell,Local,null
-8014,Tic Tac Manufacturing,"598 Palmer Rd., NE, Calgary",Teisha,Local,null
-8015,Knock Knock Inc.,"363 42nd Ave., NE, Calgary",Ned,Local,null
-8016,Corky Things Inc.,"35 McCall Way, NE, Calgary",Corrine,Local,null
-8017,E & O Industries,"883 44th St., SE, Calgary",Stan,Local,null
-8018,Fiddleys Makes Stuff Inc.,"350 27th St., NE, Calgary",Fredda,Local,null
-8019,Horks and Stuff Manufacturing,"997 42nd Ave., NE, Calgary",Harold,Local,null
-8020,Wings Works,"754 48th St., SE, Calgary",Wing,Local,null
-8021,Busy Bee Tool,"2611 Hopewell Pl NE, Calgary",John,Local,null
-8022,Ken,"488 Danxia Street,Hefei",Xiping Wang,International,200
+id, company name,Type, address,Sales,Phone
+8001,Grommet Builders,Local,"788 30th St., SE, Calgary",Fred,4032125692
+8002,Pong Works,Local,"749 Dufferin Blvd., SE, Calgary",Bart,4032125702
+8003,Wiley Inc.,Local,"26 40th St., SE, Calgary",BillyBob,4032125712
+8004,Winork Manufacturing Inc.,Local,"156 51st Ave., SE, Calgary",Marty,4032125722
+8005,Grab Bag Inc.,Local,"138 42nd Ave., NE, Calgary",Monty,4032125732
+8006,Paddy's Manufacturing,Local,"311 McCall Way, NE, Calgary",Barney,4032125742
+8007,Smickles Industries,Local,"966 Smed Lane, SE, Calgary",Lisa,4032125752
+8008,Thangs Inc.,Local,"879 37th Ave., NE, Calgary",Thelma,4032125762
+8009,Flip Works Inc.,Local,"472 Ogden Dale Rd., SE, Calgary",Rory,4032125772
+8010,Irkle Industries,Local,"754 Sunridge Way, NE, Calgary",Irma,4032125782
+8011,Biff Builders,Local,"690 19th St., NE, Calgary",Borjn,4032125792
+8012,Twinkles Inc.,Local,"318 29th St.,NE, Calgary",Barkley,4032125802
+8013,Piddles Industries,Local,"238 112th Ave., NE, Calgary",Parnell,4032125812
+8014,Tic Tac Manufacturing,Local,"598 Palmer Rd., NE, Calgary",Teisha,4032125822
+8015,Knock Knock Inc.,Local,"363 42nd Ave., NE, Calgary",Ned,4032125832
+8016,Corky Things Inc.,Local,"35 McCall Way, NE, Calgary",Corrine,4032125842
+8017,E & O Industries,Local,"883 44th St., SE, Calgary",Stan,4032125852
+8018,Fiddleys Makes Stuff Inc.,Local,"350 27th St., NE, Calgary",Fredda,4032125862
+8019,Horks and Stuff Manufacturing,Local,"997 42nd Ave., NE, Calgary",Harold,4032125872
+8020,Wings Works,Local,"754 48th St., SE, Calgary",Wing,4032125882
+8021,Busy Bee Tool,Local,"2611 Hopewell Pl NE, Calgary",Bob,4032125892
+8022,Ken ltd,International,"488 Danxia Street,Hefei",Jing,4032125902

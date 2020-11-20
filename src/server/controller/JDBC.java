@@ -42,7 +42,7 @@ public class JDBC {
         this.conn = conn;
     }
 public JDBC() {
-	connectDB("18.236.191.241:3306", "tool_shop", "testadmin", "passw0rd");
+	connectDB("18.236.191.241:3306", "ToolShop", "testadmin", "passw0rd");
 }
     /**
      * Connect db.
@@ -209,7 +209,7 @@ public JDBC() {
 
     public ResultSet searchGeneralPurpose(String table, String column, String strWithWildcard){
         try {
-            query("use tool_shop;");
+            query("use ToolShop;");
             String query = "select * from " +
                     table +
                     " where " +
@@ -233,10 +233,8 @@ public JDBC() {
 
     public String getItemsList() throws JsonProcessingException{
         try {
-            String table = "items";//include ELECTRICAL when table is created
-            query("use tool_shop;");
-            String query = "select * from " +
-                    table;
+            String query = "SELECT T.ToolID,T.Name,T.Type,T.Quantity,T.Price,T.SupplierID,E.PowerType FROM ToolShop.TOOL AS T \n" + 
+            		"LEFT OUTER JOIN ToolShop.ELECTRICAL AS E ON T.ToolID=E.ToolID";
             PreparedStatement pStat = conn.prepareStatement(query);
             rs = pStat.executeQuery();
             metaData=rs.getMetaData();
@@ -250,8 +248,8 @@ public JDBC() {
     }
     public String getCustomersList() throws JsonProcessingException {
         try {
-            String table = "customer";
-            query("use tool_shop;");
+            String table = "CLIENT";
+            query("use ToolShop;");
             String query = "select * from " +
                     table;
             PreparedStatement pStat = conn.prepareStatement(query);
@@ -268,10 +266,9 @@ public JDBC() {
     
     public String getSuppliersList() throws JsonProcessingException{
         try {
-            String table = "suppliers";
-            query("use tool_shop;");
-            String query = "select * from " +
-                    table;
+            query("use ToolShop;");
+            String query = "SELECT S.SupplierID,S.Name,S.Type,S.Address,S.CName,S.Phone,I.ImportTax FROM ToolShop.SUPPLIER AS S\n" + 
+            		"LEFT OUTER JOIN ToolShop.INTERNATIONAL AS I ON S.SupplierID =I.SupplierID ";
             PreparedStatement pStat = conn.prepareStatement(query);
             rs = pStat.executeQuery();
             metaData=rs.getMetaData();
@@ -294,37 +291,74 @@ public JDBC() {
     public void checkInventory() {
     	try {
             String table = "TOOL";
-            query("use tool_shop;");
-            String query = "SELECT id,quantity_in_stock,supplier_id FROM "+table+" WHERE quantity_in_stock < ?";
+            query("use ToolShop;");
+            String query = "SELECT ToolID,Quantity,SupplierID FROM "+table+" WHERE Quantity < ?";
             PreparedStatement pStat = conn.prepareStatement(query);
             pStat.setInt(1, 40);
             rs=pStat.executeQuery();
-            if (rs!=null)
-            {	int orderID=generateOrderID();
+            
+            	if (rs.next())
+            {
+            	System.err.println("CREATING NEW ORDER!!");
+            	int orderID=generateOrderID();
             	createOrder(orderID);
             	createOrderLine(orderID);
+            	//updateToolTable(rs);
             	//do we update ITEM ??
             }
+            else
+            	System.err.println("No New ORDERES CREATED");
             pStat.close();
             }catch (SQLException e) {
             	System.out.println(e);
             }
     }
-    private void createOrderLine(int orderID) {
+    private void updateToolTable(ResultSet rs2) {
+    	try {
+    		System.err.println("UPDATEING TOOL");
+        	String table = "TOOL";
+            query("use ToolShop;");
+            String query = "UPDATE "+table+" SET Quantity=? WHERE ToolID= ?";
+            PreparedStatement pStat = conn.prepareStatement(query);
+            while(rs2.next()) {
+            	 pStat.setInt(1, 50);
+            	 pStat.setInt(2, rs.getInt("ToolID"));
+            }
+            pStat.close();
+	}catch (SQLException e) {
+		System.err.println(e);
+	}
+    	}
+	private void createOrderLine(int orderID) {
     	try {
     	String table = "ORDERLINE";
-        query("use tool_shop;");
-        PreparedStatement pStat = null;
-        while(rs.next()) {
-        String query = "INSERT INTO"+table+"VALUES(?,?,?,?)";
-        pStat = conn.prepareStatement(query);
+        query("use ToolShop;");
+        String query1 = "INSERT INTO "+table+" VALUES(?,?,?,?)";
+        String query2 = "UPDATE ToolShop.TOOL SET Quantity=? WHERE ToolID=?";
+        PreparedStatement  pStat = conn.prepareStatement(query1);
+        PreparedStatement  pStat2 = conn.prepareStatement(query2);
+        //Cursor is at first ROW ,  COULDNT change position of cursor
+        pStat2.setInt(1, 50);
+        pStat2.setInt(2, rs.getInt("ToolID"));
         pStat.setInt(1, orderID);
         pStat.setInt(2, rs.getInt("ToolID"));
         pStat.setInt(3, rs.getInt("SupplierID"));
         pStat.setInt(4, (int)(50-rs.getInt("Quantity")));//assuming it creates orderline of 50
         pStat.executeUpdate();
+        pStat2.executeUpdate();
+        while(rs.next()) {
+        
+        pStat2.setInt(1, 50);
+        pStat2.setInt(2, rs.getInt("ToolID"));
+        pStat.setInt(1, orderID);
+        pStat.setInt(2, rs.getInt("ToolID"));
+        pStat.setInt(3, rs.getInt("SupplierID"));
+        pStat.setInt(4, (int)(50-rs.getInt("Quantity")));//assuming it creates orderline of 50
+        pStat.executeUpdate();
+        pStat2.executeUpdate();
         }
         pStat.close();
+        pStat2.close();
        
 	}catch (SQLException e) {
 		System.out.println(e);
@@ -333,9 +367,9 @@ public JDBC() {
 
 	private void createOrder(int orderID) {
     	try {
-            String table = "ORDER";
-            query("use tool_shop;");
-            String query = "INSERT INTO"+table+"VALUES(?,CURRENT_TIMESTAMP)";
+            String table = "ORDER_";
+            query("use ToolShop;");
+            String query = "INSERT INTO "+table+" VALUES(?,CURRENT_TIMESTAMP)";
             PreparedStatement pStat = conn.prepareStatement(query);
             pStat.setInt(1, orderID);
             pStat.executeUpdate();
@@ -343,7 +377,7 @@ public JDBC() {
             
 		
 	}catch (SQLException e) {
-		System.out.println(e);
+		System.out.println("HERE");
 	}
 	}
     	public int generateOrderID(){
@@ -354,10 +388,10 @@ public JDBC() {
 	public void purchase (int toolID, int quantity,int customerID)
     {
     	 try {
-    		 updatePurchaseTable(toolID, customerID);
+    		 updatePurchaseTable(toolID, customerID);//customer ID
              String table = "TOOL";
-             query("use tool_shop;");
-             String query = "UPDATE "+ table +" SET quantity_in_stock=quantity_in_stock-? WHERE id=?";
+             query("use ToolShop;");
+             String query = "UPDATE "+ table +" SET Quantity=Quantity-? WHERE ToolID=?";
              PreparedStatement pStat = conn.prepareStatement(query);
              pStat.setInt(1, quantity);
              pStat.setInt(2, toolID);
@@ -372,12 +406,12 @@ public JDBC() {
     }
 	private void updatePurchaseTable(int toolID, int customerID) {
 		 try {
-             String table = "PURCHASES";
-             query("use tool_shop;");
+             String table = "PURCHASE";
+             query("use ToolShop;");
              String query = "INSERT INTO "+ table +" VALUES(?,?,CURRENT_TIMESTAMP)";
              PreparedStatement pStat = conn.prepareStatement(query);
-             pStat.setInt(1, toolID);
-             pStat.setInt(2, customerID);
+             pStat.setInt(1, customerID);
+             pStat.setInt(2, toolID);
              int n=pStat.executeUpdate();
              pStat.close();
              } catch (SQLException e) {
@@ -386,19 +420,41 @@ public JDBC() {
 		 
 	}
 
-	public ResultSet generateOrder() {
+	public String getOrderList() throws JsonProcessingException {
 		try {
-            String table = "ORDER,ORDERLINE";
-            query("use tool_shop;");
-            String query = "SELECT * FROM "+ table ;
+           
+            query("use ToolShop;");
+            String query = "SELECT O.OrderID,O.Date,T.Name,S.Name,L.Quantity FROM ToolShop.ORDERLINE AS L ,ToolShop.ORDER_ AS O ,ToolShop.TOOL AS T , ToolShop.SUPPLIER AS S\n"+
+            		"WHERE L.OrderID=O.OrderID AND L.ToolID =  T.ToolID AND L.SupplierID=S.SupplierID";
+
             PreparedStatement pStat = conn.prepareStatement(query);
             rs=pStat.executeQuery();
+            metaData=rs.getMetaData();
+            orderToJson();
+            pStat.close();
             }         
          catch (SQLException e) {
             e.printStackTrace();
         }
-		return rs;
+		return json;
 	}
+	private void orderToJson() throws SQLException, JsonProcessingException {
+		ObjectMapper mapper = new ObjectMapper();
+		 ArrayNode arrayNode = mapper.createArrayNode();
+
+	       while(rs.next()) {
+	    	  ObjectNode node = new ObjectMapper().createObjectNode();
+	    		 node.put(metaData.getColumnName(1), rs.getInt(1));
+		    	 node.put(metaData.getColumnName(2), rs.getTimestamp(2).toString());
+		    	 node.put(metaData.getColumnName(3), rs.getString(3));
+		    	 node.put(metaData.getColumnName(4), rs.getString(4));
+		    	 node.put(metaData.getColumnName(5), rs.getInt(5));
+	    	 arrayNode.addAll(Arrays.asList(node));
+	       
+	       }
+	       json=mapper.writerWithDefaultPrettyPrinter().writeValueAsString(arrayNode);
+	}		
+
 	public void customerListTooJson() throws SQLException, JsonProcessingException {
 		ObjectMapper mapper = new ObjectMapper();
 		 ArrayNode arrayNode = mapper.createArrayNode();
@@ -432,25 +488,25 @@ public JDBC() {
 	    	 node.put(metaData.getColumnName(4), rs.getString(4));
 	    	 node.put(metaData.getColumnName(5), rs.getString(5));
 	    	 node.put(metaData.getColumnName(6), rs.getString(6));
+	    	 node.put(metaData.getColumnName(7), rs.getFloat(7));
 	    	 arrayNode.addAll(Arrays.asList(node));
 	       
 	       }
 	       json=mapper.writerWithDefaultPrettyPrinter().writeValueAsString(arrayNode);
 	}
-	//TODO: doesnt work yet
 	public void toolListTooJson() throws SQLException, JsonProcessingException {
 		ObjectMapper mapper = new ObjectMapper();
 		 ArrayNode arrayNode = mapper.createArrayNode();
 
 	       while(rs.next()) {
-	    	 System.err.println(metaData.getColumnName(1)+rs.getInt(1));
 	    	 ObjectNode node = new ObjectMapper().createObjectNode();
 	    	 node.put(metaData.getColumnName(1), rs.getInt(1));
 	    	 node.put(metaData.getColumnName(2), rs.getString(2));
 	    	 node.put(metaData.getColumnName(3), rs.getString(3));
-	    	 node.put(metaData.getColumnName(4), rs.getString(4));
-	    	 node.put(metaData.getColumnName(5), rs.getString(5));
-	    	 node.put(metaData.getColumnName(6), rs.getString(6));
+	    	 node.put(metaData.getColumnName(4), rs.getInt(4));
+	    	 node.put(metaData.getColumnName(5), rs.getFloat(5));
+	    	 node.put(metaData.getColumnName(6), rs.getInt(6));
+	    	 node.put(metaData.getColumnName(7), rs.getString(7));
 	    	 arrayNode.addAll(Arrays.asList(node));
 	       
 	       }
