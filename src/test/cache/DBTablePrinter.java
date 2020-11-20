@@ -29,7 +29,7 @@ for version control and publishing an open source software.
 Hami
  */
 
-package test;
+package test.cache;
 
 import java.sql.*;
 import java.util.ArrayList;

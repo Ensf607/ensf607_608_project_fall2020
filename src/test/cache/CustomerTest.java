@@ -1,6 +1,7 @@
-package test;
+package test.cache;
 
 import client.model.Customer;
+import server.models.Customer;
 
 /**
  * to see a code snippet of how it's done
