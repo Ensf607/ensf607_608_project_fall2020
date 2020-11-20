@@ -1,4 +1,4 @@
-package server.jdo;
+package client.model;
 
 import java.util.ArrayList;
 

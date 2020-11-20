@@ -1,6 +1,6 @@
 package test;
 
-import server.JDBC;
+import server.controller.JDBC;
 
 class JDBCTest {
     public static void main(String[] args) {
