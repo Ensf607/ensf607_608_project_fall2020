@@ -1,4 +1,3 @@
-drop table if exists SUPPLIER;
 create table SUPPLIER
 (
 	SupplierID int auto_increment,

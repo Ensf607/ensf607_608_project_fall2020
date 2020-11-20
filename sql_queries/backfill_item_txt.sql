@@ -1,4 +1,3 @@
-use tool_shop;
 INSERT INTO items(id,description_name,quantity_in_stock,price,supplier_id) VALUES (1000,'Knock Bits',88,12.67,8015);
 INSERT INTO items(id,description_name,quantity_in_stock,price,supplier_id) VALUES (1001,'Widgets',10,35.50,8004);
 INSERT INTO items(id,description_name,quantity_in_stock,price,supplier_id) VALUES (1002,'Grommets',20,23.45,8001);

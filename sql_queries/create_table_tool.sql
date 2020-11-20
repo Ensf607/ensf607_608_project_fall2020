@@ -1,4 +1,3 @@
-drop table if exists  TOOL;
 create table TOOL
 (
 	ToolID int auto_increment,
