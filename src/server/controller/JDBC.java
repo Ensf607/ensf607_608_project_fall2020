@@ -4,14 +4,17 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.sql.*;
+import java.util.Arrays;
 //TODO :
 //Query for Listing all tools
 //Query for search by toolName
 //Query for search by toolID
 //Query for purchasing an item (need to include customer info ???)
+import java.util.Random;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 
@@ -28,8 +31,8 @@ public class JDBC {
     private Connection conn;
     private ResultSet rs;
     private BufferedReader reader;
-    String json = new String();
-    ObjectNode node;
+    private String json = new String();
+    private ResultSetMetaData metaData;
 
     public Connection getConn() {
 		return conn;
@@ -228,21 +231,24 @@ public JDBC() {
             System.out.print (rs.getString(columns[i])+ "\t");
     }
 
-    public ResultSet getItemsList(){
+    public String getItemsList() throws JsonProcessingException{
         try {
-            String table = "items";
+            String table = "items";//include ELECTRICAL when table is created
             query("use tool_shop;");
             String query = "select * from " +
                     table;
             PreparedStatement pStat = conn.prepareStatement(query);
             rs = pStat.executeQuery();
+            metaData=rs.getMetaData();
+            toolListTooJson();
+            pStat.close();
            
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return rs;
+        return json;
     }
-    public ResultSet getCustomersList() {
+    public String getCustomersList() throws JsonProcessingException {
         try {
             String table = "customer";
             query("use tool_shop;");
@@ -250,14 +256,17 @@ public JDBC() {
                     table;
             PreparedStatement pStat = conn.prepareStatement(query);
             rs = pStat.executeQuery();
-           
+            metaData=rs.getMetaData();
+            customerListTooJson();
+            pStat.close();
+            
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return rs;
+        return json;
     }
     
-    public ResultSet getSuppliersList(){
+    public String getSuppliersList() throws JsonProcessingException{
         try {
             String table = "suppliers";
             query("use tool_shop;");
@@ -265,59 +274,189 @@ public JDBC() {
                     table;
             PreparedStatement pStat = conn.prepareStatement(query);
             rs = pStat.executeQuery();
+            metaData=rs.getMetaData();
+            supplierListTooJson();
+            pStat.close();
             }         
          catch (SQLException e) {
             e.printStackTrace();
         }
-       return rs;
+       return json;
     }
-
+    /**
+     * NEED TO CHANGE
     public ResultSet searchForToolID(int toolID){
         return searchGeneralPurpose("items","id", String.valueOf(toolID));
     }
     public ResultSet searchForToolName(String toolName){
         return searchGeneralPurpose("items","description_name", toolName);
-    }
-    public ResultSet checkInventory() {
+    }*/
+    public void checkInventory() {
     	try {
-            String table = "items";
+            String table = "TOOL";
             query("use tool_shop;");
             String query = "SELECT id,quantity_in_stock,supplier_id FROM "+table+" WHERE quantity_in_stock < ?";
             PreparedStatement pStat = conn.prepareStatement(query);
             pStat.setInt(1, 40);
             rs=pStat.executeQuery();
-            ResultSetMetaData metaData = rs.getMetaData();
-         //  System.out.println( metaData.getColumnType(1));
-            node = new ObjectMapper().createObjectNode();
-            System.out.println(rs.getString(1));
-            node.put(metaData.getColumnName(1), rs.getInt(1));
-//            for (int i=1 ;i<=metaData.getColumnCount();i++)
-//            {	System.out.println(metaData.getColumnName(i)+" "+rs.getString(i));
-//            	node.put(metaData.getColumnName(i), rs.getString(i));
-//            }
-            System.err.println(node.toString());
-     //       pStat.close();
+            if (rs!=null)
+            {	int orderID=generateOrderID();
+            	createOrder(orderID);
+            	createOrderLine(orderID);
+            	//do we update ITEM ??
+            }
+            pStat.close();
             }catch (SQLException e) {
             	System.out.println(e);
             }
-    	return rs;
     }
-    public void purchase (int toolID, int quantity,int customerID)
+    private void createOrderLine(int orderID) {
+    	try {
+    	String table = "ORDERLINE";
+        query("use tool_shop;");
+        PreparedStatement pStat = null;
+        while(rs.next()) {
+        String query = "INSERT INTO"+table+"VALUES(?,?,?,?)";
+        pStat = conn.prepareStatement(query);
+        pStat.setInt(1, orderID);
+        pStat.setInt(2, rs.getInt("ToolID"));
+        pStat.setInt(3, rs.getInt("SupplierID"));
+        pStat.setInt(4, (int)(50-rs.getInt("Quantity")));//assuming it creates orderline of 50
+        pStat.executeUpdate();
+        }
+        pStat.close();
+       
+	}catch (SQLException e) {
+		System.out.println(e);
+	}
+	}
+
+	private void createOrder(int orderID) {
+    	try {
+            String table = "ORDER";
+            query("use tool_shop;");
+            String query = "INSERT INTO"+table+"VALUES(?,CURRENT_TIMESTAMP)";
+            PreparedStatement pStat = conn.prepareStatement(query);
+            pStat.setInt(1, orderID);
+            pStat.executeUpdate();
+            pStat.close();
+            
+		
+	}catch (SQLException e) {
+		System.out.println(e);
+	}
+	}
+    	public int generateOrderID(){
+    		Random r = new Random( System.currentTimeMillis() );
+    		return ((1 + r.nextInt(2)) * 10000 + r.nextInt(10000));
+    	}
+
+	public void purchase (int toolID, int quantity,int customerID)
     {
     	 try {
-             String table = "items";
+    		 updatePurchaseTable(toolID, customerID);
+             String table = "TOOL";
              query("use tool_shop;");
              String query = "UPDATE "+ table +" SET quantity_in_stock=quantity_in_stock-? WHERE id=?";
              PreparedStatement pStat = conn.prepareStatement(query);
              pStat.setInt(1, quantity);
              pStat.setInt(2, toolID);
              int n=pStat.executeUpdate();
-             System.out.println(n);
+             checkInventory();
+             pStat.close();
+             
              }         
           catch (SQLException e) {
              e.printStackTrace();
          }
     }
+	private void updatePurchaseTable(int toolID, int customerID) {
+		 try {
+             String table = "PURCHASES";
+             query("use tool_shop;");
+             String query = "INSERT INTO "+ table +" VALUES(?,?,CURRENT_TIMESTAMP)";
+             PreparedStatement pStat = conn.prepareStatement(query);
+             pStat.setInt(1, toolID);
+             pStat.setInt(2, customerID);
+             int n=pStat.executeUpdate();
+             pStat.close();
+             } catch (SQLException e) {
+            	 System.out.println(e);
+			}  
+		 
+	}
+
+	public ResultSet generateOrder() {
+		try {
+            String table = "ORDER,ORDERLINE";
+            query("use tool_shop;");
+            String query = "SELECT * FROM "+ table ;
+            PreparedStatement pStat = conn.prepareStatement(query);
+            rs=pStat.executeQuery();
+            }         
+         catch (SQLException e) {
+            e.printStackTrace();
+        }
+		return rs;
+	}
+	public void customerListTooJson() throws SQLException, JsonProcessingException {
+		ObjectMapper mapper = new ObjectMapper();
+		 ArrayNode arrayNode = mapper.createArrayNode();
+
+	       while(rs.next()) {
+	    	   System.err.println(metaData.getColumnName(1)+rs.getInt(1));
+	    	  ObjectNode node = new ObjectMapper().createObjectNode();
+	    	 node.put(metaData.getColumnName(1), rs.getInt(1));
+	    	 node.put(metaData.getColumnName(2), rs.getString(2));
+	    	 node.put(metaData.getColumnName(3), rs.getString(3));
+	    	 node.put(metaData.getColumnName(4), rs.getString(4));
+	    	 node.put(metaData.getColumnName(5), rs.getString(5));
+	    	 node.put(metaData.getColumnName(6), rs.getString(6));
+	    	 node.put(metaData.getColumnName(7), rs.getString(7));
+	    	 arrayNode.addAll(Arrays.asList(node));
+	       
+	       }
+	       json=mapper.writerWithDefaultPrettyPrinter().writeValueAsString(arrayNode);
+	}
+	
+	public void supplierListTooJson() throws SQLException, JsonProcessingException {
+		ObjectMapper mapper = new ObjectMapper();
+		 ArrayNode arrayNode = mapper.createArrayNode();
+
+	       while(rs.next()) {
+	    	 System.err.println(metaData.getColumnName(1)+rs.getInt(1));
+	    	 ObjectNode node = new ObjectMapper().createObjectNode();
+	    	 node.put(metaData.getColumnName(1), rs.getInt(1));
+	    	 node.put(metaData.getColumnName(2), rs.getString(2));
+	    	 node.put(metaData.getColumnName(3), rs.getString(3));
+	    	 node.put(metaData.getColumnName(4), rs.getString(4));
+	    	 node.put(metaData.getColumnName(5), rs.getString(5));
+	    	 node.put(metaData.getColumnName(6), rs.getString(6));
+	    	 arrayNode.addAll(Arrays.asList(node));
+	       
+	       }
+	       json=mapper.writerWithDefaultPrettyPrinter().writeValueAsString(arrayNode);
+	}
+	//TODO: doesnt work yet
+	public void toolListTooJson() throws SQLException, JsonProcessingException {
+		ObjectMapper mapper = new ObjectMapper();
+		 ArrayNode arrayNode = mapper.createArrayNode();
+
+	       while(rs.next()) {
+	    	 System.err.println(metaData.getColumnName(1)+rs.getInt(1));
+	    	 ObjectNode node = new ObjectMapper().createObjectNode();
+	    	 node.put(metaData.getColumnName(1), rs.getInt(1));
+	    	 node.put(metaData.getColumnName(2), rs.getString(2));
+	    	 node.put(metaData.getColumnName(3), rs.getString(3));
+	    	 node.put(metaData.getColumnName(4), rs.getString(4));
+	    	 node.put(metaData.getColumnName(5), rs.getString(5));
+	    	 node.put(metaData.getColumnName(6), rs.getString(6));
+	    	 arrayNode.addAll(Arrays.asList(node));
+	       
+	       }
+	       json=mapper.writerWithDefaultPrettyPrinter().writeValueAsString(arrayNode);
+	}
+	
     
 
 
