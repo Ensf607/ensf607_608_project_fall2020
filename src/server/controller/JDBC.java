@@ -383,8 +383,7 @@ public class JDBC {
         return ((1 + r.nextInt(2)) * 10000 + r.nextInt(10000));
     }
 
-    public void purchase (int toolID, int quantity,int customerID)
-    {
+    public void purchase (int toolID, int quantity,int customerID) {
         try {
             updatePurchaseTable(toolID, customerID);//customer ID
             String table = "TOOL";
@@ -420,7 +419,6 @@ public class JDBC {
 
     public String getOrderList() throws JsonProcessingException {
         try {
-
             query("use ToolShop;");
             String query = "SELECT O.OrderID,O.Date,T.Name,S.Name,L.Quantity FROM ToolShop.ORDERLINE AS L ,ToolShop.ORDER_ AS O ,ToolShop.TOOL AS T , ToolShop.SUPPLIER AS S\n"+
                     "WHERE L.OrderID=O.OrderID AND L.ToolID =  T.ToolID AND L.SupplierID=S.SupplierID";
@@ -515,13 +513,4 @@ public class JDBC {
 
 
 
-
 }
-	
-
-
-		
-
-
-
-
