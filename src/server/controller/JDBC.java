@@ -513,20 +513,20 @@ public class JDBC {
 
 
     /** Update SQL DB **/
-    public void insertIntoTable(String tableName, String[] schema){
+    public void insertIntoTable(String tableName, String[] row){
         StringBuilder sqlSB = new StringBuilder();
         sqlSB.append("INSERT INTO `" + tableName +"` "+"values(");
-        for (int i = 0; i< schema.length; i++){
-            switch (Utils.parseColumn(schema[i])){
+        for (int i = 0; i< row.length; i++){
+            switch (Utils.parseColumn(row[i])){
                 case "int":
                 case "float":
-                    sqlSB.append(schema[i]);
+                    sqlSB.append(row[i]);
                     break;
                 default:
-                    sqlSB.append("'" + schema[i]+ "'");
+                    sqlSB.append("'" + row[i]+ "'");
                     break;
             }
-            if (i+1< schema.length)
+            if (i+1< row.length)
                 sqlSB.append(",");
         }
         sqlSB.append(");");
@@ -540,5 +540,9 @@ public class JDBC {
     }
 
 
+    public void insertIntoTOOL(String ToolID, String Name, String Type, String Quantity, String Price, String SupplierID){
+        String[] row = {ToolID,Name,Type,Quantity,Price,SupplierID};
+        insertIntoTable("TOOL", row);
+    }
 
 }

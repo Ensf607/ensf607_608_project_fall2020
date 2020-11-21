@@ -48,6 +48,12 @@ public class LiveProjectJDBCTest {
         jdbc.checkInventory();
     }
 
+    @Test
+    public void insertIntoCLIENTTest() throws SQLException, JsonProcessingException {
+        JDBC jdbc = getJdbc();
+        jdbc.insertIntoTOOL("1094","Test Tool", "Electric","20","150", "8022");
+    }
+
     /**
      * Test Setup
      * @return
@@ -58,6 +64,8 @@ public class LiveProjectJDBCTest {
         jdbc.query("use ToolShop;");
         return jdbc;
     }
+
+
 
 
 }
