@@ -47,9 +47,8 @@ public class ServerController {
 				aSocket = serverSocket.accept();
 				socketIn = new BufferedReader(new InputStreamReader(aSocket.getInputStream()));
 				socketOut = new PrintWriter(aSocket.getOutputStream(), true);
-				JDBC connector =new JDBC();//assuming no login for now
 				
-				InventoryManager im =new InventoryManager(socketIn,socketOut,connector.getConn());
+				ModelController im =new ModelController(this);
 				pool.execute(im);
 
 			}
@@ -60,6 +59,23 @@ public class ServerController {
 		System.out.println("Good Bye!");
 		socketIn.close();
 		socketOut.close();
+	}
+	
+	/**
+	 * Based on message the client will decode and print the respective form of table on GUI
+	 * Send a jason object {message: displayTool,tool:[]}
+	 */
+	public void send() {
+		
+	}
+
+
+	/**
+	 * Recieve jason object from client in {message: purchase,itemID:2,Quantity:5}
+	 * get requests example: { "type": "get", "table": "ORDER_", "scope": "all"}
+	 **/
+	public void recieve() {
+		
 	}
 
 	public static void main(String[] args) throws IOException {

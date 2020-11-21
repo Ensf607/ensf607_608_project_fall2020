@@ -1,10 +1,19 @@
 package server.controller;
 
 import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
 import java.sql.*;
+import java.util.Arrays;
+//TODO :
+//Query for Listing all tools
+//Query for search by toolName
+//Query for search by toolID
+//Query for purchasing an item (need to include customer info ???)
+import java.util.Random;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 
 /**
@@ -14,23 +23,22 @@ import java.sql.*;
  * String password = "passw0rd";
  */
 public class JDBC {
-
     private PreparedStatement preparedStmt;
-    private Statement stmt;
-    private Connection conn;
-    private ResultSet rs;
+    Statement stmt;
+    Connection conn;
+    ResultSet rs;
     private BufferedReader reader;
-
+    private String json = new String();
+    private ResultSetMetaData metaData;
     public Connection getConn() {
-		return conn;
-	}
- 
-	public void setConn(Connection conn) {
+        return conn;
+    }
+    public void setConn(Connection conn) {
         this.conn = conn;
     }
-public JDBC() {
-	connectDB("localhost:3306", "tool_shop", "testadmin", "passw0rd");
-}
+    public JDBC() {
+        connectDB("18.236.191.241:3306", "ToolShop", "testadmin", "passw0rd");
+    }
     /**
      * Connect db.
      *
@@ -52,7 +60,6 @@ public JDBC() {
             System.out.println(e.getMessage());
         }
     }
-
     public void query(String sql){
         try (Statement stmt = conn.createStatement()) {
 //            System.out.println("Querying: \n" +
@@ -62,7 +69,6 @@ public JDBC() {
             e.printStackTrace();
         }
     }
-
     /**
      * D2L provided code
      * close()
@@ -76,50 +82,8 @@ public JDBC() {
             e.printStackTrace();
         }
     }
-
-    public void createTables() {
-        try {
-            // flushing schema
-            query("drop schema if exists tool_shop;");
-            query("create schema tool_shop;");
-            query("drop table if exists  items;"); // items has to be dropped first due to referential integrity
-            query("drop table if exists  suppliers;");
-            query("use tool_shop;");
-
-            query("create table suppliers" +
-                    "(" +
-                    "id int auto_increment," +
-                    "company_name text null," +
-                    "address text null," +
-                    "sales_contact text null," +
-                    "constraint suppliers_pk " +
-                    "primary key (id)" +
-                    ");");
-            System.out.println("Created Table suppliers");
-            query("create table items" +
-                    "(" +
-                    "id int auto_increment," +
-                    "description_name text null," +
-                    "quantity_in_stock int null," +
-                    "price float null," +
-                    "supplier_id int null," +
-                    "constraint items_pk " +
-                    "primary key (id)," +
-                    "constraint suppliers_suppliers_id_fk " +
-                    "foreign key (supplier_id) references suppliers (id) " +
-                    "on update cascade on delete set null" +
-                    ");");
-            System.out.println("Created Table ToolTable");
-
-        } catch (Exception e) {
-            System.err.println("Cant drop/create tables");
-            return;
-        }
-    }
-
-
     /**
-     * D2L provided code
+     * Might create a User table that contains login info in Mysql
      * Select user.
      */
     public void selectUser() {
@@ -135,7 +99,6 @@ public JDBC() {
             e.printStackTrace();
         }
     }
-
     /**
      * D2L provided code
      * Insert user.
@@ -151,7 +114,6 @@ public JDBC() {
             e.printStackTrace();
         }
     }
-
     /**
      * D2L provided code
      * Delete user.
@@ -166,7 +128,6 @@ public JDBC() {
             e.printStackTrace();
         }
     }
-
     /**
      * D2L provided code
      * Validate login.
@@ -189,7 +150,6 @@ public JDBC() {
             e.printStackTrace();
         }
     }
-
     /**
      * D2L provided code
      * Select user prepared statement.
@@ -210,7 +170,6 @@ public JDBC() {
             e.printStackTrace();
         }
     }
-
     /**
      * D2L provided code
      * Insert user prepared statement.
@@ -230,91 +189,9 @@ public JDBC() {
             e.printStackTrace();
         }
     }
-
-    public void addItemList(String fileName) {
-        System.out.print("Filling the table with tools");
+    public ResultSet searchGeneralPurpose(String table, String column, String strWithWildcard){
         try {
-
-            reader = new BufferedReader(new FileReader(fileName));
-            String line = reader.readLine();
-            line = reader.readLine();
-            while (line != null) {
-                String temp[];
-
-                temp = line.split("[;]");
-                int id = Integer.parseInt(temp[0]);
-                String description = temp[1];
-                int quantity = Integer.parseInt(temp[2]);
-                float price = Float.parseFloat(temp[3]);
-                int supplierId = Integer.parseInt(temp[4]);
-                String query ="INSERT INTO items(id,description_name,quantity_in_stock,price,supplier_id) VALUES (?,?,?,?,?)";;
-
-
-                try {
-                    preparedStmt = conn.prepareStatement(query);
-                    preparedStmt.setInt(1, id);
-                    preparedStmt.setString(2, description);
-                    preparedStmt.setInt(3, quantity);
-                    preparedStmt.setFloat(4, price);
-                    preparedStmt.setInt(5, supplierId);
-//                    System.out.println(preparedStmt);
-                    preparedStmt.executeUpdate();
-                } catch (SQLException e) {
-                    System.out.println(e);
-                }
-
-                line = reader.readLine();
-            }
-            reader.close();
-        } catch (IOException e) {
-            System.out.println("Error reading file");
-        }
-        System.out.println("\t--Done");
-    }
-
-    public void addSupplierList(String fileName) {
-        System.out.print("Filling the table with suppliers");
-        try {
-
-            reader = new BufferedReader(new FileReader(fileName));
-            String line = reader.readLine();
-            line = reader.readLine();//skipping header
-            while (line != null) {
-                String temp[];
-
-                temp = line.split("[;]");
-                int id = Integer.parseInt(temp[0]);
-                String company_name = temp[1];
-                String adress = temp[2];
-                String contact = temp[3];
-
-                String query = "INSERT INTO suppliers(id,company_name,address,sales_contact) " + "VALUES (?,?,?,?)";
-
-                try {
-                    preparedStmt = conn.prepareStatement(query);
-                    preparedStmt.setInt(1, id);
-                    preparedStmt.setString(2, company_name);
-                    preparedStmt.setString(3, adress);
-                    preparedStmt.setString(4, contact);
-                    preparedStmt.executeUpdate();
-//                    System.out.println(preparedStmt);
-
-                } catch (SQLException e) {
-                    System.out.println(e);
-                }
-
-                line = reader.readLine();
-            }
-            reader.close();
-        } catch (IOException e) {
-            System.out.println("Error reading file");
-        }
-        System.out.println("\t--Done");
-    }
-
-    public void searchGeneralPurpose(String table, String column, String strWithWildcard, String[] columns){
-        try {
-            query("use tool_shop;");
+            query("use ToolShop;");
             String query = "select * from " +
                     table +
                     " where " +
@@ -322,142 +199,362 @@ public JDBC() {
                     " like ?; ";
             PreparedStatement pStat = conn.prepareStatement(query);
             pStat.setString(1, strWithWildcard);
-//            System.out.println(pStat);
             rs = pStat.executeQuery();
-            if (!rs.next()){
-                System.out.println("Search Failed to find a tool matching "+column + ": "+strWithWildcard);
-                return;
-            } else {
-                System.out.print("Search Result:\t");
-                displayReturnStatement(columns);
-            }
 
-            while (rs.next()) {
-                displayReturnStatement(columns);
-            }
-            System.out.println("\n");
             pStat.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        return rs;
     }
-
     private void displayReturnStatement(String[] columns) throws SQLException {
         for (int i = 0; i < columns.length; i++)
             System.out.print (rs.getString(columns[i])+ "\t");
     }
-
-    public void selectFromItems(){
-        System.out.println("Reading all tools from the table:\nTools:");
+    /**
+     * NEED TO CHANGE
+     public ResultSet searchForToolID(int toolID){
+     return searchGeneralPurpose("items","id", String.valueOf(toolID));
+     }
+     public ResultSet searchForToolName(String toolName){
+     return searchGeneralPurpose("items","description_name", toolName);
+     }*/
+    public void checkInventory() {
         try {
-            String table = "items";
-            query("use tool_shop;");
+            String table = "TOOL";
+            query("use ToolShop;");
+            String query = "SELECT ToolID,Quantity,SupplierID FROM "+table+" WHERE Quantity < ?";
+            PreparedStatement pStat = conn.prepareStatement(query);
+            pStat.setInt(1, 40);
+            rs=pStat.executeQuery();
+
+            if (rs.next())
+            {
+                System.err.println("CREATING NEW ORDER!!");
+                int orderID=generateOrderID();
+                createOrder(orderID);
+                createOrderLine(orderID);
+                //updateToolTable(rs);
+                //do we update ITEM ??
+            }
+            else
+                System.err.println("No New ORDERES CREATED");
+            pStat.close();
+        }catch (SQLException e) {
+            System.out.println(e);
+        }
+    }
+    private void updateToolTable(ResultSet rs2) {
+        try {
+            System.err.println("UPDATEING TOOL");
+            String table = "TOOL";
+            query("use ToolShop;");
+            String query = "UPDATE "+table+" SET Quantity=? WHERE ToolID= ?";
+            PreparedStatement pStat = conn.prepareStatement(query);
+            while(rs2.next()) {
+                pStat.setInt(1, 50);
+                pStat.setInt(2, rs.getInt("ToolID"));
+            }
+            pStat.close();
+        }catch (SQLException e) {
+            System.err.println(e);
+        }
+    }
+    public void purchase (int toolID, int quantity,int customerID) {
+        try {
+            updatePurchaseTable(toolID, customerID);//customer ID
+            String table = "TOOL";
+            query("use ToolShop;");
+            String query = "UPDATE "+ table +" SET Quantity=Quantity-? WHERE ToolID=?";
+            PreparedStatement pStat = conn.prepareStatement(query);
+            pStat.setInt(1, quantity);
+            pStat.setInt(2, toolID);
+            int n=pStat.executeUpdate();
+            checkInventory();
+            pStat.close();
+
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    private void createOrderLine(int orderID) {
+        try {
+            String table = "ORDERLINE";
+            query("use ToolShop;");
+            String query1 = "INSERT INTO "+table+" VALUES(?,?,?,?)";
+            String query2 = "UPDATE ToolShop.TOOL SET Quantity=? WHERE ToolID=?";
+            PreparedStatement  pStat = conn.prepareStatement(query1);
+            PreparedStatement  pStat2 = conn.prepareStatement(query2);
+            //Cursor is at first ROW ,  COULDNT change position of cursor
+            pStat2.setInt(1, 50);
+            pStat2.setInt(2, rs.getInt("ToolID"));
+            pStat.setInt(1, orderID);
+            pStat.setInt(2, rs.getInt("ToolID"));
+            pStat.setInt(3, rs.getInt("SupplierID"));
+            pStat.setInt(4, (int)(50-rs.getInt("Quantity")));//assuming it creates orderline of 50
+            pStat.executeUpdate();
+            pStat2.executeUpdate();
+            while(rs.next()) {
+
+                pStat2.setInt(1, 50);
+                pStat2.setInt(2, rs.getInt("ToolID"));
+                pStat.setInt(1, orderID);
+                pStat.setInt(2, rs.getInt("ToolID"));
+                pStat.setInt(3, rs.getInt("SupplierID"));
+                pStat.setInt(4, (int)(50-rs.getInt("Quantity")));//assuming it creates orderline of 50
+                pStat.executeUpdate();
+                pStat2.executeUpdate();
+            }
+            pStat.close();
+            pStat2.close();
+
+        }catch (SQLException e) {
+            System.out.println(e);
+        }
+    }
+    private void createOrder(int orderID) {
+        try {
+            String table = "ORDER_";
+            query("use ToolShop;");
+            String query = "INSERT INTO "+table+" VALUES(?,CURRENT_TIMESTAMP)";
+            PreparedStatement pStat = conn.prepareStatement(query);
+            pStat.setInt(1, orderID);
+            pStat.executeUpdate();
+            pStat.close();
+
+
+        }catch (SQLException e) {
+            System.out.println("HERE");
+        }
+    }
+    private void updatePurchaseTable(int toolID, int customerID) {
+        try {
+            String table = "PURCHASE";
+            query("use ToolShop;");
+            String query = "INSERT INTO "+ table +" VALUES(?,?,CURRENT_TIMESTAMP)";
+            PreparedStatement pStat = conn.prepareStatement(query);
+            pStat.setInt(1, customerID);
+            pStat.setInt(2, toolID);
+            int n=pStat.executeUpdate();
+            pStat.close();
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+
+    }
+    public int generateOrderID(){
+        Random r = new Random( System.currentTimeMillis() );
+        return ((1 + r.nextInt(2)) * 10000 + r.nextInt(10000));
+    }
+    public String getItemsList() throws JsonProcessingException{
+        try {
+            String query = "SELECT T.ToolID,T.Name,T.Type,T.Quantity,T.Price,T.SupplierID,E.PowerType FROM ToolShop.TOOL AS T \n" +
+                    "LEFT OUTER JOIN ToolShop.ELECTRICAL AS E ON T.ToolID=E.ToolID";
+            PreparedStatement pStat = conn.prepareStatement(query);
+            rs = pStat.executeQuery();
+            metaData=rs.getMetaData();
+            toJsonToolList();
+            pStat.close();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return json;
+    }
+    public String getSuppliersList() throws JsonProcessingException{
+        try {
+            query("use ToolShop;");
+            String query = "SELECT S.SupplierID,S.Name,S.Type,S.Address,S.CName,S.Phone,I.ImportTax FROM ToolShop.SUPPLIER AS S\n" +
+                    "LEFT OUTER JOIN ToolShop.INTERNATIONAL AS I ON S.SupplierID =I.SupplierID ";
+            PreparedStatement pStat = conn.prepareStatement(query);
+            rs = pStat.executeQuery();
+            metaData=rs.getMetaData();
+            toJsonSupplierList();
+            pStat.close();
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return json;
+    }
+    public String getCustomersList() throws JsonProcessingException {
+        try {
+            String table = "CLIENT";
+            query("use ToolShop;");
             String query = "select * from " +
                     table;
             PreparedStatement pStat = conn.prepareStatement(query);
             rs = pStat.executeQuery();
-            while (rs.next()) {
-                System.out.print(rs.getString("id")+"\t");
-                System.out.print(rs.getString("description_name")+"\t");
-                System.out.print(rs.getString("quantity_in_stock")+"\t");
-                System.out.print(rs.getString("price")+"\t");
-                System.out.print(rs.getString("supplier_id")+"\n");
-            }
+            metaData=rs.getMetaData();
+            toJsonCustomerList();
             pStat.close();
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        System.out.println("\n");
+        return json;
     }
-
-    public void selectFromSuppliers(){
-        System.out.println("Reading all suppliers from the table:\nSuppliers:");
+    public String getOrderList() throws JsonProcessingException {
         try {
-            String table = "suppliers";
-            query("use tool_shop;");
-            String query = "select * from " +
-                    table;
+            query("use ToolShop;");
+            String query = "SELECT O.OrderID,O.Date,T.Name,S.Name,L.Quantity FROM ToolShop.ORDERLINE AS L ,ToolShop.ORDER_ AS O ,ToolShop.TOOL AS T , ToolShop.SUPPLIER AS S\n"+
+                    "WHERE L.OrderID=O.OrderID AND L.ToolID =  T.ToolID AND L.SupplierID=S.SupplierID";
+
             PreparedStatement pStat = conn.prepareStatement(query);
-            rs = pStat.executeQuery();
-            while (rs.next()) {
-                System.out.print(rs.getString("id")+"\t");
-                System.out.print(rs.getString("company_name")+"\t");
-                System.out.print(rs.getString("address")+"\t");
-                System.out.print(rs.getString("sales_contact")+"\n");
-            }
+            rs=pStat.executeQuery();
+            metaData=rs.getMetaData();
+            toJsonOrder();
             pStat.close();
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return json;
+    }
+    public String getTable(String tableName) throws JsonProcessingException {
+        switch (tableName){
+            case "TOOL":
+                return getItemsList();
+            case "SUPPLIER":
+                return getSuppliersList();
+            case "CLIENT":
+                return  getCustomersList();
+            case "ORDER":
+                return getOrderList();
+            default:
+                return null;
+        }
+    }
+    public void toJsonToolList() throws SQLException, JsonProcessingException {
+        ObjectMapper mapper = new ObjectMapper();
+        ArrayNode arrayNode = mapper.createArrayNode();
+
+        while(rs.next()) {
+            ObjectNode node = new ObjectMapper().createObjectNode();
+            node.put(metaData.getColumnName(1), rs.getInt(1));
+            node.put(metaData.getColumnName(2), rs.getString(2));
+            node.put(metaData.getColumnName(3), rs.getString(3));
+            node.put(metaData.getColumnName(4), rs.getInt(4));
+            node.put(metaData.getColumnName(5), rs.getFloat(5));
+            node.put(metaData.getColumnName(6), rs.getInt(6));
+            node.put(metaData.getColumnName(7), rs.getString(7));
+            arrayNode.addAll(Arrays.asList(node));
+
+        }
+        json=mapper.writerWithDefaultPrettyPrinter().writeValueAsString(arrayNode);
+    }
+    public void toJsonSupplierList() throws SQLException, JsonProcessingException {
+        ObjectMapper mapper = new ObjectMapper();
+        ArrayNode arrayNode = mapper.createArrayNode();
+
+        while(rs.next()) {
+            System.err.println(metaData.getColumnName(1)+rs.getInt(1));
+            ObjectNode node = new ObjectMapper().createObjectNode();
+            node.put(metaData.getColumnName(1), rs.getInt(1));
+            node.put(metaData.getColumnName(2), rs.getString(2));
+            node.put(metaData.getColumnName(3), rs.getString(3));
+            node.put(metaData.getColumnName(4), rs.getString(4));
+            node.put(metaData.getColumnName(5), rs.getString(5));
+            node.put(metaData.getColumnName(6), rs.getString(6));
+            node.put(metaData.getColumnName(7), rs.getFloat(7));
+            arrayNode.addAll(Arrays.asList(node));
+
+        }
+        json=mapper.writerWithDefaultPrettyPrinter().writeValueAsString(arrayNode);
+    }
+    public void toJsonCustomerList() throws SQLException, JsonProcessingException {
+        ObjectMapper mapper = new ObjectMapper();
+        ArrayNode arrayNode = mapper.createArrayNode();
+
+        while(rs.next()) {
+            System.err.println(metaData.getColumnName(1)+rs.getInt(1));
+            ObjectNode node = new ObjectMapper().createObjectNode();
+            node.put(metaData.getColumnName(1), rs.getInt(1));
+            node.put(metaData.getColumnName(2), rs.getString(2));
+            node.put(metaData.getColumnName(3), rs.getString(3));
+            node.put(metaData.getColumnName(4), rs.getString(4));
+            node.put(metaData.getColumnName(5), rs.getString(5));
+            node.put(metaData.getColumnName(6), rs.getString(6));
+            node.put(metaData.getColumnName(7), rs.getString(7));
+            arrayNode.addAll(Arrays.asList(node));
+
+        }
+        json=mapper.writerWithDefaultPrettyPrinter().writeValueAsString(arrayNode);
+    }
+    public void toJsonOrder() throws SQLException, JsonProcessingException {
+        ObjectMapper mapper = new ObjectMapper();
+        ArrayNode arrayNode = mapper.createArrayNode();
+
+        while(rs.next()) {
+            ObjectNode node = new ObjectMapper().createObjectNode();
+            node.put(metaData.getColumnName(1), rs.getInt(1));
+            node.put(metaData.getColumnName(2), rs.getTimestamp(2).toString());
+            node.put(metaData.getColumnName(3), rs.getString(3));
+            node.put(metaData.getColumnName(4), rs.getString(4));
+            node.put(metaData.getColumnName(5), rs.getInt(5));
+            arrayNode.addAll(Arrays.asList(node));
+
+        }
+        json=mapper.writerWithDefaultPrettyPrinter().writeValueAsString(arrayNode);
+    }
+    /** Update SQL DB **/
+    public void insertIntoTable(String tableName, String[] row){
+        StringBuilder sqlSB = new StringBuilder();
+        sqlSB.append("INSERT INTO `" + tableName +"` "+"values(");
+        for (int i = 0; i< row.length; i++){
+            switch (server.controller.Utils.parseColumn(row[i])){
+                case "int":
+                case "float":
+                    sqlSB.append(row[i]);
+                    break;
+                default:
+                    sqlSB.append("'" + row[i]+ "'");
+                    break;
+            }
+            if (i+1< row.length)
+                sqlSB.append(",");
+        }
+        sqlSB.append(");");
+        String sql = sqlSB.toString();
+        System.out.println(sql);
+        try (Statement stmt = conn.createStatement()) {
+            stmt.executeUpdate(sql);
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        System.out.println("\n");
+    }
+    public void insertIntoTOOL(String ToolID, String Name, String Type, String Quantity, String Price, String SupplierID){
+        String[] row = {ToolID,Name,Type,Quantity,Price,SupplierID};
+        insertIntoTable("TOOL", row);
+    }
+    public void insertIntoSUPPLIER (String SupplierID, String Name, String Type, String Address, String CName, String Phone){
+        String [] row = {SupplierID, Name, Type, Address, CName, Phone};
+        insertIntoTable("SUPPLIER", row);
+    }
+    public void insertIntoPURCHASE (String ClientID, String ToolID, String Data){
+        String [] row = {ClientID, ToolID, Data};
+        insertIntoTable("PURCHASE", row);
+    }
+    public void insertIntoORDERLINE (String OrderID, String ToolID, String SupplierID, String Quantity){
+        String [] row = {OrderID, ToolID, SupplierID, Quantity};
+        insertIntoTable("ORDERLINE", row);
+    }
+    public void insertIntoORDER_ (String OrderID, String Date){
+        String [] row = {OrderID, Date};
+        insertIntoTable("ORDER_", row);
+    }
+    public void insertIntoINTERNATIONAL (String SupplierID, String ImportTax){
+        String [] row = {SupplierID, ImportTax};
+        insertIntoTable("INTERNATIONAL", row);
+    }
+    public void insertIntoELECTRICAL (String ToolID, String PowerType){
+        String [] row = {ToolID, PowerType};
+        insertIntoTable("ELECTRICAL", row);
+    }
+    public void insertIntoCLIENT(String ClientID, String LName, String FName, String Type, String PhoneNum, String Address, String PostalCode){
+        String [] row = {ClientID, LName, FName, Type, PhoneNum, Address, PostalCode};
+        insertIntoTable("CLIENT", row);
     }
 
-    public void searchForToolID(int toolID){
-        String [] columns =  {"id", "description_name", "quantity_in_stock", "price", "supplier_id"};
-        searchGeneralPurpose("items","id", String.valueOf(toolID),columns);
-    }
-
-    public void removeTables(){
-        System.out.println("Trying to remove the table");
-        query("drop table if exists  items;"); // items has to be dropped first due to referential integrity
-        System.out.println("Removed Table items");
-        query("drop table if exists  suppliers;");
-        System.out.println("Removed Table suppliers");
-    }
-		
-
-    // TODO: make ingest supplier to ingest from mysql;
-    //void ingestSuppliers(Shop shop) {
-//        Scanner scanLine= new Scanner(returnData());
-//        if (scanLine.hasNextLine()) {
-//            do {
-//                String[] readLine = scanLine.nextLine().split(";");
-//                Supplier parseSupplier = new Supplier();
-//                parseSupplier.setId(Integer.parseInt(readLine[0]));
-//                parseSupplier.setSupplierName(readLine[1]);
-//                parseSupplier.setSupplierAddress(readLine[2]);
-//                parseSupplier.setSalesPerson(readLine[3]);
-//                shop.getSupplierList().appendToSupplierList(parseSupplier);
-//            } while (scanLine.hasNextLine());
-//        }
-//        scanLine.close();
-    }
-
-
-    // TODO: make ingest items to ingest from mysql;
-    /**
-     * ingest the items from file
-     * @param shop
-     *
-     */
-   // void ingestItems(Shop shop) {
-//        Scanner scanLine= new Scanner(returnData());
-//        if (scanLine.hasNextLine()) {
-//            do {
-//                String[] readLine = scanLine.nextLine().split(";");
-//                Item parseItem = new Item();
-//                parseItem.setItemID(Integer.parseInt(readLine[0]));
-//                parseItem.setItemName(readLine[1]);
-//                parseItem.setQuantity(Integer.parseInt(readLine[2]));
-//                parseItem.setPrice(Double.parseDouble(readLine[3]));
-//                parseItem.setSupplierId(Integer.parseInt(readLine[4]));
-//                shop.getItemList().addItem(parseItem);
-//            } while (scanLine.hasNextLine());
-//        }
-//        scanLine.close();
-   // }
-
-
-    /**
-     * D2L provided code
-     * The entry point of application.
-     * @param args the input arguments
-     */
-    // public static void main(String[] args) {
-//        MyJDBCApp app = new MyJDBCApp();
-//        app.initializeConnection();
-    //  }
-
-
-
-
+}
