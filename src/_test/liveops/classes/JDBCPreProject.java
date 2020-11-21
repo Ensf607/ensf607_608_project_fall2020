@@ -18,7 +18,7 @@ import java.sql.*;
  * String username = "admin";
  * String password = "passw0rd";
  */
-public class JDBC {
+public class JDBCPreProject {
 
     private PreparedStatement preparedStmt;
     private Statement stmt;

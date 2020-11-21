@@ -6,7 +6,7 @@ package server.model;
  * @version 1.0
  * @since Oct 13, 2020
  */
-public abstract class Item {
+public class Item {
 	private int itemID;
 	private String itemName;
 	private int quantity;

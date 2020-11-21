@@ -1,7 +1,6 @@
 package test.cache;
 
-import client.model.Customer;
-import server.models.Customer;
+import server.model.Customer;
 
 /**
  * to see a code snippet of how it's done

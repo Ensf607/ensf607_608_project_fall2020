@@ -1,6 +1,5 @@
 package server.model;
 
-import java.sql.ResultSet;
 import java.util.ArrayList;
 
 /**
@@ -12,17 +11,13 @@ import java.util.ArrayList;
 public class Inventory {
 	private Item item;
 	private ArrayList <Item> itemsList = new ArrayList<Item>();
-	private Order order;
+	private Order order =new Order();
 
 	/**
 	 * Sets item.
-	 * at 
+	 *
 	 * @param item the item
 	 */
-	public Inventory(ResultSet itemList,ResultSet orderList) {
-		order =new Order(orderList);
-		//iterate and create items
-	}
 	public void setItem(Item item) {
 		this.item = item;
 	}
@@ -151,14 +146,12 @@ public class Inventory {
 	 * Check item quantity.
 	 */
 	public void checkQuantity() {
-		
 		for(int i = 0; i< itemsList.size(); i++) {
 			if(this.itemsList.get(i).getQuantity()<=40) {
 				Item itemCheck = itemsList.get(i);
 				this.order.checkItem(itemCheck);
 			}
 		}
-		//add return statement to return new orders generated inorder to update db
 	}
 
 
