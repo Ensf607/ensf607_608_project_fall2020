@@ -23,7 +23,6 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
  * String password = "passw0rd";
  */
 public class JDBC {
-
     private PreparedStatement preparedStmt;
     Statement stmt;
     Connection conn;
@@ -31,11 +30,9 @@ public class JDBC {
     private BufferedReader reader;
     private String json = new String();
     private ResultSetMetaData metaData;
-
     public Connection getConn() {
         return conn;
     }
-
     public void setConn(Connection conn) {
         this.conn = conn;
     }
@@ -63,7 +60,6 @@ public class JDBC {
             System.out.println(e.getMessage());
         }
     }
-
     public void query(String sql){
         try (Statement stmt = conn.createStatement()) {
 //            System.out.println("Querying: \n" +
@@ -73,7 +69,6 @@ public class JDBC {
             e.printStackTrace();
         }
     }
-
     /**
      * D2L provided code
      * close()
@@ -87,9 +82,6 @@ public class JDBC {
             e.printStackTrace();
         }
     }
-
-
-
     /**
      * Might create a User table that contains login info in Mysql
      * Select user.
@@ -107,7 +99,6 @@ public class JDBC {
             e.printStackTrace();
         }
     }
-
     /**
      * D2L provided code
      * Insert user.
@@ -123,7 +114,6 @@ public class JDBC {
             e.printStackTrace();
         }
     }
-
     /**
      * D2L provided code
      * Delete user.
@@ -138,7 +128,6 @@ public class JDBC {
             e.printStackTrace();
         }
     }
-
     /**
      * D2L provided code
      * Validate login.
@@ -161,7 +150,6 @@ public class JDBC {
             e.printStackTrace();
         }
     }
-
     /**
      * D2L provided code
      * Select user prepared statement.
@@ -182,7 +170,6 @@ public class JDBC {
             e.printStackTrace();
         }
     }
-
     /**
      * D2L provided code
      * Insert user prepared statement.
@@ -202,9 +189,6 @@ public class JDBC {
             e.printStackTrace();
         }
     }
-
-
-
     public ResultSet searchGeneralPurpose(String table, String column, String strWithWildcard){
         try {
             query("use ToolShop;");
@@ -223,60 +207,9 @@ public class JDBC {
         }
         return rs;
     }
-
     private void displayReturnStatement(String[] columns) throws SQLException {
         for (int i = 0; i < columns.length; i++)
             System.out.print (rs.getString(columns[i])+ "\t");
-    }
-
-    public String getItemsList() throws JsonProcessingException{
-        try {
-            String query = "SELECT T.ToolID,T.Name,T.Type,T.Quantity,T.Price,T.SupplierID,E.PowerType FROM ToolShop.TOOL AS T \n" +
-                    "LEFT OUTER JOIN ToolShop.ELECTRICAL AS E ON T.ToolID=E.ToolID";
-            PreparedStatement pStat = conn.prepareStatement(query);
-            rs = pStat.executeQuery();
-            metaData=rs.getMetaData();
-            toJsonToolList();
-            pStat.close();
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return json;
-    }
-    public String getCustomersList() throws JsonProcessingException {
-        try {
-            String table = "CLIENT";
-            query("use ToolShop;");
-            String query = "select * from " +
-                    table;
-            PreparedStatement pStat = conn.prepareStatement(query);
-            rs = pStat.executeQuery();
-            metaData=rs.getMetaData();
-            toJsonCustomerList();
-            pStat.close();
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return json;
-    }
-
-    public String getSuppliersList() throws JsonProcessingException{
-        try {
-            query("use ToolShop;");
-            String query = "SELECT S.SupplierID,S.Name,S.Type,S.Address,S.CName,S.Phone,I.ImportTax FROM ToolShop.SUPPLIER AS S\n" +
-                    "LEFT OUTER JOIN ToolShop.INTERNATIONAL AS I ON S.SupplierID =I.SupplierID ";
-            PreparedStatement pStat = conn.prepareStatement(query);
-            rs = pStat.executeQuery();
-            metaData=rs.getMetaData();
-            toJsonSupplierList();
-            pStat.close();
-        }
-        catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return json;
     }
     /**
      * NEED TO CHANGE
@@ -327,6 +260,24 @@ public class JDBC {
             System.err.println(e);
         }
     }
+    public void purchase (int toolID, int quantity,int customerID) {
+        try {
+            updatePurchaseTable(toolID, customerID);//customer ID
+            String table = "TOOL";
+            query("use ToolShop;");
+            String query = "UPDATE "+ table +" SET Quantity=Quantity-? WHERE ToolID=?";
+            PreparedStatement pStat = conn.prepareStatement(query);
+            pStat.setInt(1, quantity);
+            pStat.setInt(2, toolID);
+            int n=pStat.executeUpdate();
+            checkInventory();
+            pStat.close();
+
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
     private void createOrderLine(int orderID) {
         try {
             String table = "ORDERLINE";
@@ -362,7 +313,6 @@ public class JDBC {
             System.out.println(e);
         }
     }
-
     private void createOrder(int orderID) {
         try {
             String table = "ORDER_";
@@ -376,29 +326,6 @@ public class JDBC {
 
         }catch (SQLException e) {
             System.out.println("HERE");
-        }
-    }
-    public int generateOrderID(){
-        Random r = new Random( System.currentTimeMillis() );
-        return ((1 + r.nextInt(2)) * 10000 + r.nextInt(10000));
-    }
-
-    public void purchase (int toolID, int quantity,int customerID) {
-        try {
-            updatePurchaseTable(toolID, customerID);//customer ID
-            String table = "TOOL";
-            query("use ToolShop;");
-            String query = "UPDATE "+ table +" SET Quantity=Quantity-? WHERE ToolID=?";
-            PreparedStatement pStat = conn.prepareStatement(query);
-            pStat.setInt(1, quantity);
-            pStat.setInt(2, toolID);
-            int n=pStat.executeUpdate();
-            checkInventory();
-            pStat.close();
-
-        }
-        catch (SQLException e) {
-            e.printStackTrace();
         }
     }
     private void updatePurchaseTable(int toolID, int customerID) {
@@ -416,7 +343,58 @@ public class JDBC {
         }
 
     }
+    public int generateOrderID(){
+        Random r = new Random( System.currentTimeMillis() );
+        return ((1 + r.nextInt(2)) * 10000 + r.nextInt(10000));
+    }
+    public String getItemsList() throws JsonProcessingException{
+        try {
+            String query = "SELECT T.ToolID,T.Name,T.Type,T.Quantity,T.Price,T.SupplierID,E.PowerType FROM ToolShop.TOOL AS T \n" +
+                    "LEFT OUTER JOIN ToolShop.ELECTRICAL AS E ON T.ToolID=E.ToolID";
+            PreparedStatement pStat = conn.prepareStatement(query);
+            rs = pStat.executeQuery();
+            metaData=rs.getMetaData();
+            toJsonToolList();
+            pStat.close();
 
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return json;
+    }
+    public String getSuppliersList() throws JsonProcessingException{
+        try {
+            query("use ToolShop;");
+            String query = "SELECT S.SupplierID,S.Name,S.Type,S.Address,S.CName,S.Phone,I.ImportTax FROM ToolShop.SUPPLIER AS S\n" +
+                    "LEFT OUTER JOIN ToolShop.INTERNATIONAL AS I ON S.SupplierID =I.SupplierID ";
+            PreparedStatement pStat = conn.prepareStatement(query);
+            rs = pStat.executeQuery();
+            metaData=rs.getMetaData();
+            toJsonSupplierList();
+            pStat.close();
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return json;
+    }
+    public String getCustomersList() throws JsonProcessingException {
+        try {
+            String table = "CLIENT";
+            query("use ToolShop;");
+            String query = "select * from " +
+                    table;
+            PreparedStatement pStat = conn.prepareStatement(query);
+            rs = pStat.executeQuery();
+            metaData=rs.getMetaData();
+            toJsonCustomerList();
+            pStat.close();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return json;
+    }
     public String getOrderList() throws JsonProcessingException {
         try {
             query("use ToolShop;");
@@ -434,44 +412,38 @@ public class JDBC {
         }
         return json;
     }
-
-    private void toJsonOrder() throws SQLException, JsonProcessingException {
-        ObjectMapper mapper = new ObjectMapper();
-        ArrayNode arrayNode = mapper.createArrayNode();
-
-        while(rs.next()) {
-            ObjectNode node = new ObjectMapper().createObjectNode();
-            node.put(metaData.getColumnName(1), rs.getInt(1));
-            node.put(metaData.getColumnName(2), rs.getTimestamp(2).toString());
-            node.put(metaData.getColumnName(3), rs.getString(3));
-            node.put(metaData.getColumnName(4), rs.getString(4));
-            node.put(metaData.getColumnName(5), rs.getInt(5));
-            arrayNode.addAll(Arrays.asList(node));
-
+    public String getTable(String tableName) throws JsonProcessingException {
+        switch (tableName){
+            case "TOOL":
+                return getItemsList();
+            case "SUPPLIER":
+                return getSuppliersList();
+            case "CLIENT":
+                return  getCustomersList();
+            case "ORDER":
+                return getOrderList();
+            default:
+                return null;
         }
-        json=mapper.writerWithDefaultPrettyPrinter().writeValueAsString(arrayNode);
     }
-
-    public void toJsonCustomerList() throws SQLException, JsonProcessingException {
+    public void toJsonToolList() throws SQLException, JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
         ArrayNode arrayNode = mapper.createArrayNode();
 
         while(rs.next()) {
-            System.err.println(metaData.getColumnName(1)+rs.getInt(1));
             ObjectNode node = new ObjectMapper().createObjectNode();
             node.put(metaData.getColumnName(1), rs.getInt(1));
             node.put(metaData.getColumnName(2), rs.getString(2));
             node.put(metaData.getColumnName(3), rs.getString(3));
-            node.put(metaData.getColumnName(4), rs.getString(4));
-            node.put(metaData.getColumnName(5), rs.getString(5));
-            node.put(metaData.getColumnName(6), rs.getString(6));
+            node.put(metaData.getColumnName(4), rs.getInt(4));
+            node.put(metaData.getColumnName(5), rs.getFloat(5));
+            node.put(metaData.getColumnName(6), rs.getInt(6));
             node.put(metaData.getColumnName(7), rs.getString(7));
             arrayNode.addAll(Arrays.asList(node));
 
         }
         json=mapper.writerWithDefaultPrettyPrinter().writeValueAsString(arrayNode);
     }
-
     public void toJsonSupplierList() throws SQLException, JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
         ArrayNode arrayNode = mapper.createArrayNode();
@@ -491,33 +463,47 @@ public class JDBC {
         }
         json=mapper.writerWithDefaultPrettyPrinter().writeValueAsString(arrayNode);
     }
-
-    public void toJsonToolList() throws SQLException, JsonProcessingException {
+    public void toJsonCustomerList() throws SQLException, JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
         ArrayNode arrayNode = mapper.createArrayNode();
 
         while(rs.next()) {
+            System.err.println(metaData.getColumnName(1)+rs.getInt(1));
             ObjectNode node = new ObjectMapper().createObjectNode();
             node.put(metaData.getColumnName(1), rs.getInt(1));
             node.put(metaData.getColumnName(2), rs.getString(2));
             node.put(metaData.getColumnName(3), rs.getString(3));
-            node.put(metaData.getColumnName(4), rs.getInt(4));
-            node.put(metaData.getColumnName(5), rs.getFloat(5));
-            node.put(metaData.getColumnName(6), rs.getInt(6));
+            node.put(metaData.getColumnName(4), rs.getString(4));
+            node.put(metaData.getColumnName(5), rs.getString(5));
+            node.put(metaData.getColumnName(6), rs.getString(6));
             node.put(metaData.getColumnName(7), rs.getString(7));
             arrayNode.addAll(Arrays.asList(node));
 
         }
         json=mapper.writerWithDefaultPrettyPrinter().writeValueAsString(arrayNode);
     }
+    public void toJsonOrder() throws SQLException, JsonProcessingException {
+        ObjectMapper mapper = new ObjectMapper();
+        ArrayNode arrayNode = mapper.createArrayNode();
 
+        while(rs.next()) {
+            ObjectNode node = new ObjectMapper().createObjectNode();
+            node.put(metaData.getColumnName(1), rs.getInt(1));
+            node.put(metaData.getColumnName(2), rs.getTimestamp(2).toString());
+            node.put(metaData.getColumnName(3), rs.getString(3));
+            node.put(metaData.getColumnName(4), rs.getString(4));
+            node.put(metaData.getColumnName(5), rs.getInt(5));
+            arrayNode.addAll(Arrays.asList(node));
 
+        }
+        json=mapper.writerWithDefaultPrettyPrinter().writeValueAsString(arrayNode);
+    }
     /** Update SQL DB **/
     public void insertIntoTable(String tableName, String[] row){
         StringBuilder sqlSB = new StringBuilder();
         sqlSB.append("INSERT INTO `" + tableName +"` "+"values(");
         for (int i = 0; i< row.length; i++){
-            switch (Utils.parseColumn(row[i])){
+            switch (server.controller.Utils.parseColumn(row[i])){
                 case "int":
                 case "float":
                     sqlSB.append(row[i]);
@@ -538,43 +524,34 @@ public class JDBC {
             e.printStackTrace();
         }
     }
-
-
     public void insertIntoTOOL(String ToolID, String Name, String Type, String Quantity, String Price, String SupplierID){
         String[] row = {ToolID,Name,Type,Quantity,Price,SupplierID};
         insertIntoTable("TOOL", row);
     }
-
     public void insertIntoSUPPLIER (String SupplierID, String Name, String Type, String Address, String CName, String Phone){
         String [] row = {SupplierID, Name, Type, Address, CName, Phone};
         insertIntoTable("SUPPLIER", row);
     }
-
     public void insertIntoPURCHASE (String ClientID, String ToolID, String Data){
         String [] row = {ClientID, ToolID, Data};
         insertIntoTable("PURCHASE", row);
     }
-
     public void insertIntoORDERLINE (String OrderID, String ToolID, String SupplierID, String Quantity){
         String [] row = {OrderID, ToolID, SupplierID, Quantity};
         insertIntoTable("ORDERLINE", row);
     }
-
     public void insertIntoORDER_ (String OrderID, String Date){
         String [] row = {OrderID, Date};
         insertIntoTable("ORDER_", row);
     }
-
     public void insertIntoINTERNATIONAL (String SupplierID, String ImportTax){
         String [] row = {SupplierID, ImportTax};
         insertIntoTable("INTERNATIONAL", row);
     }
-
     public void insertIntoELECTRICAL (String ToolID, String PowerType){
         String [] row = {ToolID, PowerType};
         insertIntoTable("ELECTRICAL", row);
     }
-
     public void insertIntoCLIENT(String ClientID, String LName, String FName, String Type, String PhoneNum, String Address, String PostalCode){
         String [] row = {ClientID, LName, FName, Type, PhoneNum, Address, PostalCode};
         insertIntoTable("CLIENT", row);

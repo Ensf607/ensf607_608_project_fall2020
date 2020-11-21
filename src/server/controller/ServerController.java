@@ -68,9 +68,12 @@ public class ServerController {
 	public void send() {
 		
 	}
-	/*
-	 * Recieve jason object from client in{ message: purchase,itemID:2,Quantity:5} 
-	 */
+
+
+	/**
+	 * Recieve jason object from client in {message: purchase,itemID:2,Quantity:5}
+	 * get requests example: { "type": "get", "table": "ORDER_", "scope": "all"}
+	 **/
 	public void recieve() {
 		
 	}
