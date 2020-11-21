@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.util.Objects;
 
-public abstract class Customer {
+public class Customer {
     private int clientID;
     private String firstName;
     private String lastName;
