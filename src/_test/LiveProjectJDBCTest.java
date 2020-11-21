@@ -49,9 +49,16 @@ public class LiveProjectJDBCTest {
     }
 
     @Test
-    public void insertIntoCLIENTTest() throws SQLException, JsonProcessingException {
+    public void insertIntoTests() throws SQLException, JsonProcessingException {
         JDBC jdbc = getJdbc();
-        jdbc.insertIntoTOOL("1094","Test Tool", "Electric","20","150", "8022");
+        jdbc.insertIntoCLIENT("21","Stan","Lee","Commercial","4036594568","1234 Sesame ST NE","T5J 0O3");
+        jdbc.insertIntoELECTRICAL("1094", "Battery");
+        jdbc.insertIntoINTERNATIONAL("8023","0.05");
+        jdbc.insertIntoORDER_("27052","2020-11-20 11:24:23");
+        jdbc.insertIntoORDERLINE("27052","1001","8014","15");
+        jdbc.insertIntoPURCHASE("14","1001","2020-11-21 03:07:39");
+        jdbc.insertIntoSUPPLIER("8024", "Stan Awesome Shop", "Local","1234 Sesame ST NW", "Stan", "4035642569");
+        jdbc.insertIntoTOOL("1095","Test Tool2", "Electric","20","150", "8022");
     }
 
     /**

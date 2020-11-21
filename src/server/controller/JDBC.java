@@ -572,7 +572,7 @@ public class JDBC {
 
     public void insertIntoELECTRICAL (String ToolID, String PowerType){
         String [] row = {ToolID, PowerType};
-        insertIntoTable("INTERNATIONAL", row);
+        insertIntoTable("ELECTRICAL", row);
     }
 
     public void insertIntoCLIENT(String ClientID, String LName, String FName, String Type, String PhoneNum, String Address, String PostalCode){
