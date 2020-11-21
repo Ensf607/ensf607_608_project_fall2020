@@ -1,3 +1,5 @@
+package liveops.classes;
+
 import server.controller.JDBC;
 
 public class JDBCAdminRoutines extends JDBC {

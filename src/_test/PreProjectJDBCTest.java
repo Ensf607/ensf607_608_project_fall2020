@@ -1,9 +1,15 @@
-package test;
+//package test;
+import liveops.classes.JDBCPreProject;
 
+import server.controller.JDBC;
 
 class PreProjectJDBCTest {
     public static void main(String[] args) {
-        JDBC jdbc = new JDBC();
+        preProjectJDBCDemo();
+    }
+
+    private static void preProjectJDBCDemo() {
+        JDBCPreProject jdbc = new JDBCPreProject();
         jdbc.connectDB("localhost:3306","mysql","testadmin", "passw0rd");
         jdbc.createTables();
         jdbc.addSupplierList("suppliers.txt");

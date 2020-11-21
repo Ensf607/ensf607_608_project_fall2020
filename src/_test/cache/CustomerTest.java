@@ -1,3 +1,5 @@
+package test.cache;
+
 import server.model.Customer;
 
 /**
