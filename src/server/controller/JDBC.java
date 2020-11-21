@@ -512,5 +512,33 @@ public class JDBC {
     }
 
 
+    /** Update SQL DB **/
+    public void insertIntoTable(String tableName, String[] schema){
+        StringBuilder sqlSB = new StringBuilder();
+        sqlSB.append("INSERT INTO `" + tableName +"` "+"values(");
+        for (int i = 0; i< schema.length; i++){
+            switch (Utils.parseColumn(schema[i])){
+                case "int":
+                case "float":
+                    sqlSB.append(schema[i]);
+                    break;
+                default:
+                    sqlSB.append("'" + schema[i]+ "'");
+                    break;
+            }
+            if (i+1< schema.length)
+                sqlSB.append(",");
+        }
+        sqlSB.append(");");
+        String sql = sqlSB.toString();
+        System.out.println(sql);
+        try (Statement stmt = conn.createStatement()) {
+            stmt.executeUpdate(sql);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+
 
 }
