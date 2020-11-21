@@ -545,4 +545,39 @@ public class JDBC {
         insertIntoTable("TOOL", row);
     }
 
+    public void insertIntoSUPPLIER (String SupplierID, String Name, String Type, String Address, String CName, String Phone){
+        String [] row = {SupplierID, Name, Type, Address, CName, Phone};
+        insertIntoTable("SUPPLIER", row);
+    }
+
+    public void insertIntoPURCHASE (String ClientID, String ToolID, String Data){
+        String [] row = {ClientID, ToolID, Data};
+        insertIntoTable("PURCHASE", row);
+    }
+
+    public void insertIntoORDERLINE (String OrderID, String ToolID, String SupplierID, String Quantity){
+        String [] row = {OrderID, ToolID, SupplierID, Quantity};
+        insertIntoTable("ORDERLINE", row);
+    }
+
+    public void insertIntoORDER_ (String OrderID, String Date){
+        String [] row = {OrderID, Date};
+        insertIntoTable("ORDER_", row);
+    }
+
+    public void insertIntoINTERNATIONAL (String SupplierID, String ImportTax){
+        String [] row = {SupplierID, ImportTax};
+        insertIntoTable("INTERNATIONAL", row);
+    }
+
+    public void insertIntoELECTRICAL (String ToolID, String PowerType){
+        String [] row = {ToolID, PowerType};
+        insertIntoTable("INTERNATIONAL", row);
+    }
+
+    public void insertIntoCLIENT(String ClientID, String LName, String FName, String Type, String PhoneNum, String Address, String PostalCode){
+        String [] row = {ClientID, LName, FName, Type, PhoneNum, Address, PostalCode};
+        insertIntoTable("CLIENT", row);
+    }
+
 }
