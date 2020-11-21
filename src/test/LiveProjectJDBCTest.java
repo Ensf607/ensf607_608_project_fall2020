@@ -1,5 +1,3 @@
-import server.controller.JDBCAdminRoutines;
-
 public class LiveProjectJDBCTest {
     public static void main(String[] args) {
         JDBCAdminRoutines setup = new JDBCAdminRoutines();

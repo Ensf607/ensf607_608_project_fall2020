@@ -1,5 +1,3 @@
-package test;
-
 import server.model.Customer;
 
 /**

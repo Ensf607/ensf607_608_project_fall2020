@@ -1,5 +1,3 @@
-package server.controller;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.io.IOException;
@@ -14,8 +12,9 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import server.controller.JDBC;
 
-class JDBCTest {
+class ZiadJDBCTest {
 
 	@Test
 	void test() throws SQLException, IOException {

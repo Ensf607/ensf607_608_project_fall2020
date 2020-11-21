@@ -1,6 +1,6 @@
-package server.controller;
+import server.controller.JDBC;
 
-public class JDBCAdminRoutines extends JDBC{
+public class JDBCAdminRoutines extends JDBC {
     public void createAllTables(){
         createSupplier();
         createTool();
