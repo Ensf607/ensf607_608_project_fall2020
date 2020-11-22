@@ -14,7 +14,15 @@ public class Item {
 	private int supplierId;
 	private Supplier supplier;
 
-	/**
+    public Item(int parseInt, String s, int parseInt1, double parseDouble, int parseInt2) {
+    	this.itemID=parseInt;
+    	this.itemName=s;
+    	this.quantity=parseInt;
+    	this.price=parseDouble;
+    	this.supplierId=parseInt2;
+    }
+
+    /**
 	 * Sets item id.
 	 *
 	 * @param itemID the item id
