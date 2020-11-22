@@ -1,4 +1,4 @@
-package test;
+package test.cache;
 
 import server.model.Customer;
 

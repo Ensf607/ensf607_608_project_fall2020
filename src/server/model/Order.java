@@ -1,6 +1,5 @@
 package server.model;
 
-import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -20,10 +19,6 @@ public class Order {
 	/**
 	 * Sets date.
 	 */
-	public Order (ResultSet orderList) {
-		//traverse and add to orderLineArrayList
-		
-	}
 	public void setDate() {
 		Date today = Calendar.getInstance().getTime();
 		this.orderDate = today.toString();

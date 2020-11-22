@@ -1,14 +1,8 @@
 package server.controller;
 
-import java.io.BufferedReader;
-import java.io.PrintWriter;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
 
-import model.Shop;
+import server.model.Shop;
 
 public class ModelController implements Runnable{
     private ResultSet rs;

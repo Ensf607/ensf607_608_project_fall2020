@@ -1,4 +1,4 @@
-package test;
+package liveops.classes;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -18,7 +18,7 @@ import java.sql.*;
  * String username = "admin";
  * String password = "passw0rd";
  */
-public class JDBC {
+public class JDBCPreProject {
 
     private PreparedStatement preparedStmt;
     private Statement stmt;

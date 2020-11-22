@@ -1,6 +1,5 @@
 package server.model;
 
-import java.sql.ResultSet;
 import java.util.ArrayList;
 
 /**
@@ -11,10 +10,6 @@ import java.util.ArrayList;
  */
 public class SupplierList {
 	private ArrayList <Supplier>supplierList = new ArrayList <Supplier>();
-
-	public SupplierList(ResultSet suppliers) {
-		// TODO Auto-generated constructor stub
-	}
 
 	/**
 	 * Append to supplier list.

@@ -1,6 +1,8 @@
-package server.controller;
+package liveops.classes;
 
-public class JDBCAdminRoutines extends JDBC{
+import server.controller.JDBC;
+
+public class JDBCAdminRoutines extends JDBC {
     public void createAllTables(){
         createSupplier();
         createTool();
