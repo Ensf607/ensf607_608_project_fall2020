@@ -4,6 +4,7 @@ import java.io.*;
 import java.net.Socket;
 import java.sql.ResultSet;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import server.model.Shop;
 
 public class ModelController implements Runnable{
@@ -22,22 +23,32 @@ public class ModelController implements Runnable{
 	@Override
 	public void run() {
 		while(true) {
-			sleep();
+			String request = "";
+			String response = "";
 			try {
-				String message = thread.stdIn();
-				System.out.println("client message: "+message);
+				request = thread.stdIn();
+				System.out.println("client request: "+request);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-			thread.stdOut("server ready.");
-//			System.out.println("model controller running");
+			Request r = new Request();
+			try {
+				response = r.requestHandler(request);
+			} catch (JsonProcessingException e) {
+				e.printStackTrace();
+			}
 
+			thread.stdOut(response);
+
+
+//			System.out.println("model controller running");
+			sleep();
 		}
 	}
 
 	private void sleep() {
 		try {
-			Thread.sleep(10000);
+			Thread.sleep(3000);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}

@@ -8,6 +8,7 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 /**
  * Implementation of the client class. This class communicates with the server
@@ -54,7 +55,7 @@ public class Client {
 	 * 
 	 * @throws InterruptedException
 	 */
-	public void communicate() throws InterruptedException {
+	public void communicate() throws InterruptedException, IOException {
 		
 		String line = "";
 		String response = "";
@@ -62,19 +63,16 @@ public class Client {
 		Scanner scan =new Scanner(System.in);
 		while (running) {
 			sleep();
-			try {
-//				line = socketIn.readLine();
-				line = "test";
-				System.out.println("request is:"+line);
+			//				line = socketIn.readLine();
+			// TODO: need to connect GUI to get line value (request string)
+			line = "{ \"type\" : \"GET\", \"table\" : \"TOOL\" , \"scope\":\"all\"}";
+			System.out.println("request is:"+line);
 
-				socketOut.println(line); // sending client request
-				response = socketIn.readLine(); // receiving server response
+			socketOut.println(line); // sending client request
+//			response = socketIn.lines().collect(Collectors.joining());; // receiving server response
+			response = socketIn.lines().collect(Collectors.joining());
 
-				System.out.println("(Response): \n"+ response);
-
-			} catch (IOException e) {
-				System.out.println("Sending error: " + e.getMessage());
-			}
+			System.out.println("(Response): \n"+ response);
 
 		}
 		try {
@@ -86,9 +84,23 @@ public class Client {
 
 	}
 
+
+	public String getServerResponse() throws IOException {
+		String s="";
+		String line = "";
+		while ((line = socketIn.readLine()) != null) {
+//			System.out.println(line);
+			s += line;
+
+			if (line =="")
+				break;
+		}
+		return s;
+	}
+
 	private void sleep() {
 		try {
-			Thread.sleep(10000);
+			Thread.sleep(3000);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
