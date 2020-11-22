@@ -37,6 +37,12 @@ public class JDBC {
         this.conn = conn;
     }
     public JDBC() {
+        // force loading driver
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
         connectDB("18.236.191.241:3306", "ToolShop", "testadmin", "passw0rd");
     }
     /**
