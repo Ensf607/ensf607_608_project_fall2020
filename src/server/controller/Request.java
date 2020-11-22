@@ -4,8 +4,10 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import java.io.IOException;
+
 public class Request {
-    public static String requestHandler(String request) throws JsonProcessingException {
+    public static String requestHandler(String request) throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();
         JsonNode jsonNodeRoot = objectMapper.readTree(request);
         String type = jsonNodeRoot.get("type").asText();

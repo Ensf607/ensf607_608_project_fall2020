@@ -34,7 +34,7 @@ public class ModelController implements Runnable{
 			Request r = new Request();
 			try {
 				response = r.requestHandler(request);
-			} catch (JsonProcessingException e) {
+			} catch (IOException e) {
 				e.printStackTrace();
 			}
 
