@@ -53,7 +53,7 @@
 
     </dependencies>
     <build>
-        <sourceDirectory>src/server</sourceDirectory>
+        <sourceDirectory>src</sourceDirectory>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
