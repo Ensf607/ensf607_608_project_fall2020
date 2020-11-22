@@ -53,6 +53,7 @@
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
             <version>2.10.1</version>
+            <scope>compile</scope>
         </dependency>
 
         <!-- smile (binary JSON). Other artifacts in this group do other formats. -->
@@ -72,6 +73,13 @@
             <groupId>com.fasterxml.jackson.module</groupId>
             <artifactId>jackson-module-jaxb-annotations</artifactId>
             <version>2.10.1</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml</groupId>
+            <artifactId>classmate</artifactId>
+            <version>1.5.1</version>
+            <scope>compile</scope>
         </dependency>
 
 
