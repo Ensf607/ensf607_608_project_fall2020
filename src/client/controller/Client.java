@@ -62,7 +62,7 @@ public class Client {
 		boolean running = true;
 		Scanner scan =new Scanner(System.in);
 		while (running) {
-			sleep();
+			sleep(500);
 			//				line = socketIn.readLine();
 			// TODO: need to connect GUI to get line value (request string)
 			line = "{ \"type\" : \"GET\", \"table\" : \"TOOL\" , \"scope\":\"all\"}";
@@ -70,7 +70,7 @@ public class Client {
 
 			socketOut.println(line); // sending client request
 //			response = socketIn.lines().collect(Collectors.joining());; // receiving server response
-			response = socketIn.lines().collect(Collectors.joining());
+			response = getServerResponse();
 
 			System.out.println("(Response): \n"+ response);
 
@@ -89,18 +89,19 @@ public class Client {
 		String s="";
 		String line = "";
 		while ((line = socketIn.readLine()) != null) {
-//			System.out.println(line);
 			s += line;
-
-			if (line =="")
-				break;
+			if (!socketIn.ready()){
+				sleep(100); //manually introduce delay
+				if (!socketIn.ready())
+					break;
+			}
 		}
 		return s;
 	}
 
-	private void sleep() {
+	private void sleep(int time) {
 		try {
-			Thread.sleep(3000);
+			Thread.sleep(time);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}

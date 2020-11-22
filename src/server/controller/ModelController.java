@@ -42,13 +42,13 @@ public class ModelController implements Runnable{
 
 
 //			System.out.println("model controller running");
-			sleep();
+			sleep(100);
 		}
 	}
 
-	private void sleep() {
+	private void sleep(int time) {
 		try {
-			Thread.sleep(3000);
+			Thread.sleep(time);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
