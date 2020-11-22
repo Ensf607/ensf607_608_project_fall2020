@@ -18,13 +18,20 @@ mvn install:install-file \
 https://stackoverflow.com/questions/8084926/including-jar-files-in-class-path
 https://howtodoinjava.com/java/basics/java-classpath/
 
-```
 
-export CLASSPATH=jars/*.jar
+
+### proper maven calling signature
+
+```
+# export CLASSPATH=jars/*.jar
 mvn -v
+echo "building maven package"
+mvn clean install -U
+mvn clean package
+echo "initing server"
 echo "building maven package"
 mvn package
 echo "initing server"
-java -cp jars/mysql-connector-java-8.0.22.jar:target/toolshop-server-1.0-SNAPSHOT.jar server.controller.ServerController 
-
+mvn exec:java -Dexec.mainClass="server.controller.ServerController" -Dexec.classpathScope=runtime 
 ```
+https://blog.csdn.net/qbg19881206/article/details/19850857
