@@ -44,7 +44,7 @@ public class JDBC {
     public void setConn(Connection conn) {
         this.conn = conn;
     }
-    public JDBC() {
+    public JDBC() throws IllegalAccessException, InstantiationException, ClassNotFoundException {
         connectDB("18.236.191.241:3306", "ToolShop", "testadmin", "passw0rd");
     }
     /**
@@ -55,7 +55,8 @@ public class JDBC {
      * @param username the username
      * @param password the password
      */
-    public void connectDB(String host, String dbname, String username, String password) {
+    public void connectDB(String host, String dbname, String username, String password) throws ClassNotFoundException, IllegalAccessException, InstantiationException {
+        Class.forName("com.mysql.jdbc.Driver").newInstance();
         Timestamp ts = new Timestamp(System.currentTimeMillis());
         String url = "jdbc:mysql://"+host+"/"+dbname;
         try (Connection conn = DriverManager.getConnection(url,username,password)) {
