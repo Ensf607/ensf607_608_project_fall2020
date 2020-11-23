@@ -254,16 +254,25 @@ public class PurchasePanel extends JPanel implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource()==purchaseBtn) {
-			String request="{ \"type\" : \"GET\", \"table\" : \"CLIENT\" , \"scope\":\"select\",\"ClientID\":\""+clientIDPurchase+"\"}";
+			String request="{ \"type\" : \"GET\", \"table\" : \"CLIENT\" , \"scope\":\"select\",\"ClientID\":\""+clientIDPurchase.getText()+"\"}";
 			String response=mc.request(request);
 			if (response.length()>3) {
 				try {
 					arrayNode=mapper.readValue(response, ObjectNode[].class);
-					if (arrayNode[0].get("FName").asText().equals(fNameClient.getText()))
-						System.err.println("CORRECT");
+					if (arrayNode[0].get("FName").asText().equalsIgnoreCase(fNameClient.getText()))
+						{
+					//TODO Creat purchase
+						request="{ \"type\" : \"POST\", \"table\" : \"PURCHASE\" ,\"ClientID\":\""+clientIDPurchase.getText()+"\",\"ToolID\":\""+variableList.get(0)+"\"}";
+						 response=mc.request(request);
+						 JOptionPane.showMessageDialog(null, "Thank you for your purchase "+arrayNode[0].get("FName").asText()+"!");
+						 c.show(panel,"table");
+						}
 					else 
-						System.err.println("WRONG");
-					c.show(panel, "table");
+						{System.err.println("WRONG"+arrayNode[0].get("FName").asText());
+//					c.show(panel, "table");
+						JOptionPane.showMessageDialog(null, "Wrong First Name");
+						}
+						
 				} catch (JsonProcessingException e1) {
 					e1.printStackTrace();
 				}}

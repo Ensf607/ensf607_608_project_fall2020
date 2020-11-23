@@ -23,7 +23,7 @@ public class Client {
 	private BufferedReader socketIn;
 	private ServerSideRequestHandler sendMSG;
 	private BufferedReader stdIn;
-	GUI gui;
+//	GUI gui;
 
 
 	/**
@@ -46,7 +46,7 @@ public class Client {
 			palinSocket = new Socket(serverName, portNumber);
 			socketIn = new BufferedReader(new InputStreamReader(palinSocket.getInputStream()));
 			socketOut = new PrintWriter((palinSocket.getOutputStream()), true);
-			initGUI();
+//			initGUI();
 		} catch (IOException e) {
 			System.err.println(e.getStackTrace());
 		}
@@ -66,11 +66,16 @@ public class Client {
 	/**
 	 * initialize GUI
 	 */
-	private void initGUI() {
-		this.gui = new GUI();
-		//TODO: @Ziad, connect gui items to event listeners
+//	private void initGUI() {
+//		this.gui = new GUI();
+//		//TODO: @Ziad, connect gui items to event listeners
+//	}
+		//TEST
+		System.out.println("SENDNG MSG TO  RequestHandler on SERVER SIDE....via sockets and wait for response");
+		String response=sendMSG.getResponse(json);
+	return response;
+		
 	}
-
 	/**
 	 * This method is responsible with communicating with Server and GUI
 	 * 
@@ -78,12 +83,7 @@ public class Client {
 	 */
 	public void communicate() throws InterruptedException, IOException {
 		
-		//TEST
-		System.out.println("SENDNG MSG TO  RequestHandler on SERVER SIDE....via sockets and wait for response");
-		String response=sendMSG.getResponse(json);
-	return response;
-		
-	}}
+	
 		String line = "";
 		String response = "";
 		boolean running = true;
@@ -132,5 +132,5 @@ public class Client {
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-	}
+	}}
 			

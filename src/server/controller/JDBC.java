@@ -585,7 +585,7 @@ public class JDBC {
                     sqlSB.append(row[i]);
                     break;
                 default:
-                    sqlSB.append("'" + row[i]+ "'");
+                    sqlSB.append(row[i]);
                     break;
             }
             if (i+1< row.length)
@@ -632,7 +632,7 @@ public class JDBC {
         String [] row = {ClientID, LName, FName, Type, PhoneNum, Address, PostalCode};
         insertIntoTable("CLIENT", row);
     }
-
+ 
 }
 
 
