@@ -13,7 +13,6 @@ public class Response {
         System.out.println(type); // DEBUG
         System.out.println(jsonNodeRoot.get("table")); // DEBUG
         System.out.println(jsonNodeRoot.get("scope")); // DEBUG
-
         String tableName = jsonNodeRoot.get("table").asText();
 
         JDBC jdbc = getJdbc();
@@ -24,6 +23,9 @@ public class Response {
             case "all":
                 return jdbc.getTable(tableName);
             case "select":
+                String field = jsonNodeRoot.get("field").asText();
+                String fieldValue = jsonNodeRoot.get("field_value").asText();
+//                return
                 System.err.println("select feature not yet implemented");
                 break;
         }
