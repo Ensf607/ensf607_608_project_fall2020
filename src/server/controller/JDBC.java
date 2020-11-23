@@ -1,6 +1,10 @@
 package server.controller;
 
 import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.Reader;
+import java.math.BigDecimal;
+import java.net.URL;
 import java.sql.*;
 import java.util.Arrays;
 //TODO :
@@ -8,6 +12,7 @@ import java.util.Arrays;
 //Query for search by toolName
 //Query for search by toolID
 //Query for purchasing an item (need to include customer info ???)
+import java.util.Calendar;
 import java.util.Random;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -349,6 +354,72 @@ public class JDBC {
         Random r = new Random( System.currentTimeMillis() );
         return ((1 + r.nextInt(2)) * 10000 + r.nextInt(10000));
     }
+    public String getSearchResult(String table, String column, String strWithWildcard){
+        try {
+            query("use ToolShop;");
+            String query ="";
+            switch (table){
+                case "TOOL":
+                    query = "SELECT T.ToolID,T.Name,T.Type,T.Quantity,T.Price,T.SupplierID,E.PowerType FROM ToolShop.TOOL AS T \n" +
+                            "LEFT OUTER JOIN ToolShop.ELECTRICAL AS E ON T.ToolID=E.ToolID"
+                            + " WHERE T." + column + " LIKE ?; ";
+                    break;
+                case "SUPPLIER":
+                    query = "SELECT S.SupplierID,S.Name,S.Type,S.Address,S.CName,S.Phone,I.ImportTax FROM ToolShop.SUPPLIER AS S\n" +
+                            "LEFT OUTER JOIN ToolShop.INTERNATIONAL AS I ON S.SupplierID =I.SupplierID "
+                            + " WHERE S." + column + " LIKE ?; ";
+                    break;
+                case "CLIENT":
+                    query = "select * from CLIENT"
+                            +" WHERE " + column + " LIKE ?; ";
+                    break;
+                case "ORDER":
+                    query = "SELECT O.OrderID,O.Date,T.Name,S.Name,L.Quantity FROM ToolShop.ORDERLINE AS L ,ToolShop.ORDER_ AS O ,ToolShop.TOOL AS T , ToolShop.SUPPLIER AS S\n"+
+                            "WHERE L.OrderID=O.OrderID AND L.ToolID =  T.ToolID AND L.SupplierID=S.SupplierID"
+                            + " AND O." + column + " LIKE ?; ";
+                    break;
+                default:
+                    break;
+            }
+
+
+            PreparedStatement pStat = null;
+            if (Utils.isInteger(strWithWildcard)||Utils.isNumeric(strWithWildcard)){
+//                System.out.println(Utils.isInteger(strWithWildcard) +" "+  Utils.isNumeric(strWithWildcard));
+                query = query.replace("?",strWithWildcard);
+//                System.out.println(query);
+                pStat = conn.prepareStatement(query);
+            }
+            if (!(Utils.isInteger(strWithWildcard)||Utils.isNumeric(strWithWildcard))){
+                pStat = conn.prepareStatement(query);
+                pStat.setString(1, strWithWildcard);
+            }
+
+            System.out.println(strWithWildcard+ " "+ pStat);
+            rs = pStat.executeQuery();
+            metaData=rs.getMetaData();
+            switch (table){
+                case "TOOL":
+                    toJsonToolList();
+                    break;
+                case "SUPPLIER":
+                    toJsonSupplierList();
+                    break;
+                case "CLIENT":
+                    toJsonCustomerList();
+                    break;
+                case "ORDER":
+                    toJsonOrder();
+                    break;
+                default:
+                    break;
+            }
+            pStat.close();
+        } catch (SQLException | JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        return json;
+    }
     public String getItemsList() throws JsonProcessingException{
         try {
             String query = "SELECT T.ToolID,T.Name,T.Type,T.Quantity,T.Price,T.SupplierID,E.PowerType FROM ToolShop.TOOL AS T \n" +
@@ -562,4 +633,48 @@ public class JDBC {
         insertIntoTable("CLIENT", row);
     }
 
+}
+
+
+
+
+class Utils {
+    public static boolean isInteger(String str) {
+        if (str == null) {
+            return false;
+        }
+        int length = str.length();
+        if (length == 0) {
+            return false;
+        }
+        int i = 0;
+        if (str.charAt(0) == '-') {
+            if (length == 1) {
+                return false;
+            }
+            i = 1;
+        }
+        for (; i < length; i++) {
+            char c = str.charAt(i);
+            if (c < '0' || c > '9') {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public static boolean isNumeric(String str) {
+        try {
+            Double.parseDouble(str);
+            return true;
+        } catch(NumberFormatException e){
+            return false;
+        }
+    }
+
+    public static String parseColumn(String str){
+        if (isInteger(str)) return "int";
+        if (isNumeric(str)) return "float";
+        return "text";
+    }
 }

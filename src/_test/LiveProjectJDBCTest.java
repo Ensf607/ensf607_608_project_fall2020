@@ -61,6 +61,12 @@ public class LiveProjectJDBCTest {
         jdbc.insertIntoTOOL("1095","Test Tool2", "Electric","20","150", "8022");
     }
 
+    @Test
+    public void getSearchResultTest() throws JsonProcessingException {
+        JDBC jdbc = getJdbc();
+        System.out.println(jdbc.getSearchResult("TOOL","ToolID","1095"));
+    }
+
     /**
      * Test Setup
      * @return
