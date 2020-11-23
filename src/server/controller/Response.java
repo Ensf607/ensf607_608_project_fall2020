@@ -32,6 +32,91 @@ public class Response {
         }
     }
 
+    static void putHandler(String request) throws JsonProcessingException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        JsonNode jsonNodeRoot = objectMapper.readTree(request);
+        JDBC jdbc = getJdbc();
+        switch (jsonNodeRoot.get("table").asText())
+        {
+            case "CLIENT":
+                jdbc.insertIntoCLIENT(jsonNodeRoot.get("ClientID").asText(),
+                        jsonNodeRoot.get("LName").asText(),
+                        jsonNodeRoot.get("FName").asText(),
+                        jsonNodeRoot.get("Type").asText(),
+                        jsonNodeRoot.get("PhoneNum").asText(),
+                        jsonNodeRoot.get("Address").asText(),
+                        jsonNodeRoot.get("PostalCode").asText()
+                );
+                break;
+            case "ORDER":
+                jdbc.insertIntoORDER_(jsonNodeRoot.get("OrderID").asText(),
+                        jsonNodeRoot.get("Date").asText());
+                break;
+            case "ORDERLINE":
+                jdbc.insertIntoORDERLINE(jsonNodeRoot.get("OrderID").asText(),
+                        jsonNodeRoot.get("ToolID").asText(),
+                        jsonNodeRoot.get("SupplierID").asText(),
+                        jsonNodeRoot.get("Quantity").asText()
+                );
+                break;
+            case "PURCHASE":
+                jdbc.insertIntoPURCHASE(jsonNodeRoot.get("ClientID").asText(),
+                        jsonNodeRoot.get("ToolID").asText(),
+                        jsonNodeRoot.get("Date").asText()
+                        );
+                break;
+            case "SUPPLIER":
+                jdbc.insertIntoSUPPLIER(jsonNodeRoot.get("SupplierID").asText(),
+                        jsonNodeRoot.get("Name").asText(),
+                        jsonNodeRoot.get("Type").asText(),
+                        jsonNodeRoot.get("Address").asText(),
+                        jsonNodeRoot.get("CName").asText(),
+                        jsonNodeRoot.get("Phone").asText()
+                );
+                break;
+            case "TOOL":
+                jdbc.insertIntoTOOL(jsonNodeRoot.get("ToolID").asText(),
+                        jsonNodeRoot.get("Name").asText(),
+                        jsonNodeRoot.get("Type").asText(), // please note this type is special "Type" Cap
+                        jsonNodeRoot.get("Quantity").asText(),
+                        jsonNodeRoot.get("Price").asText(),
+                        jsonNodeRoot.get("SupplierID").asText()
+                );
+                break;
+            case "ELECTRICAL":
+                jdbc.insertIntoELECTRICAL(
+                        jsonNodeRoot.get("ToolID").asText(),
+                        jsonNodeRoot.get("PowerType").asText()
+                );
+                break;
+            case "INTERNATIONAL":
+                jdbc.insertIntoINTERNATIONAL(
+                        jsonNodeRoot.get("SupplierID").asText(),
+                        jsonNodeRoot.get("ImportTax").asText()
+                );
+
+        }
+
+
+        return;
+    }
+
+    static String postHandler(String request) throws JsonProcessingException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        JsonNode jsonNodeRoot = objectMapper.readTree(request);
+
+
+        return "";
+    }
+
+    static String pdeleteHandler(String request) throws JsonProcessingException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        JsonNode jsonNodeRoot = objectMapper.readTree(request);
+
+
+        return "";
+    }
+
     private static JDBC getJdbc() {
         JDBC jdbc = new JDBC();
 //        jdbc.connectDB("18.236.191.241:3306", "ToolShop", "testadmin", "passw0rd");

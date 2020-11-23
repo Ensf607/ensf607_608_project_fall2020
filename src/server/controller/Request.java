@@ -20,6 +20,7 @@ public class Request {
                 break;
             case "PUT":
                 break;
+            case "DELETE":
             default:
                 break;
         }
