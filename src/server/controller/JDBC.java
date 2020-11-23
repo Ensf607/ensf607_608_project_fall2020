@@ -342,17 +342,16 @@ public class JDBC {
                 case "TOOL":
                     query = "SELECT T.ToolID,T.Name,T.Type,T.Quantity,T.Price,T.SupplierID,E.PowerType FROM ToolShop.TOOL AS T \n" +
                             "LEFT OUTER JOIN ToolShop.ELECTRICAL AS E ON T.ToolID=E.ToolID"
-                            + " AND T." + column + " LIKE ?; ";
+                            + " WHERE T." + column + " LIKE ?; ";
                     break;
                 case "SUPPLIER":
                     query = "SELECT S.SupplierID,S.Name,S.Type,S.Address,S.CName,S.Phone,I.ImportTax FROM ToolShop.SUPPLIER AS S\n" +
                             "LEFT OUTER JOIN ToolShop.INTERNATIONAL AS I ON S.SupplierID =I.SupplierID "
-                            + " AND S." + column + " LIKE ?; ";
+                            + " WHERE S." + column + " LIKE ?; ";
                     break;
                 case "CLIENT":
                     query = "select * from CLIENT"
-                            +" AND " + column + " LIKE ?; ";
-                    toJsonCustomerList();
+                            +" WHERE " + column + " LIKE ?; ";
                     break;
                 case "ORDER":
                     query = "SELECT O.OrderID,O.Date,T.Name,S.Name,L.Quantity FROM ToolShop.ORDERLINE AS L ,ToolShop.ORDER_ AS O ,ToolShop.TOOL AS T , ToolShop.SUPPLIER AS S\n"+
@@ -376,7 +375,7 @@ public class JDBC {
                 pStat.setString(1, strWithWildcard);
             }
 
-//            System.out.println(strWithWildcard+ " "+ pStat);
+            System.out.println(strWithWildcard+ " "+ pStat);
             rs = pStat.executeQuery();
             metaData=rs.getMetaData();
             switch (table){

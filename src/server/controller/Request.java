@@ -16,6 +16,10 @@ public class Request {
                 r = response.getHandler(request);
                 System.out.println(r);
                 break;
+            case "POST":
+                break;
+            case "PUT":
+                break;
             default:
                 break;
         }
