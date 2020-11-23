@@ -18,6 +18,7 @@ public class Client {
 	private PrintWriter socketOut;
 	private Socket palinSocket;
 	private BufferedReader socketIn;
+	private ServerSideRequestHandler sendMSG;
 
 	/**
 	 * Ctor to initialize @param
@@ -26,71 +27,32 @@ public class Client {
 	 * @param portNumber
 	 */
 	public Client(String serverName, int portNumber) {
-		try {
-			palinSocket = new Socket(serverName, portNumber);
-			socketIn = new BufferedReader(new InputStreamReader(palinSocket.getInputStream()));
-			socketOut = new PrintWriter((palinSocket.getOutputStream()), true);
-		} catch (IOException e) {
-			System.err.println(e.getStackTrace());
-		}
+		sendMSG=new ServerSideRequestHandler();//NOTE: its just a test, this must be on server side
+//		try {
+//			palinSocket = new Socket(serverName, portNumber);
+//			socketIn = new BufferedReader(new InputStreamReader(palinSocket.getInputStream()));
+//			socketOut = new PrintWriter((palinSocket.getOutputStream()), true);
+//			
+//		} catch (IOException e) {
+//			System.err.println(e.getStackTrace());
+//		}
 	}
-
-	/**
-	 * This method is responsible with communicating with Server and GUI
-	 * 
-	 * @throws InterruptedException
-	 */
-	public void communicate() throws InterruptedException {
+	
+	public String send(String json) throws IOException {
+		//THIS WHAT U WILL HAVE
+//		socketOut.print(json);//sends request
+//		StringBuffer sb =new StringBuffer();
+//		String line=socketIn.readLine();
+//		sb.append(line);
+//		while(line!=null) {
+//			line=socketIn.readLine();
+//		sb.append(line);}
+//		return sb.toString();
 		
-		String line = "";
-		String response = "";
-		boolean running = true;
-		Scanner scan =new Scanner(System.in);
-		while (running) {
-			try {
-				response = socketIn.readLine();
-				System.out.println(response);
-				if (response.indexOf("Menu")!=-1)
-					
-				{	int i=6;
-					while(i>0)
-					{
-					response = socketIn.readLine();
-					System.out.println(response);
-					i--;
-					}
-					
-					
-					int temp=scan.nextInt();
-					socketOut.println(temp);
-					
-				}
-				
-
-			} catch (IOException e) {
-				System.out.println("Sending error: " + e.getMessage());
-				
-				
-				
-			}
-
-		}
-		try {
-			socketIn.close();
-			socketOut.close();
-		} catch (IOException e) {
-			System.out.println("Closing error: " + e.getMessage());
-		}
-
-	}
+		//TEST
+		System.out.println("SENDNG MSG TO  RequestHandler on SERVER SIDE....via sockets and wait for response");
+		String response=sendMSG.getResponse(json);
+	return response;
+		
+	}}
 			
-	public static void main(String[] args) throws IOException {
-		Client aClient = new Client("localhost", 9090);
-		try {
-			aClient.communicate();
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-
-	}
-}
