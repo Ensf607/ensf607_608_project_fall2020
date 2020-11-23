@@ -96,8 +96,10 @@ public class Response {
      * Right now by default it's updating everything if gui need to enter something.
      * @param request
      * @throws JsonProcessingException
+     * @return
      */
-    static void postHandler(String request) throws JsonProcessingException {
+    static String postHandler(String request) throws JsonProcessingException {
+        String message = "{\"error\" : \"0\" }"; // {"error" : "0" }
         ObjectMapper objectMapper = new ObjectMapper();
         JsonNode jsonNodeRoot = objectMapper.readTree(request);
         JDBC jdbc = getJdbc();
@@ -106,30 +108,33 @@ public class Response {
         {
             case "TOOL":
                 sql = "UPDATE TOOL "
-                        +"SET ToolID == "+jsonNodeRoot.get("ToolID")+", "
-                        +"SET Name == "+jsonNodeRoot.get("Name")+", "
-                        +"SET Type == "+jsonNodeRoot.get("Type")+", "
-                        +"SET Quantity == "+jsonNodeRoot.get("Quantity")+", "
-                        +"SET Price == "+jsonNodeRoot.get("Price")+", "
-                        +"SET SupplierID == "+jsonNodeRoot.get("SupplierID")
-                        + " WHERE " + jsonNodeRoot.get("field").asText()+" == "+jsonNodeRoot.get("field_value");
+                        +"SET ToolID == "+jsonNodeRoot.get("ToolID").asText()+", "
+                        +"SET Name == "+jsonNodeRoot.get("Name").asText()+", "
+                        +"SET Type == "+jsonNodeRoot.get("Type").asText()+", "
+                        +"SET Quantity == "+jsonNodeRoot.get("Quantity").asText()+", "
+                        +"SET Price == "+jsonNodeRoot.get("Price").asText()+", "
+                        +"SET SupplierID == "+jsonNodeRoot.get("SupplierID").asText()
+                        + " WHERE " + jsonNodeRoot.get("field").asText()+" == "+jsonNodeRoot.get("field_value").asText(); // this will be ToolID, no wrapping needed
                 jdbc.query(sql);
                 break;
             case "CLIENT":
                 sql = "UPDATE CLIENT "
-                        +"SET ClientID == "+jsonNodeRoot.get("ClientID")+", "
-                        +"SET LName == "+jsonNodeRoot.get("LName")+", "
-                        +"SET FName == "+jsonNodeRoot.get("FName")+", "
-                        +"SET Type == "+jsonNodeRoot.get("Type")+", "
-                        +"SET PhoneNum == "+jsonNodeRoot.get("PhoneNum")+", "
-                        +"SET Address == "+jsonNodeRoot.get("Address")+", "
-                        +"SET PostalCode == "+jsonNodeRoot.get("PostalCode")
-                        + " WHERE " + jsonNodeRoot.get("field").asText()+" == "+jsonNodeRoot.get("field_value");
+                        +"SET ClientID == "+jsonNodeRoot.get("ClientID").asText()+", "
+                        +"SET LName == "+jsonNodeRoot.get("LName").asText()+", "
+                        +"SET FName == "+jsonNodeRoot.get("FName").asText()+", "
+                        +"SET Type == "+jsonNodeRoot.get("Type").asText()+", "
+                        +"SET PhoneNum == "+jsonNodeRoot.get("PhoneNum").asText()+", "
+                        +"SET Address == "+jsonNodeRoot.get("Address").asText()+", "
+                        +"SET PostalCode == "+jsonNodeRoot.get("PostalCode").asText()
+                        + " WHERE " + jsonNodeRoot.get("field").asText()+" == "+jsonNodeRoot.get("field_value").asText();
                 jdbc.query(sql);
                 break;
+            case "USER":
+                message= jdbc.validateLogin(jsonNodeRoot.get("username").asText(), jsonNodeRoot.get("password").asText());
             default:
                 break;
         }
+        return message;
     }
 
     static void deleteHandler(String request) throws JsonProcessingException {
@@ -173,5 +178,11 @@ public class Response {
 //        jdbc.connectDB("18.236.191.241:3306", "ToolShop", "testadmin", "passw0rd");
         jdbc.query("use ToolShop;");
         return jdbc;
+    }
+
+    public static void main(String[] args) throws JsonProcessingException {
+        Response r = new Response();
+        String request = "{\"type\" : \"POST\", \"table\" : \"USER\", \"scope\": \"login\", \"username\":\"user01\", \"password\":\"hello123\"}"; //{"type" : "POST", "table" : "USER", "scope": "login", "username":"user01", "password":"hello123"}
+        System.out.println(r.postHandler(request));
     }
 }

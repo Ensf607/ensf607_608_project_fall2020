@@ -3,6 +3,7 @@ package server.controller;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 public class Request {
     public static String requestHandler(String request) throws JsonProcessingException {
@@ -17,7 +18,8 @@ public class Request {
                 System.out.println(r); // disable this for production
                 break;
             case "POST":
-                response.postHandler(request);
+                r = response.postHandler(request);
+                System.out.println(r);
                 break;
             case "PUT":
                 response.putHandler(request);

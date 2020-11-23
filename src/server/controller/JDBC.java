@@ -1,10 +1,6 @@
 package server.controller;
 
 import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.Reader;
-import java.math.BigDecimal;
-import java.net.URL;
 import java.sql.*;
 import java.util.Arrays;
 //TODO :
@@ -12,7 +8,6 @@ import java.util.Arrays;
 //Query for search by toolName
 //Query for search by toolID
 //Query for purchasing an item (need to include customer info ???)
-import java.util.Calendar;
 import java.util.Random;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -136,24 +131,27 @@ public class JDBC {
     /**
      * D2L provided code
      * Validate login.
-     *
-     * @param username the username
+     *  @param username the username
      * @param password the password
+     * @return
      */
-    public void validateLogin(String username, String password) {
+    public String validateLogin(String username, String password) {
         try {
             stmt = conn.createStatement();
-            String query = "SELECT * FROM users WHERE username = '" + username
+            String query = "SELECT * FROM USER WHERE username = '" + username
                     + "' and password ='" + password + "'";
             rs = stmt.executeQuery(query);
             if (rs.next()) {
                 System.out.println("User is logged in");
+                return "{\"valid\":\"1\"}"; // {"valid":"1"}
             } else {
                 System.out.println("Invalid Username and Password");
+                return "{\"valid\":\"0\"}";
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        return "{\"valid\":\"1\", \"error\": \"1\"}"; //  {"valid":"1", "error": "1"}
     }
     /**
      * D2L provided code
