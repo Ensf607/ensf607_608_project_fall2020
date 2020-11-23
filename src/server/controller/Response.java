@@ -8,17 +8,8 @@ public class Response {
     static String getHandler(String request) throws JsonProcessingException {
         ObjectMapper objectMapper = new ObjectMapper();
         JsonNode jsonNodeRoot = objectMapper.readTree(request);
-
-        String type = jsonNodeRoot.get("type").asText(); // DEBUG
-//        System.out.println(type); // DEBUG
-//        System.out.println(jsonNodeRoot.get("table")); // DEBUG
-//        System.out.println(jsonNodeRoot.get("scope")); // DEBUG
         String tableName = jsonNodeRoot.get("table").asText();
-
         JDBC jdbc = getJdbc();
-//        System.out.println(jdbc.getTable(tableName));
-
-
         switch (jsonNodeRoot.get("scope").asText()){
             case "all":
                 return jdbc.getTable(tableName);
@@ -32,7 +23,7 @@ public class Response {
         }
     }
 
-    static void putHandler(String request) throws JsonProcessingException {
+    public static void putHandler(String request) throws JsonProcessingException {
         ObjectMapper objectMapper = new ObjectMapper();
         JsonNode jsonNodeRoot = objectMapper.readTree(request);
         JDBC jdbc = getJdbc();
@@ -101,14 +92,47 @@ public class Response {
         return;
     }
 
-    static String postHandler(String request) throws JsonProcessingException {
+    /**
+     * Right now by default it's updating everything if gui need to enter something.
+     * @param request
+     * @throws JsonProcessingException
+     */
+    static void postHandler(String request) throws JsonProcessingException {
         ObjectMapper objectMapper = new ObjectMapper();
         JsonNode jsonNodeRoot = objectMapper.readTree(request);
-
-        return "";
+        JDBC jdbc = getJdbc();
+        String sql = "";
+        switch (jsonNodeRoot.get("table").asText())
+        {
+            case "TOOL":
+                sql = "UPDATE TOOL "
+                        +"SET ToolID == "+jsonNodeRoot.get("ToolID")+", "
+                        +"SET Name == "+jsonNodeRoot.get("Name")+", "
+                        +"SET Type == "+jsonNodeRoot.get("Type")+", "
+                        +"SET Quantity == "+jsonNodeRoot.get("Quantity")+", "
+                        +"SET Price == "+jsonNodeRoot.get("Price")+", "
+                        +"SET SupplierID == "+jsonNodeRoot.get("SupplierID")
+                        + " WHERE " + jsonNodeRoot.get("field").asText()+" == "+jsonNodeRoot.get("field_value");
+                jdbc.query(sql);
+                break;
+            case "CLIENT":
+                sql = "UPDATE CLIENT "
+                        +"SET ClientID == "+jsonNodeRoot.get("ClientID")+", "
+                        +"SET LName == "+jsonNodeRoot.get("LName")+", "
+                        +"SET FName == "+jsonNodeRoot.get("FName")+", "
+                        +"SET Type == "+jsonNodeRoot.get("Type")+", "
+                        +"SET PhoneNum == "+jsonNodeRoot.get("PhoneNum")+", "
+                        +"SET Address == "+jsonNodeRoot.get("Address")+", "
+                        +"SET PostalCode == "+jsonNodeRoot.get("PostalCode")
+                        + " WHERE " + jsonNodeRoot.get("field").asText()+" == "+jsonNodeRoot.get("field_value");
+                jdbc.query(sql);
+                break;
+            default:
+                break;
+        }
     }
 
-    static String deleteHandler(String request) throws JsonProcessingException {
+    static void deleteHandler(String request) throws JsonProcessingException {
         ObjectMapper objectMapper = new ObjectMapper();
         JsonNode jsonNodeRoot = objectMapper.readTree(request);
         JDBC jdbc = getJdbc();
@@ -141,7 +165,7 @@ public class Response {
             case "INTERNATIONAL":
                 break;
         }
-        return "";
+        return;
     }
 
     private static JDBC getJdbc() {

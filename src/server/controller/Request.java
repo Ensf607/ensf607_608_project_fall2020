@@ -14,13 +14,16 @@ public class Request {
         switch (type){
             case "GET":
                 r = response.getHandler(request);
-                System.out.println(r);
+                System.out.println(r); // disable this for production
                 break;
             case "POST":
+                response.postHandler(request);
                 break;
             case "PUT":
+                response.putHandler(request);
                 break;
             case "DELETE":
+                response.deleteHandler(request);
             default:
                 break;
         }
