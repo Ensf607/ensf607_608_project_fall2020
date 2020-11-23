@@ -17,6 +17,10 @@ import javax.swing.JTextField;
 import javax.swing.event.CaretEvent;
 import javax.swing.event.CaretListener;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+
 import client.controller.Observer;
 
 public class PurchasePanel extends JPanel implements ActionListener{
@@ -35,7 +39,8 @@ public class PurchasePanel extends JPanel implements ActionListener{
 	private JButton newClientBtn;
 	private CardLayout c;
 	private JPanel panel;
-
+	ObjectMapper mapper=new ObjectMapper();
+	ObjectNode[] arrayNode;
 	public PurchasePanel(Observer mc, ArrayList<Object> variableList) {
 		this.mc=mc;
 		this.variableList=variableList;
@@ -249,14 +254,26 @@ public class PurchasePanel extends JPanel implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource()==purchaseBtn) {
-			
-			String json=mc.request("");
-		
+			String request="{ \"type\" : \"GET\", \"table\" : \"CLIENT\" , \"scope\":\"select\",\"ClientID\":\""+clientIDPurchase+"\"}";
+			String response=mc.request(request);
+			if (response.length()>3) {
+				try {
+					arrayNode=mapper.readValue(response, ObjectNode[].class);
+					if (arrayNode[0].get("FName").asText().equals(fNameClient.getText()))
+						System.err.println("CORRECT");
+					else 
+						System.err.println("WRONG");
+					c.show(panel, "table");
+				} catch (JsonProcessingException e1) {
+					e1.printStackTrace();
+				}}
+				else 
+					JOptionPane.showMessageDialog(null, "Wrong Client ID or UserName");
+		}
 			//TODO check json if contains correct clientID/name then go back to main panel
 			//TODO: generate purchase update tools table and add t PURCHASE TABLE
-			c.show(panel, "table");
+		
 			
-		}
 		else if (e.getSource()==newClientBtn)
 		{
 			NewCustomerPanel nc=new NewCustomerPanel(mc);

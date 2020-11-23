@@ -55,9 +55,12 @@ public class TablePanel extends JPanel implements ListSelectionListener{
 public void populateTable(ObjectNode[] arrayNode) {
 	tableModel.setRowCount(0);
 	for (int i=0;i<arrayNode.length;i++) {
+		String powerType="";//to display empty instead of null
+		if(arrayNode[i].hasNonNull("PowerType")){
+			powerType=arrayNode[i].get("PowerType").asText();
+		}
 		tableModel.insertRow(0, new Object [] {  arrayNode[i].get("ToolID").asInt(),arrayNode[i].get("Name").asText(),arrayNode[i].get("Type").asText()
-				,arrayNode[i].get("Quantity").asInt(),arrayNode[i].get("Price").asDouble(),arrayNode[i].get("SupplierID").asInt(),
-				arrayNode[i].get("powerType")});
+				,arrayNode[i].get("Quantity").asInt(),arrayNode[i].get("Price").asDouble(),arrayNode[i].get("SupplierID").asInt(),powerType});
 }}
 public void setCardLayout(CardLayout c) {
 	this.c=c;
