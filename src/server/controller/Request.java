@@ -9,13 +9,12 @@ public class Request {
         ObjectMapper objectMapper = new ObjectMapper();
         JsonNode jsonNodeRoot = objectMapper.readTree(request);
         String type = jsonNodeRoot.get("type").asText();
-
-
         Response response = new Response();
-        String r = response.getHandler(request);
+        String r = "";
         switch (type){
             case "GET":
-                System.out.println();
+                r = response.getHandler(request);
+                System.out.println(r);
                 break;
             default:
                 break;

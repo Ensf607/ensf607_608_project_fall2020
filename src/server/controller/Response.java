@@ -10,13 +10,13 @@ public class Response {
         JsonNode jsonNodeRoot = objectMapper.readTree(request);
 
         String type = jsonNodeRoot.get("type").asText(); // DEBUG
-        System.out.println(type); // DEBUG
-        System.out.println(jsonNodeRoot.get("table")); // DEBUG
-        System.out.println(jsonNodeRoot.get("scope")); // DEBUG
+//        System.out.println(type); // DEBUG
+//        System.out.println(jsonNodeRoot.get("table")); // DEBUG
+//        System.out.println(jsonNodeRoot.get("scope")); // DEBUG
         String tableName = jsonNodeRoot.get("table").asText();
 
         JDBC jdbc = getJdbc();
-        System.out.println(jdbc.getTable(tableName));
+//        System.out.println(jdbc.getTable(tableName));
 
 
         switch (jsonNodeRoot.get("scope").asText()){
@@ -25,11 +25,10 @@ public class Response {
             case "select":
                 String field = jsonNodeRoot.get("field").asText();
                 String fieldValue = jsonNodeRoot.get("field_value").asText();
-//                return
-                System.err.println("select feature not yet implemented");
-                break;
+                return jdbc.getSearchResult(tableName, field, fieldValue);
+            default:
+                return "";
         }
-        return "type";
     }
 
     private static JDBC getJdbc() {

@@ -1,6 +1,10 @@
 package server.controller;
 
 import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.Reader;
+import java.math.BigDecimal;
+import java.net.URL;
 import java.sql.*;
 import java.util.Arrays;
 //TODO :
@@ -8,6 +12,7 @@ import java.util.Arrays;
 //Query for search by toolName
 //Query for search by toolID
 //Query for purchasing an item (need to include customer info ???)
+import java.util.Calendar;
 import java.util.Random;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -337,29 +342,41 @@ public class JDBC {
                 case "TOOL":
                     query = "SELECT T.ToolID,T.Name,T.Type,T.Quantity,T.Price,T.SupplierID,E.PowerType FROM ToolShop.TOOL AS T \n" +
                             "LEFT OUTER JOIN ToolShop.ELECTRICAL AS E ON T.ToolID=E.ToolID"
-                            + " WHERE T." + column + " LIKE ?; ";
+                            + " AND T." + column + " LIKE ?; ";
                     break;
                 case "SUPPLIER":
                     query = "SELECT S.SupplierID,S.Name,S.Type,S.Address,S.CName,S.Phone,I.ImportTax FROM ToolShop.SUPPLIER AS S\n" +
                             "LEFT OUTER JOIN ToolShop.INTERNATIONAL AS I ON S.SupplierID =I.SupplierID "
-                            + " WHERE S." + column + " LIKE ?; ";
+                            + " AND S." + column + " LIKE ?; ";
                     break;
                 case "CLIENT":
                     query = "select * from CLIENT"
-                            +" WHERE " + column + " LIKE ?; ";
+                            +" AND " + column + " LIKE ?; ";
                     toJsonCustomerList();
                     break;
                 case "ORDER":
                     query = "SELECT O.OrderID,O.Date,T.Name,S.Name,L.Quantity FROM ToolShop.ORDERLINE AS L ,ToolShop.ORDER_ AS O ,ToolShop.TOOL AS T , ToolShop.SUPPLIER AS S\n"+
                             "WHERE L.OrderID=O.OrderID AND L.ToolID =  T.ToolID AND L.SupplierID=S.SupplierID"
-                            + " WHERE O." + column + " LIKE ?; ";
+                            + " AND O." + column + " LIKE ?; ";
                     break;
                 default:
                     break;
             }
 
-            PreparedStatement pStat = conn.prepareStatement(query);
-            pStat.setString(1, strWithWildcard);
+
+            PreparedStatement pStat = null;
+            if (Utils.isInteger(strWithWildcard)||Utils.isNumeric(strWithWildcard)){
+//                System.out.println(Utils.isInteger(strWithWildcard) +" "+  Utils.isNumeric(strWithWildcard));
+                query = query.replace("?",strWithWildcard);
+//                System.out.println(query);
+                pStat = conn.prepareStatement(query);
+            }
+            if (!(Utils.isInteger(strWithWildcard)||Utils.isNumeric(strWithWildcard))){
+                pStat = conn.prepareStatement(query);
+                pStat.setString(1, strWithWildcard);
+            }
+
+//            System.out.println(strWithWildcard+ " "+ pStat);
             rs = pStat.executeQuery();
             metaData=rs.getMetaData();
             switch (table){
