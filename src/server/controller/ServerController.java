@@ -16,11 +16,12 @@ import java.util.concurrent.Executors;
  */
 
 public class ServerController {
-	private Socket aSocket;
 	private ServerSocket serverSocket;
+	private ExecutorService pool;
+	private Socket aSocket;
+
 	private PrintWriter socketOut;
 	private BufferedReader socketIn;
-	private ExecutorService pool;
 
 	/**
 	 * Initialize serverSocket and pool
@@ -35,28 +36,32 @@ public class ServerController {
 		}
 	}
 
+	public Socket getaSocket() {
+		return aSocket;
+	}
+
 	/**
 	 * Communicates with client and executes threads once there is two clients
 	 * 
 	 * @throws IOException
 	 * @throws InterruptedException
 	 */
-	public void runServer() throws IOException, InterruptedException {
+	public void communicate() throws IOException, InterruptedException {
 		try {
 			while (true) {
+				System.out.println("(check) communicate tag");
 				aSocket = serverSocket.accept();
 				socketIn = new BufferedReader(new InputStreamReader(aSocket.getInputStream()));
 				socketOut = new PrintWriter(aSocket.getOutputStream(), true);
-				
-				ModelController im =new ModelController(this);
-				pool.execute(im);
-
+				ModelController modelController = new ModelController(this);
+				pool.execute(modelController);
 			}
 
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		System.out.println("Good Bye!");
+		pool.shutdown();
 		socketIn.close();
 		socketOut.close();
 	}
@@ -66,7 +71,6 @@ public class ServerController {
 	 * Send a jason object {message: displayTool,tool:[]}
 	 */
 	public void send() {
-		
 	}
 
 
@@ -75,14 +79,16 @@ public class ServerController {
 	 * get requests example: { "type": "get", "table": "ORDER_", "scope": "all"}
 	 **/
 	public void recieve() {
-		
 	}
+
+
+
 
 	public static void main(String[] args) throws IOException {
 		ServerController myServer = new ServerController();
 		System.out.println("Server is now running.");
 		try {
-			myServer.runServer();
+			myServer.communicate();
 		} catch (IOException e) {
 			e.printStackTrace();
 		} catch (InterruptedException e) {

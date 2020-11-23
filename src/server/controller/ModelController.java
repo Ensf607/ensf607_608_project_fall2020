@@ -1,7 +1,10 @@
 package server.controller;
 
+import java.io.*;
+import java.net.Socket;
 import java.sql.ResultSet;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import server.model.Shop;
 
 public class ModelController implements Runnable{
@@ -9,59 +12,95 @@ public class ModelController implements Runnable{
 	ServerController server;
 	Shop shop;
 	JDBC jdbc;
+	poolThread thread;
 
-	public ModelController(ServerController server) {
+	public ModelController(ServerController server) throws IOException {
 		this.server=server;
 		jdbc=new JDBC();
+		this.thread=new poolThread(server.getaSocket());
 	}
-	public void communicate() throws InterruptedException {
-		while(true) {
-			server.recieve();
-		//JASON=server.recieve();
-		
-		//decode jason object
-		//based on jason object either query jdbc and will recieve a ResultSet or simply get a jason from model 
-		//EX if Jason requires a list of tools then no need to query DataBase, simply get itemsList Jason from Model
-		//if JASON requires to update DB ,update both model and DB
-		
-		//EX Cutomer bought item 101 then update DB Customer table and Purchase Table, items table ,etc 
-		//check if need to create an orderin model
-		//if new order is created then update db orderline for example
-		//sql toolTable
-		// Inventory add(item)
-		
-		
-		//jdbc.updateCustomer(customer info) 
-		//jdbc.updateItems(item,Quantity
-		// then update local model
-		
-		//check if we need new orderline
-		//are we updating ItemTable when we generate Order or wait for supplier to ship the items
-			
-			
-		
-		
-		
-		//send JASON for displaying tables ex: toollist, supplierlist, orderlist,
-		//server.send(JASON file);
-		}
-		}
-	
-	
-	
+
 	@Override
 	public void run() {
-		
-		//query to get customer list ,item list, supplierlist, orderList, purchaseList
-		//create shop (ResultSet toolist, supl
-		
+		while(true) {
+			String request = "";
+			String response = "";
+			try {
+				request = thread.stdIn();
+				System.out.println("client request: "+request);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			Request r = new Request();
+			try {
+				response = r.requestHandler(request);
+			} catch (JsonProcessingException e) {
+				e.printStackTrace();
+			}
+
+			thread.stdOut(response);
+
+
+//			System.out.println("model controller running");
+			sleep(100);
+		}
+	}
+
+	private void sleep(int time) {
 		try {
-			communicate();
+			Thread.sleep(time);
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
-	
-	
+}
+
+class poolThread {
+	private final PrintWriter socketOut;
+	/**
+	 * The A socket.
+	 */
+	private final Socket aSocket;
+	/**
+	 * The Std in.
+	 */
+	private final BufferedReader stdIn;
+
+	poolThread(Socket aSocket) throws IOException {
+		this.aSocket = aSocket;
+		this.stdIn = new BufferedReader(new InputStreamReader(aSocket.getInputStream()));
+		this.socketOut = new PrintWriter(new OutputStreamWriter(aSocket.getOutputStream()), true);
+	}
+
+	public String stdIn() throws IOException {
+		StringBuffer buffer = null;
+		while (true) {
+			if (buffer == null) {
+				buffer = new StringBuffer(stdIn.readLine());
+			} else {
+				break;
+			}
+		}
+		String string = buffer.toString();
+		return string;
+	}
+
+	public void stdOut(String message) {
+		socketOut.println(message);
+	}
+
+	public void exit(){
+		socketOut.close();
+		try {
+			stdIn.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		try {
+			aSocket.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
 }

@@ -1,16 +1,19 @@
 package client.controller;
 
+import view.GUI;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 /**
  * Implementation of the client class. This class communicates with the server
  * via sockets and invokes the GUI to display, also communicates with
- * {@link GUIActions} if there are any actions occurred in the GUI
+ * {@link } if there are any actions occurred in the GUI
  *
  */
 public class Client {
@@ -18,6 +21,9 @@ public class Client {
 	private PrintWriter socketOut;
 	private Socket palinSocket;
 	private BufferedReader socketIn;
+	private BufferedReader stdIn;
+	GUI gui;
+
 
 	/**
 	 * Ctor to initialize @param
@@ -30,9 +36,18 @@ public class Client {
 			palinSocket = new Socket(serverName, portNumber);
 			socketIn = new BufferedReader(new InputStreamReader(palinSocket.getInputStream()));
 			socketOut = new PrintWriter((palinSocket.getOutputStream()), true);
+			initGUI();
 		} catch (IOException e) {
 			System.err.println(e.getStackTrace());
 		}
+	}
+
+	/**
+	 * initialize GUI
+	 */
+	private void initGUI() {
+		this.gui = new GUI();
+		//TODO: @Ziad, connect gui items to event listeners
 	}
 
 	/**
@@ -40,39 +55,24 @@ public class Client {
 	 * 
 	 * @throws InterruptedException
 	 */
-	public void communicate() throws InterruptedException {
+	public void communicate() throws InterruptedException, IOException {
 		
 		String line = "";
 		String response = "";
 		boolean running = true;
 		Scanner scan =new Scanner(System.in);
 		while (running) {
-			try {
-				response = socketIn.readLine();
-				System.out.println(response);
-				if (response.indexOf("Menu")!=-1)
-					
-				{	int i=6;
-					while(i>0)
-					{
-					response = socketIn.readLine();
-					System.out.println(response);
-					i--;
-					}
-					
-					
-					int temp=scan.nextInt();
-					socketOut.println(temp);
-					
-				}
-				
+			sleep(500);
+			//				line = socketIn.readLine();
+			// TODO: need to connect GUI to get line value (request string)
+			line = "{ \"type\" : \"GET\", \"table\" : \"TOOL\" , \"scope\":\"all\"}";
+			System.out.println("request is:"+line);
 
-			} catch (IOException e) {
-				System.out.println("Sending error: " + e.getMessage());
-				
-				
-				
-			}
+			socketOut.println(line); // sending client request
+//			response = socketIn.lines().collect(Collectors.joining());; // receiving server response
+			response = getServerResponse();
+
+			System.out.println("(Response): \n"+ response);
 
 		}
 		try {
@@ -82,6 +82,29 @@ public class Client {
 			System.out.println("Closing error: " + e.getMessage());
 		}
 
+	}
+
+
+	public String getServerResponse() throws IOException {
+		String s="";
+		String line = "";
+		while ((line = socketIn.readLine()) != null) {
+			s += line;
+			if (!socketIn.ready()){
+				sleep(100); //manually introduce delay
+				if (!socketIn.ready())
+					break;
+			}
+		}
+		return s;
+	}
+
+	private void sleep(int time) {
+		try {
+			Thread.sleep(time);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 	}
 			
 	public static void main(String[] args) throws IOException {
