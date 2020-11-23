@@ -105,15 +105,42 @@ public class Response {
         ObjectMapper objectMapper = new ObjectMapper();
         JsonNode jsonNodeRoot = objectMapper.readTree(request);
 
-
         return "";
     }
 
-    static String pdeleteHandler(String request) throws JsonProcessingException {
+    static String deleteHandler(String request) throws JsonProcessingException {
         ObjectMapper objectMapper = new ObjectMapper();
         JsonNode jsonNodeRoot = objectMapper.readTree(request);
+        JDBC jdbc = getJdbc();
+        String sql = "";
+        switch (jsonNodeRoot.get("table").asText())
+        {
+            case "TOOL":
+                sql = "DELETE FROM TOOL WHERE "+
+                        jsonNodeRoot.get("field").asText()+" == "+jsonNodeRoot.get("field_value");
+                jdbc.query(sql);
+                break;
+            case "CLIENT":
+                sql= "DELETE FROM CLIENT WHERE "+
+                        jsonNodeRoot.get("field").asText()+" == "+jsonNodeRoot.get("field_value");
+                jdbc.query(sql);
+                break;
 
-
+            case "ORDERLINE":
+            case "ORDER":
+                sql= "DELETE FROM ORDER_ WHERE "+
+                        jsonNodeRoot.get("field").asText()+" == "+jsonNodeRoot.get("field_value");
+                jdbc.query(sql);
+                sql= "DELETE FROM ORDERLINE WHERE "+
+                        jsonNodeRoot.get("field").asText()+" == "+jsonNodeRoot.get("field_value");
+                jdbc.query(sql);
+                break;
+            case "PURCHASE":
+            case "SUPPLIER":
+            case "ELECTRICAL":
+            case "INTERNATIONAL":
+                break;
+        }
         return "";
     }
 
