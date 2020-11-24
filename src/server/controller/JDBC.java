@@ -375,6 +375,8 @@ public class JDBC {
                     query = "SELECT O.OrderID,O.Date,T.Name,S.Name,L.Quantity FROM ToolShop.ORDERLINE AS L ,ToolShop.ORDER_ AS O ,ToolShop.TOOL AS T , ToolShop.SUPPLIER AS S\n"+
                             "WHERE L.OrderID=O.OrderID AND L.ToolID =  T.ToolID AND L.SupplierID=S.SupplierID"
                             + " AND O." + column + " LIKE ?; ";
+                case "USER":
+                	 query ="SELECT * FROM ToolShop.USER WHERE "+column+"=?";
                     break;
                 default:
                     break;
@@ -408,6 +410,8 @@ public class JDBC {
                     break;
                 case "ORDER":
                     toJsonOrder();
+                case "USER":
+                    toJsonUser();
                     break;
                 default:
                     break;
@@ -418,7 +422,8 @@ public class JDBC {
         }
         return json;
     }
-    public String getItemsList() throws JsonProcessingException{
+ 
+	public String getItemsList() throws JsonProcessingException{
         try {
             String query = "SELECT T.ToolID,T.Name,T.Type,T.Quantity,T.Price,T.SupplierID,E.PowerType FROM ToolShop.TOOL AS T \n" +
                     "LEFT OUTER JOIN ToolShop.ELECTRICAL AS E ON T.ToolID=E.ToolID";
@@ -533,6 +538,16 @@ public class JDBC {
 
         }
         json=mapper.writerWithDefaultPrettyPrinter().writeValueAsString(arrayNode);
+    }
+    private void toJsonUser() throws SQLException, JsonProcessingException {
+    	 ObjectNode node = new ObjectMapper().createObjectNode();
+         while(rs.next()) {
+            
+             node.put(metaData.getColumnName(1), rs.getString(1));
+             node.put(metaData.getColumnName(2), rs.getString(2));
+ 	}
+         json=new ObjectMapper().writeValueAsString(node);
+         
     }
     public void toJsonCustomerList() throws SQLException, JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();

@@ -63,6 +63,8 @@ public class GUIDesign {
 	private JTextField postalCodeCMS;
 	private JTextField phoneCMS;
 	private JTextField totalField;
+	private JTextField userNameField;
+	private JTextField passwordField;
 
 	/**
 	 * Launch the application.
@@ -771,5 +773,32 @@ public class GUIDesign {
 		gbc_clearBtn.gridx = 3;
 		gbc_clearBtn.gridy = 11;
 		clientInfoPanel.add(clearBtn, gbc_clearBtn);
+		
+		JPanel loginPanel = new JPanel();
+		loginPanel.setBackground(SystemColor.activeCaption);
+		panel.add(loginPanel, "name_48048621038600");
+		loginPanel.setLayout(null);
+		
+		JLabel userNamelbl = new JLabel("User Name");
+		userNamelbl.setBounds(222, 96, 85, 16);
+		loginPanel.add(userNamelbl);
+		
+		userNameField = new JTextField();
+		userNameField.setBounds(319, 93, 116, 22);
+		loginPanel.add(userNameField);
+		userNameField.setColumns(10);
+		
+		JLabel lblPassword = new JLabel("Password");
+		lblPassword.setBounds(222, 141, 85, 16);
+		loginPanel.add(lblPassword);
+		
+		passwordField = new JTextField();
+		passwordField.setColumns(10);
+		passwordField.setBounds(319, 138, 116, 22);
+		loginPanel.add(passwordField);
+		
+		JButton loginBtn = new JButton("Login");
+		loginBtn.setBounds(267, 209, 97, 25);
+		loginPanel.add(loginBtn);
 	}
 }
