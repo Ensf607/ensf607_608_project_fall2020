@@ -1,6 +1,5 @@
 package client.controller;
 
-import view.GUI;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -21,9 +20,7 @@ public class Client {
 	private PrintWriter socketOut;
 	private Socket palinSocket;
 	private BufferedReader socketIn;
-	private ServerSideRequestHandler sendMSG;
 	private BufferedReader stdIn;
-//	GUI gui;
 
 
 	/**
@@ -121,7 +118,7 @@ public class Client {
 		while ((line = socketIn.readLine()) != null) {
 			s += line;
 			if (!socketIn.ready()){
-				sleep(100); //manually introduce delay
+//				sleep(100); //manually introduce delay
 				if (!socketIn.ready())
 					break;
 			}

@@ -2,10 +2,7 @@ package client.controller;
 
 import java.io.IOException;
 
-import javax.swing.text.View;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 
 public class ModelController implements Observer{
 	private Client c;

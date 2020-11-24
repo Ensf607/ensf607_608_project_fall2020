@@ -7,6 +7,7 @@ import java.awt.Insets;
 import java.awt.SystemColor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 
 import javax.swing.JButton;
@@ -254,16 +255,8 @@ public class PurchasePanel extends JPanel implements ActionListener{
 					arrayNode=mapper.readValue(response, ObjectNode[].class);
 					if (arrayNode[0].get("FName").asText().equalsIgnoreCase(fNameClient.getText()))
 						{
-						request="{ \"type\" : \"PUT\", \"table\" : \"PURCHASE\" ,\"ClientID\":\""+clientIDPurchase.getText()+"\",\"ToolID\":\""+variableList.get(0)+"\",\"Date\":\"CURRENT_TIMESTAMP\"}";
+						request="{ \"type\" : \"PUT\", \"table\" : \"PURCHASE\" ,\"ClientID\":\""+clientIDPurchase.getText()+"\",\"ToolID\":\""+variableList.get(0)+"\",\"Date\":\""+new Timestamp(System.currentTimeMillis())+"\"}";
 						 response=mc.request(request);
-//						 sql = "UPDATE TOOL "
-//			                        +"SET ToolID == "+jsonNodeRoot.get("ToolID")+", "
-//			                        +"SET Name == "+jsonNodeRoot.get("Name")+", "
-//			                        +"SET Type == "+jsonNodeRoot.get("Type")+", "
-//			                        +"SET Quantity == "+jsonNodeRoot.get("Quantity")+", "
-//			                        +"SET Price == "+jsonNodeRoot.get("Price")+", "
-//			                        +"SET SupplierID == "+jsonNodeRoot.get("SupplierID")
-//			                        + " WHERE " + jsonNodeRoot.get("field").asText()+" == "+jsonNodeRoot.get("field_value");
 						 request="{ \"type\" : \"POST\", \"table\" : \"TOOL\" ,\"ToolID\":\""+variableList.get(0)+"\",\"Name\":\""+variableList.get(1)+"\""
 						 		+ ",\"Type\":\""+variableList.get(2)+"\",\"Quantity\":\""+((Integer)variableList.get(3)-Integer.parseInt(qtyField.getText()))+"\",\"Price\":\""+variableList.get(4)+"\",\"SupplierID\":\""+variableList.get(5)+"\",\"field\":\"ToolID\",\"field_value\":\""+variableList.get(0)+"\"}";
 						 response=mc.request(request);
