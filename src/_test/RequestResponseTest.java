@@ -85,7 +85,11 @@ public class RequestResponseTest {
 //        userLoginTest2();
         Request r = new Request();
 //        String request = "{\"type\" : \"POST\", \"table\" : \"TOOL\", \"ToolID\": \"1000\", \"Name\":\"Knock Bitzzz\", \"Type\":\"Electric\", \"Quantity\":\"120\", \"Price\":\"15\", \"SupplierID\":\"8004\"}"; //{"type" : "POST", "table" : "TOOL", "ToolID": "1000", "Name":"Knock Bitzzz", "Type":"Electric", "Quantity":"120", "Price":"15", "SupplierID":"8004"}
-        String request = "{\"type\" : \"POST\", \"table\" : \"CLIENT\", \"ClientID\": \"11\", \"LName\":\"sTANNN\", \"FName\":\"lEEEE\", \"Type\":\"Residential\", \"PhoneNum\":\"4039996666\", \"Address\":\"7899  Washington Street\", \"PostalCode\":\"0X0 OYO\"}"; //{"type" : "POST", "table" : "CLIENT", "ClientID": "11", "LName":"sTANNN", "FName":"lEEEE", "Type":"Residential", "PhoneNum":"4039996666", "Address":"7899  Washington Street", "PostalCode":"0X0 OYO"}
+//        String request = "{\"type\" : \"POST\", \"table\" : \"CLIENT\", \"ClientID\": \"11\", \"LName\":\"sTANNN\", \"FName\":\"lEEEE\", \"Type\":\"Residential\", \"PhoneNum\":\"4039996666\", \"Address\":\"7899  Washington Street\", \"PostalCode\":\"0X0 OYO\"}"; //{"type" : "POST", "table" : "CLIENT", "ClientID": "11", "LName":"sTANNN", "FName":"lEEEE", "Type":"Residential", "PhoneNum":"4039996666", "Address":"7899  Washington Street", "PostalCode":"0X0 OYO"}
+//        String request = "{\"type\" : \"PUT\", \"table\" : \"TOOL\", \"ToolID\": \"1097\", \"Name\":\"fake Knock Bitzzz\", \"Type\":\"Electric\", \"Quantity\":\"199\", \"Price\":\"15\", \"SupplierID\":\"8004\"}"; // {"type" : "PUT", "table" : "TOOL", "ToolID": "1097", "Name":"fake Knock Bitzzz", "Type":"Electric", "Quantity":"199", "Price":"15", "SupplierID":"8004"}
+//        String request = "{\"type\" : \"DELETE\", \"table\": \"TOOL\" ,\"field\" : \"ToolID\", \"field_value\": \"1097\"}"; // {"type" : "DELETE", "table": "TOOL" ,"field" : "ToolID", "field_value": "1097"}
+//        String request = "{\"type\" : \"DELETE\", \"table\": \"CLIENT\" ,\"field\" : \"ClientID\", \"field_value\": \"22\"}"; // {"type" : "DELETE", "table": "CLIENT" ,"field" : "ClientID", "field_value": "22"}
+        String request = "{\"type\" : \"DELETE\", \"table\": \"SUPPLIER\" ,\"field\" : \"SupplierID\", \"field_value\": \"8099\"}"; // {"type" : "DELETE", "table": "SUPPLIER" ,"field" : "SupplierID", "field_value": "8099"}
         r.requestHandler(request);
     }
 

@@ -146,26 +146,32 @@ public class Response {
         {
             case "TOOL":
                 sql = "DELETE FROM TOOL WHERE "+
-                        jsonNodeRoot.get("field").asText()+" == "+jsonNodeRoot.get("field_value");
+                        jsonNodeRoot.get("field").asText()+" = "+jsonNodeRoot.get("field_value");
                 jdbc.query(sql);
                 break;
             case "CLIENT":
                 sql= "DELETE FROM CLIENT WHERE "+
-                        jsonNodeRoot.get("field").asText()+" == "+jsonNodeRoot.get("field_value");
+                        jsonNodeRoot.get("field").asText()+" = "+jsonNodeRoot.get("field_value");
+                System.out.println(sql);
                 jdbc.query(sql);
                 break;
 
             case "ORDERLINE":
             case "ORDER":
                 sql= "DELETE FROM ORDER_ WHERE "+
-                        jsonNodeRoot.get("field").asText()+" == "+jsonNodeRoot.get("field_value");
+                        jsonNodeRoot.get("field").asText()+" = "+jsonNodeRoot.get("field_value");
                 jdbc.query(sql);
                 sql= "DELETE FROM ORDERLINE WHERE "+
-                        jsonNodeRoot.get("field").asText()+" == "+jsonNodeRoot.get("field_value");
+                        jsonNodeRoot.get("field").asText()+" = "+jsonNodeRoot.get("field_value");
                 jdbc.query(sql);
                 break;
             case "PURCHASE":
             case "SUPPLIER":
+                sql= "DELETE FROM SUPPLIER WHERE "+
+                        jsonNodeRoot.get("field").asText()+" = "+jsonNodeRoot.get("field_value");
+                System.out.println(sql);
+                jdbc.query(sql);
+                break;
             case "ELECTRICAL":
             case "INTERNATIONAL":
                 break;
