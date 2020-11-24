@@ -7,6 +7,7 @@ import java.awt.Insets;
 import java.awt.SystemColor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 
 import javax.swing.JButton;
@@ -36,7 +37,6 @@ public class PurchasePanel extends JPanel implements ActionListener{
 	private JTextField clientIDPurchase;
 	private JTextField fNameClient;
 	private JButton purchaseBtn;
-	private JButton newClientBtn;
 	private CardLayout c;
 	private JPanel panel;
 	ObjectMapper mapper=new ObjectMapper();
@@ -187,13 +187,7 @@ public class PurchasePanel extends JPanel implements ActionListener{
 		gbc_lblCustomerInfo.gridy = 7;
 		add(lblCustomerInfo, gbc_lblCustomerInfo);
 		
-		newClientBtn = new JButton("New Customer");
-		GridBagConstraints gbc_newClientBtn = new GridBagConstraints();
-		gbc_newClientBtn.insets = new Insets(0, 0, 5, 0);
-		gbc_newClientBtn.gridx = 2;
-		gbc_newClientBtn.gridy = 7;
-		newClientBtn.addActionListener(this);
-		add(newClientBtn, gbc_newClientBtn);
+		
 		
 		JLabel labelID = new JLabel("ClientID");
 		GridBagConstraints gbc_labelID = new GridBagConstraints();
@@ -254,16 +248,19 @@ public class PurchasePanel extends JPanel implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource()==purchaseBtn) {
-			String request="{ \"type\" : \"GET\", \"table\" : \"CLIENT\" , \"scope\":\"select\",\"ClientID\":\""+clientIDPurchase.getText()+"\"}";
+			String request="{ \"type\" : \"GET\", \"table\" : \"CLIENT\" , \"scope\":\"select\",\"field\":\"ClientID\",\"field_value\":\""+clientIDPurchase.getText()+"\"}";
 			String response=mc.request(request);
 			if (response.length()>3) {
 				try {
 					arrayNode=mapper.readValue(response, ObjectNode[].class);
 					if (arrayNode[0].get("FName").asText().equalsIgnoreCase(fNameClient.getText()))
 						{
-					//TODO Creat purchase
-						request="{ \"type\" : \"POST\", \"table\" : \"PURCHASE\" ,\"ClientID\":\""+clientIDPurchase.getText()+"\",\"ToolID\":\""+variableList.get(0)+"\"}";
+						request="{ \"type\" : \"PUT\", \"table\" : \"PURCHASE\" ,\"ClientID\":\""+clientIDPurchase.getText()+"\",\"ToolID\":\""+variableList.get(0)+"\",\"Date\":\""+new Timestamp(System.currentTimeMillis())+"\"}";
 						 response=mc.request(request);
+						 request="{ \"type\" : \"POST\", \"table\" : \"TOOL\" ,\"ToolID\":\""+variableList.get(0)+"\",\"Name\":\""+variableList.get(1)+"\""
+						 		+ ",\"Type\":\""+variableList.get(2)+"\",\"Quantity\":\""+((Integer)variableList.get(3)-Integer.parseInt(qtyField.getText()))+"\",\"Price\":\""+variableList.get(4)+"\",\"SupplierID\":\""+variableList.get(5)+"\",\"field\":\"ToolID\",\"field_value\":\""+variableList.get(0)+"\"}";
+						 response=mc.request(request);
+						 System.err.println("response"+response);
 						 JOptionPane.showMessageDialog(null, "Thank you for your purchase "+arrayNode[0].get("FName").asText()+"!");
 						 c.show(panel,"table");
 						}
@@ -279,18 +276,8 @@ public class PurchasePanel extends JPanel implements ActionListener{
 				else 
 					JOptionPane.showMessageDialog(null, "Wrong Client ID or UserName");
 		}
-			//TODO check json if contains correct clientID/name then go back to main panel
-			//TODO: generate purchase update tools table and add t PURCHASE TABLE
 		
 			
-		else if (e.getSource()==newClientBtn)
-		{
-			NewCustomerPanel nc=new NewCustomerPanel(mc);
-			panel.add(nc,"newClient");
-			nc.setCardLayout(c);
-			nc.setPanel(panel);
-			c.show(panel,"newClient");
-		}
 	}
 
 	public void setCardLayout(CardLayout c) {

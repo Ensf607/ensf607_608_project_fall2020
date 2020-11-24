@@ -55,6 +55,7 @@ public class ServerController {
 				socketOut = new PrintWriter(aSocket.getOutputStream(), true);
 				ModelController modelController = new ModelController(this);
 				pool.execute(modelController);
+				System.err.println("Accepte");
 			}
 
 		} catch (IOException e) {

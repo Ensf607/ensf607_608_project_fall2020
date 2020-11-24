@@ -2,10 +2,7 @@ package client.controller;
 
 import java.io.IOException;
 
-import javax.swing.text.View;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 
 public class ModelController implements Observer{
 	private Client c;
@@ -34,7 +31,7 @@ public class ModelController implements Observer{
 		
 	}
 public static void main (String [] arg) {
-	Client c =new Client("localhost", 3306);
+	Client c =new Client("localhost", 9090);
 	ModelController mc =new ModelController(c);
 	ViewController vc=new ViewController(mc);
 }
