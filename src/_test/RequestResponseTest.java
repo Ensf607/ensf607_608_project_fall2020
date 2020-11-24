@@ -71,18 +71,22 @@ public class RequestResponseTest {
         Request r = new Request();
         String request = "{\"type\" : \"POST\", \"table\" : \"USER\", \"scope\": \"login\", \"username\":\"user01\", \"password\":\"hello123\"}"; //{"type" : "POST", "table" : "USER", "scope": "login", "username":"user01", "password":"hello123"}
         r.requestHandler(request);
-    }    @Test
+    }
+    @Test
     public static void userLoginTest2 () throws JsonProcessingException {
         Request r = new Request();
-        String request = "{\"type\" : \"POST\", \"table\" : \"USER\", \"scope\": \"login\", \"username\":\"user01\", \"password\":\"hello143\"}"; //{"type" : "POST", "table" : "USER", "scope": "login", "username":"user01", "password":"hello123"}
+        String request = "{\"type\" : \"POST\", \"table\" : \"USER\", \"scope\": \"login\", \"username\":\"user01\", \"password\":\"hello143\"}"; //{"type" : "POST", "table" : "USER", "scope": "login", "username":"user01", "password":"hello143"}
         r.requestHandler(request);
     }
 
     public static void main(String[] args) throws JsonProcessingException {
 //        testSelectFieldFromOrder();
-        userLoginTest();
-        userLoginTest2();
-
+//        userLoginTest();
+//        userLoginTest2();
+        Request r = new Request();
+//        String request = "{\"type\" : \"POST\", \"table\" : \"TOOL\", \"ToolID\": \"1000\", \"Name\":\"Knock Bitzzz\", \"Type\":\"Electric\", \"Quantity\":\"120\", \"Price\":\"15\", \"SupplierID\":\"8004\"}"; //{"type" : "POST", "table" : "TOOL", "ToolID": "1000", "Name":"Knock Bitzzz", "Type":"Electric", "Quantity":"120", "Price":"15", "SupplierID":"8004"}
+        String request = "{\"type\" : \"POST\", \"table\" : \"CLIENT\", \"ClientID\": \"11\", \"LName\":\"sTANNN\", \"FName\":\"lEEEE\", \"Type\":\"Residential\", \"PhoneNum\":\"4039996666\", \"Address\":\"7899  Washington Street\", \"PostalCode\":\"0X0 OYO\"}"; //{"type" : "POST", "table" : "CLIENT", "ClientID": "11", "LName":"sTANNN", "FName":"lEEEE", "Type":"Residential", "PhoneNum":"4039996666", "Address":"7899  Washington Street", "PostalCode":"0X0 OYO"}
+        r.requestHandler(request);
     }
 
 

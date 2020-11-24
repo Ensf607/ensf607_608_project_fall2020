@@ -108,25 +108,25 @@ public class Response {
         {
             case "TOOL":
                 sql = "UPDATE TOOL "
-                        +"SET ToolID == "+jsonNodeRoot.get("ToolID").asText()+", "
-                        +"SET Name == "+jsonNodeRoot.get("Name").asText()+", "
-                        +"SET Type == "+jsonNodeRoot.get("Type").asText()+", "
-                        +"SET Quantity == "+jsonNodeRoot.get("Quantity").asText()+", "
-                        +"SET Price == "+jsonNodeRoot.get("Price").asText()+", "
-                        +"SET SupplierID == "+jsonNodeRoot.get("SupplierID").asText()
-                        + " WHERE " + jsonNodeRoot.get("field").asText()+" == "+jsonNodeRoot.get("field_value").asText(); // this will be ToolID, no wrapping needed
+//                        +"SET ToolID = "+jsonNodeRoot.get("ToolID").asText()+", "
+                        +"SET Name = '"+jsonNodeRoot.get("Name").asText()+"', "
+                        +"Type = '"+jsonNodeRoot.get("Type").asText()+"', "
+                        +"Quantity = "+jsonNodeRoot.get("Quantity").asText()+", "
+                        +"Price = "+jsonNodeRoot.get("Price").asText()+", "
+                        +"SupplierID = "+jsonNodeRoot.get("SupplierID").asText()
+                        + " WHERE " + "ToolID"+" = "+jsonNodeRoot.get("ToolID").asText()+";"; // this will be ToolID, no wrapping needed
                 jdbc.query(sql);
                 break;
             case "CLIENT":
                 sql = "UPDATE CLIENT "
-                        +"SET ClientID == "+jsonNodeRoot.get("ClientID").asText()+", "
-                        +"SET LName == "+jsonNodeRoot.get("LName").asText()+", "
-                        +"SET FName == "+jsonNodeRoot.get("FName").asText()+", "
-                        +"SET Type == "+jsonNodeRoot.get("Type").asText()+", "
-                        +"SET PhoneNum == "+jsonNodeRoot.get("PhoneNum").asText()+", "
-                        +"SET Address == "+jsonNodeRoot.get("Address").asText()+", "
-                        +"SET PostalCode == "+jsonNodeRoot.get("PostalCode").asText()
-                        + " WHERE " + jsonNodeRoot.get("field").asText()+" == "+jsonNodeRoot.get("field_value").asText();
+                        +"SET LName = '"+jsonNodeRoot.get("LName").asText()+"', "
+                        +"FName = '"+jsonNodeRoot.get("FName").asText()+"', "
+                        +"Type = '"+jsonNodeRoot.get("Type").asText()+"', "
+                        +"PhoneNum = '"+jsonNodeRoot.get("PhoneNum").asText()+"', "
+                        +"Address = '"+jsonNodeRoot.get("Address").asText()+"', "
+                        +"PostalCode = '"+jsonNodeRoot.get("PostalCode").asText()+"'"
+                        + " WHERE " + "ClientID" +" = "+jsonNodeRoot.get("ClientID").asText()+";";
+                System.out.println(sql);
                 jdbc.query(sql);
                 break;
             case "USER":
