@@ -192,18 +192,37 @@ public class JDBC {
             e.printStackTrace();
         }
     }
+    public void searchGeneralPurpose(String table, String column, String strWithWildcard) throws JsonProcessingException{
+        try {
+            query("use ToolShop;");
+            String query= "SELECT T.ToolID,T.Name,T.Type,T.Quantity,T.Price,T.SupplierID,E.PowerType FROM  TOOL AS T \n"+
+            "LEFT OUTER JOIN ELECTRICAL AS E ON T.ToolID=E.ToolID\n"+
+            "WHERE T."+column+" like ?";
+            
+            PreparedStatement pStat = conn.prepareStatement(query);
+            pStat.setString(1, strWithWildcard);
+            rs = pStat.executeQuery();
+            metaData=rs.getMetaData();
+            toJsonToolList();
+            pStat.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
     private void displayReturnStatement(String[] columns) throws SQLException {
         for (int i = 0; i < columns.length; i++)
             System.out.print (rs.getString(columns[i])+ "\t");
     }
-    /**
-     * NEED TO CHANGE
-     public ResultSet searchForToolID(int toolID){
-     return searchGeneralPurpose("items","id", String.valueOf(toolID));
+    
+     public String searchForToolID(int toolID) throws JsonProcessingException{
+    		 searchGeneralPurpose("TOOL","ToolID", "%"+toolID+"%");
+    		 
+    		 return json;
      }
-     public ResultSet searchForToolName(String toolName){
-     return searchGeneralPurpose("items","description_name", toolName);
-     }*/
+     public String searchForToolName(String toolName) throws JsonProcessingException{
+      searchGeneralPurpose("TOOL","Name","%"+toolName+"%");
+      return json;
+     }
     public void checkInventory() {
         try {
             String table = "TOOL";
@@ -211,6 +230,7 @@ public class JDBC {
             String query = "SELECT ToolID,Quantity,SupplierID FROM "+table+" WHERE Quantity < ?";
             PreparedStatement pStat = conn.prepareStatement(query);
             pStat.setInt(1, 40);
+         
             rs=pStat.executeQuery();
 
             if (rs.next())
@@ -536,6 +556,8 @@ public class JDBC {
     public void toJsonOrder() throws SQLException, JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
         ArrayNode arrayNode = mapper.createArrayNode();
+        
+        
 
         while(rs.next()) {
             ObjectNode node = new ObjectMapper().createObjectNode();
@@ -544,6 +566,7 @@ public class JDBC {
             node.put(metaData.getColumnName(3), rs.getString(3));
             node.put(metaData.getColumnName(4), rs.getString(4));
             node.put(metaData.getColumnName(5), rs.getInt(5));
+            
             arrayNode.addAll(Arrays.asList(node));
 
         }
@@ -557,6 +580,7 @@ public class JDBC {
             switch (server.controller.Utils.parseColumn(row[i])){
                 case "int":
                 case "float":
+                case "timestamp":
                     sqlSB.append(row[i]);
                     break;
                 default:
@@ -607,7 +631,7 @@ public class JDBC {
         String [] row = {ClientID, LName, FName, Type, PhoneNum, Address, PostalCode};
         insertIntoTable("CLIENT", row);
     }
-
+ 
 }
 
 
@@ -650,6 +674,7 @@ class Utils {
     public static String parseColumn(String str){
         if (isInteger(str)) return "int";
         if (isNumeric(str)) return "float";
+        if (str == "CURRENT_TIMESTAMP" ) return "timestamp";
         return "text";
     }
 }
