@@ -22,10 +22,10 @@ public class Request {
                 System.out.println(r);
                 break;
             case "PUT":
-                response.putHandler(request);
+                response.putHandler(request); // TODO: complete full api by returning error message
                 break;
             case "DELETE":
-                response.deleteHandler(request);
+                response.deleteHandler(request); //TODO: complete full api by returning error message
             default:
                 break;
         }

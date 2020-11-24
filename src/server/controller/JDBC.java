@@ -89,7 +89,7 @@ public class JDBC {
     public void selectUser() {
         try {
             stmt = conn.createStatement();
-            String query = "SELECT * FROM USERS";
+            String query = "SELECT * FROM USER";
             rs = stmt.executeQuery(query);
             while (rs.next()) {
                 System.out.println(rs.getString("username") + " " +
@@ -106,8 +106,8 @@ public class JDBC {
     public void insertUser() {
         try {
             stmt = conn.createStatement();
-            String insert = "INSERT INTO users (ID, username,password) values " +
-                    "(1004, 'newUser','newPass')";
+            String insert = "INSERT INTO USER (username,password) values " +
+                    "('newUser','newPass')";
             int rowCount = stmt.executeUpdate(insert);
             System.out.println("row Count = " + rowCount);
         } catch (SQLException e) {
@@ -121,7 +121,7 @@ public class JDBC {
     public void deleteUser() {
         try {
             stmt = conn.createStatement();
-            String delete = "DELETE FROM users WHERE username = 'newUser'";
+            String delete = "DELETE FROM USER WHERE username = 'newUser'";
             int rowCount = stmt.executeUpdate(delete);
             System.out.println("row Count = " + rowCount);
         } catch (SQLException e) {
