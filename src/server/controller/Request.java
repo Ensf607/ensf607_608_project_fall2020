@@ -32,4 +32,9 @@ public class Request {
         return r;
     }
 
+
+    public static void main(String[] args) throws JsonProcessingException {
+
+    }
+
 }

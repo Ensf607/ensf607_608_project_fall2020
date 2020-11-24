@@ -56,7 +56,7 @@ public class RequestResponseTest {
     }
 
 
-    public static void main(String[] args) throws JsonProcessingException {
+    private static void testSelectFieldFromOrder() throws JsonProcessingException {
         String request = "{ \"type\": \"GET\" , \"table\": \"ORDER\", \"scope\":\"select\" , \"field\": \"OrderID\" , \"field_value\" : \"27051\"}";
         ObjectMapper objectMapper = new ObjectMapper();
         JsonNode jsonNode = objectMapper.readTree(request);
@@ -65,6 +65,25 @@ public class RequestResponseTest {
         System.out.println(jsonNode);
     }
 
+
+    @Test
+    public static void userLoginTest() throws JsonProcessingException {
+        Request r = new Request();
+        String request = "{\"type\" : \"POST\", \"table\" : \"USER\", \"scope\": \"login\", \"username\":\"user01\", \"password\":\"hello123\"}"; //{"type" : "POST", "table" : "USER", "scope": "login", "username":"user01", "password":"hello123"}
+        r.requestHandler(request);
+    }    @Test
+    public static void userLoginTest2 () throws JsonProcessingException {
+        Request r = new Request();
+        String request = "{\"type\" : \"POST\", \"table\" : \"USER\", \"scope\": \"login\", \"username\":\"user01\", \"password\":\"hello143\"}"; //{"type" : "POST", "table" : "USER", "scope": "login", "username":"user01", "password":"hello123"}
+        r.requestHandler(request);
+    }
+
+    public static void main(String[] args) throws JsonProcessingException {
+//        testSelectFieldFromOrder();
+        userLoginTest();
+        userLoginTest2();
+
+    }
 
 
 }

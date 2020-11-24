@@ -181,8 +181,5 @@ public class Response {
     }
 
     public static void main(String[] args) throws JsonProcessingException {
-        Response r = new Response();
-        String request = "{\"type\" : \"POST\", \"table\" : \"USER\", \"scope\": \"login\", \"username\":\"user01\", \"password\":\"hello123\"}"; //{"type" : "POST", "table" : "USER", "scope": "login", "username":"user01", "password":"hello123"}
-        System.out.println(r.postHandler(request));
     }
 }
