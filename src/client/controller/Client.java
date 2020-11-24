@@ -33,7 +33,7 @@ public class Client {
 	 * @param portNumber
 	 */
 	public Client(String serverName, int portNumber) {
-		sendMSG=new ServerSideRequestHandler();//NOTE: its just a test, this must be on server side
+		//sendMSG=new ServerSideRequestHandler();//NOTE: its just a test, this must be on server side
 //		try {
 //			palinSocket = new Socket(serverName, portNumber);
 //			socketIn = new BufferedReader(new InputStreamReader(palinSocket.getInputStream()));
@@ -72,7 +72,9 @@ public class Client {
 //	}
 		//TEST
 		System.out.println("SENDNG MSG TO  RequestHandler on SERVER SIDE....via sockets and wait for response");
-		String response=sendMSG.getResponse(json);
+		System.err.println(json);
+		socketOut.println(json);
+		String response=getServerResponse();
 	return response;
 		
 	}
@@ -89,17 +91,17 @@ public class Client {
 		boolean running = true;
 		Scanner scan =new Scanner(System.in);
 		while (running) {
-			sleep(500);
+//			sleep(500);
 			//				line = socketIn.readLine();
 			// TODO: need to connect GUI to get line value (request string)
-			line = "{ \"type\" : \"GET\", \"table\" : \"TOOL\" , \"scope\":\"all\"}";
-			System.out.println("request is:"+line);
-
-			socketOut.println(line); // sending client request
-//			response = socketIn.lines().collect(Collectors.joining());; // receiving server response
-			response = getServerResponse();
-
-			System.out.println("(Response): \n"+ response);
+//			line = "{ \"type\" : \"GET\", \"table\" : \"TOOL\" , \"scope\":\"all\"}";
+//			System.out.println("request is:"+line);
+//
+//			socketOut.println(line); // sending client request
+////			response = socketIn.lines().collect(Collectors.joining());; // receiving server response
+//			response = getServerResponse();
+//
+//			System.out.println("(Response): \n"+ response);
 
 		}
 		try {
@@ -110,6 +112,7 @@ public class Client {
 		}
 
 	}
+	
 
 
 	public String getServerResponse() throws IOException {

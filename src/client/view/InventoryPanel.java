@@ -126,7 +126,7 @@ public void actionPerformed(ActionEvent e) {
 		if(comboBox.getSelectedItem().equals("Search by ToolID"))
 		{
 			c.show(displayPanel, "table"); 
-			String request="{ \"type\" : \"GET\", \"table\" : \"TOOL\" , \"scope\":\"select\",\"ToolID\":\""+Integer.parseInt(searchField.getText())+"\"}";
+			String request="{ \"type\" : \"GET\", \"table\" : \"TOOL\" , \"scope\":\"select\",\"field\":\"ToolID\",\"field_value\":\""+Integer.parseInt(searchField.getText())+"\"}";
 		
 			String response=mc.request(request);
 			System.err.println(response.isEmpty());
@@ -146,7 +146,7 @@ public void actionPerformed(ActionEvent e) {
 		}
 		else  {
 			c.show(displayPanel, "table"); 
-			String request="{ \"type\" : \"GET\", \"table\" : \"TOOL\" , \"scope\":\"select\",\"ToolName\":\""+searchField.getText()+"\"}";
+			String request="{ \"type\" : \"GET\", \"table\" : \"TOOL\" , \"scope\":\"select\",\"field\":\"Name\",\"field_value\":\""+searchField.getText()+"\"}";
 		
 			String response=mc.request(request);
 			if (response.length()>3) {

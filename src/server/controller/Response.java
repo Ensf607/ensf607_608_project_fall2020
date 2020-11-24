@@ -106,13 +106,14 @@ public class Response {
         {
             case "TOOL":
                 sql = "UPDATE TOOL "
-                        +"SET ToolID == "+jsonNodeRoot.get("ToolID")+", "
-                        +"SET Name == "+jsonNodeRoot.get("Name")+", "
-                        +"SET Type == "+jsonNodeRoot.get("Type")+", "
-                        +"SET Quantity == "+jsonNodeRoot.get("Quantity")+", "
-                        +"SET Price == "+jsonNodeRoot.get("Price")+", "
-                        +"SET SupplierID == "+jsonNodeRoot.get("SupplierID")
-                        + " WHERE " + jsonNodeRoot.get("field").asText()+" == "+jsonNodeRoot.get("field_value");
+                        +"SET ToolID = "+jsonNodeRoot.get("ToolID")+", "
+                        +"Name = "+jsonNodeRoot.get("Name")+", "
+                        +" Type = "+jsonNodeRoot.get("Type")+", "
+                        +" Quantity = "+jsonNodeRoot.get("Quantity")+", "
+                        +"Price ="+jsonNodeRoot.get("Price")+", "
+                        +"SupplierID = "+jsonNodeRoot.get("SupplierID")
+                        + " WHERE " + jsonNodeRoot.get("field").asText()+" = "+jsonNodeRoot.get("field_value");
+                System.err.println(sql);
                 jdbc.query(sql);
                 break;
             case "CLIENT":
@@ -130,6 +131,7 @@ public class Response {
             default:
                 break;
         }
+        jdbc.checkInventory();
     }
 
     static void deleteHandler(String request) throws JsonProcessingException {
