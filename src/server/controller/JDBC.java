@@ -582,10 +582,11 @@ public class JDBC {
             switch (server.controller.Utils.parseColumn(row[i])){
                 case "int":
                 case "float":
+                case "timestamp":
                     sqlSB.append(row[i]);
                     break;
                 default:
-                    sqlSB.append(row[i]);
+                    sqlSB.append("'" + row[i]+ "'");
                     break;
             }
             if (i+1< row.length)
@@ -675,6 +676,7 @@ class Utils {
     public static String parseColumn(String str){
         if (isInteger(str)) return "int";
         if (isNumeric(str)) return "float";
+        if (str == "CURRENT_TIMESTAMP" ) return "timestamp";
         return "text";
     }
 }
