@@ -5,6 +5,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import server.model.Customer;
+import server.model.Supplier;
 
 public class Response {
     static String getHandler(String request) throws JsonProcessingException {
@@ -42,7 +43,7 @@ public class Response {
                         jsonNodeRoot.get("Address").asText(),
                         jsonNodeRoot.get("PostalCode").asText()
                 ));
-                System.out.println(mc.getClient().toString());
+//                System.out.println(mc.getClient().toString());
                 jdbc.insertIntoCLIENT(String.valueOf(mc.getClient().getClientID()),
                         mc.getClient().getFirstName(),
                         mc.getClient().getLastName(),
@@ -70,12 +71,21 @@ public class Response {
                         );
                 break;
             case "SUPPLIER":
-                jdbc.insertIntoSUPPLIER(jsonNodeRoot.get("SupplierID").asText(),
+                mc.setSupplier(new Supplier(
+                        jsonNodeRoot.get("SupplierID").asInt(),
                         jsonNodeRoot.get("Name").asText(),
                         jsonNodeRoot.get("Type").asText(),
                         jsonNodeRoot.get("Address").asText(),
                         jsonNodeRoot.get("CName").asText(),
                         jsonNodeRoot.get("Phone").asText()
+                ));
+
+                jdbc.insertIntoSUPPLIER(String.valueOf(mc.getSupplier().getId()),
+                        mc.getSupplier().getSupplierName(),
+                        mc.getSupplier().getType(),
+                        mc.getSupplier().getSupplierAddress(),
+                        mc.getSupplier().getSalesPerson(),
+                        mc.getSupplier().getPhoneNumber()
                 );
                 break;
             case "TOOL":

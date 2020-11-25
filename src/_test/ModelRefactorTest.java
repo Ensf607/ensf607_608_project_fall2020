@@ -8,7 +8,22 @@ import server.controller.Request;
 public class ModelRefactorTest {
     public static void main(String[] args) throws JsonProcessingException {
         Request r = new Request();
+        ObjectMapper mapper = new ObjectMapper();
+        ObjectNode request = mapper.createObjectNode();
+        request.put("type", "PUT");
+        request.put("table", "SUPPLIER");
+        request.put("SupplierID", "8091");
+        request.put("Name", "refactor test name");
+        request.put("Type", "Local");
+        request.put("Address", "3410  Coburn Hollow Road");
+        request.put("CName", "refac name");
+        request.put("Phone", "4030012985");
+        String jsonString = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(request);
+        r.requestHandler(jsonString);
+    }
 
+    private static void putClientTest() throws JsonProcessingException {
+        Request r = new Request();
         ObjectMapper mapper = new ObjectMapper();
         ObjectNode request = mapper.createObjectNode();
         request.put("type", "PUT");
