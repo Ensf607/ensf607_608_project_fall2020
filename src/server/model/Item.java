@@ -9,6 +9,7 @@ package server.model;
 public class Item {
 	private int itemID;
 	private String itemName;
+	private String type;
 	private int quantity;
 	private double price;
 	private int supplierId;
@@ -22,7 +23,27 @@ public class Item {
     	this.supplierId=supplierID;
     }
 
-    /**
+	public Item(int itemID, String itemName, String type, int quantity, double price, int supplierId) {
+		this.itemID = itemID;
+		this.itemName = itemName;
+		this.type = type;
+		this.quantity = quantity;
+		this.price = price;
+		this.supplierId = supplierId;
+	}
+
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
+
+
+
+	/**
 	 * Sets item id.
 	 *
 	 * @param itemID the item id

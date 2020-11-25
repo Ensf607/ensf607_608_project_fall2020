@@ -103,12 +103,21 @@ public class Response {
                 );
                 break;
             case "TOOL":
-                jdbc.insertIntoTOOL(jsonNodeRoot.get("ToolID").asText(),
+                mc.setItem(new Item(
+                        jsonNodeRoot.get("ToolID").asInt(),
                         jsonNodeRoot.get("Name").asText(),
                         jsonNodeRoot.get("Type").asText(), // please note this type is special "Type" Cap
-                        jsonNodeRoot.get("Quantity").asText(),
-                        jsonNodeRoot.get("Price").asText(),
-                        jsonNodeRoot.get("SupplierID").asText()
+                        jsonNodeRoot.get("Quantity").asInt(),
+                        jsonNodeRoot.get("Price").asDouble(),
+                        jsonNodeRoot.get("SupplierID").asInt()
+                ));
+
+                jdbc.insertIntoTOOL(String.valueOf(mc.getItem().getItemID()),
+                        String.valueOf(mc.getItem().getItemName()),
+                        String.valueOf(mc.getItem().getType()), // please note this type is special "Type" Cap
+                        String.valueOf(mc.getItem().getQuantity()),
+                        String.valueOf(mc.getItem().getPrice()),
+                        String.valueOf(mc.getItem().getSupplierId())
                 );
                 break;
             case "ELECTRICAL":
