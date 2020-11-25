@@ -27,9 +27,13 @@ public class Response {
         ObjectMapper objectMapper = new ObjectMapper();
         JsonNode jsonNodeRoot = objectMapper.readTree(request);
         JDBC jdbc = getJdbc();
+        ModelController mc = new ModelController();
         switch (jsonNodeRoot.get("table").asText())
         {
             case "CLIENT":
+
+
+
                 jdbc.insertIntoCLIENT(jsonNodeRoot.get("ClientID").asText(),
                         jsonNodeRoot.get("LName").asText(),
                         jsonNodeRoot.get("FName").asText(),
