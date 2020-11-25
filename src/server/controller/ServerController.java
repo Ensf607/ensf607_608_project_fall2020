@@ -53,8 +53,8 @@ public class ServerController {
 				aSocket = serverSocket.accept();
 				socketIn = new BufferedReader(new InputStreamReader(aSocket.getInputStream()));
 				socketOut = new PrintWriter(aSocket.getOutputStream(), true);
-				ModelController modelController = new ModelController(this);
-				pool.execute(modelController);
+				ThreadPool threadPool = new ThreadPool(this);
+				pool.execute(threadPool);
 				System.err.println("Accepte");
 			}
 

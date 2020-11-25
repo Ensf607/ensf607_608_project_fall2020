@@ -1,8 +1,10 @@
 package server.controller;
 
+import client.controller.Client;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import server.model.*;
 
 public class Response {
     static String getHandler(String request) throws JsonProcessingException {
@@ -16,7 +18,7 @@ public class Response {
             case "select":
                 String field = jsonNodeRoot.get("field").asText();
                 String fieldValue = jsonNodeRoot.get("field_value").asText();
-                System.out.println(field + " " + fieldValue+" "+tableName);
+//                System.out.println(field + " " + fieldValue);
                 return jdbc.getSearchResult(tableName, field, fieldValue);
             default:
                 return "";
@@ -27,63 +29,114 @@ public class Response {
         ObjectMapper objectMapper = new ObjectMapper();
         JsonNode jsonNodeRoot = objectMapper.readTree(request);
         JDBC jdbc = getJdbc();
+        ModelController mc = new ModelController();
         switch (jsonNodeRoot.get("table").asText())
         {
             case "CLIENT":
-                jdbc.insertIntoCLIENT(jsonNodeRoot.get("ClientID").asText(),
+                mc.setClient(new Customer(
+                        jsonNodeRoot.get("ClientID").asInt(),
                         jsonNodeRoot.get("LName").asText(),
                         jsonNodeRoot.get("FName").asText(),
                         jsonNodeRoot.get("Type").asText(),
                         jsonNodeRoot.get("PhoneNum").asText(),
                         jsonNodeRoot.get("Address").asText(),
                         jsonNodeRoot.get("PostalCode").asText()
+                ));
+//                System.out.println(mc.getClient().toString());
+                jdbc.insertIntoCLIENT(String.valueOf(mc.getClient().getClientID()),
+                        mc.getClient().getFirstName(),
+                        mc.getClient().getLastName(),
+                        mc.getClient().getClientType(),
+                        mc.getClient().getPhoneNumber(),
+                        mc.getClient().getAddress(),
+                        mc.getClient().getPostolCode()
                 );
                 break;
             case "ORDER":
-                jdbc.insertIntoORDER_(jsonNodeRoot.get("OrderID").asText(),
-                        jsonNodeRoot.get("Date").asText());
+                mc.setOrder(new Order(jsonNodeRoot.get("OrderID").asInt(),
+                        jsonNodeRoot.get("Date").asText()));
+
+                jdbc.insertIntoORDER_(String.valueOf(mc.getOrder().getOrderID()),
+                        mc.getOrder().getDate());
                 break;
             case "ORDERLINE":
-                jdbc.insertIntoORDERLINE(jsonNodeRoot.get("OrderID").asText(),
-                        jsonNodeRoot.get("ToolID").asText(),
-                        jsonNodeRoot.get("SupplierID").asText(),
-                        jsonNodeRoot.get("Quantity").asText()
+
+                mc.setOrderLine(new OrderLine(
+                        jsonNodeRoot.get("OrderID").asInt(),
+                        jsonNodeRoot.get("ToolID").asInt(),
+                        jsonNodeRoot.get("SupplierID").asInt(),
+                        jsonNodeRoot.get("Quantity").asInt()
+                ));
+                jdbc.insertIntoORDERLINE(String.valueOf(mc.getOrderLine().getOrderID()),
+                        String.valueOf(mc.getOrderLine().getToolID()),
+                        String.valueOf(mc.getOrderLine().getSupplierID()),
+                        String.valueOf(mc.getOrderLine().getAmount())
                 );
                 break;
             case "PURCHASE":
-                jdbc.insertIntoPURCHASE(jsonNodeRoot.get("ClientID").asText(),
-                        jsonNodeRoot.get("ToolID").asText(),
+                mc.setPurchase(new Purchase(
+                        jsonNodeRoot.get("ClientID").asInt(),
+                        jsonNodeRoot.get("ToolID").asInt(),
                         jsonNodeRoot.get("Date").asText()
+                ));
+                jdbc.insertIntoPURCHASE(String.valueOf(mc.getPurchase().getClientID()),
+                        String.valueOf(mc.getPurchase().getToolID()),
+                        mc.getPurchase().getDate()
                         );
                 break;
             case "SUPPLIER":
-                jdbc.insertIntoSUPPLIER(jsonNodeRoot.get("SupplierID").asText(),
+                mc.setSupplier(new Supplier(
+                        jsonNodeRoot.get("SupplierID").asInt(),
                         jsonNodeRoot.get("Name").asText(),
                         jsonNodeRoot.get("Type").asText(),
                         jsonNodeRoot.get("Address").asText(),
                         jsonNodeRoot.get("CName").asText(),
                         jsonNodeRoot.get("Phone").asText()
+                ));
+
+                jdbc.insertIntoSUPPLIER(String.valueOf(mc.getSupplier().getId()),
+                        mc.getSupplier().getSupplierName(),
+                        mc.getSupplier().getType(),
+                        mc.getSupplier().getSupplierAddress(),
+                        mc.getSupplier().getSalesPerson(),
+                        mc.getSupplier().getPhoneNumber()
                 );
                 break;
             case "TOOL":
-                jdbc.insertIntoTOOL(jsonNodeRoot.get("ToolID").asText(),
+                mc.setItem(new Item(
+                        jsonNodeRoot.get("ToolID").asInt(),
                         jsonNodeRoot.get("Name").asText(),
                         jsonNodeRoot.get("Type").asText(), // please note this type is special "Type" Cap
-                        jsonNodeRoot.get("Quantity").asText(),
-                        jsonNodeRoot.get("Price").asText(),
-                        jsonNodeRoot.get("SupplierID").asText()
+                        jsonNodeRoot.get("Quantity").asInt(),
+                        jsonNodeRoot.get("Price").asDouble(),
+                        jsonNodeRoot.get("SupplierID").asInt()
+                ));
+
+                jdbc.insertIntoTOOL(String.valueOf(mc.getItem().getItemID()),
+                        String.valueOf(mc.getItem().getItemName()),
+                        String.valueOf(mc.getItem().getType()), // please note this type is special "Type" Cap
+                        String.valueOf(mc.getItem().getQuantity()),
+                        String.valueOf(mc.getItem().getPrice()),
+                        String.valueOf(mc.getItem().getSupplierId())
                 );
                 break;
             case "ELECTRICAL":
+                mc.setElectrical(new Electrical());
+                mc.getElectrical().setToolID(jsonNodeRoot.get("ToolID").asInt());
+                mc.getElectrical().setPowerType(jsonNodeRoot.get("PowerType").asText());
+
                 jdbc.insertIntoELECTRICAL(
-                        jsonNodeRoot.get("ToolID").asText(),
-                        jsonNodeRoot.get("PowerType").asText()
+                        String.valueOf(mc.getElectrical().getToolID()),
+                        mc.getElectrical().getPowerType()
                 );
                 break;
             case "INTERNATIONAL":
+                mc.setInternational(new International());
+                mc.getInternational().setSupplierID(jsonNodeRoot.get("SupplierID").asInt());
+                mc.getInternational().setImportTax(jsonNodeRoot.get("ImportTax").asDouble());
                 jdbc.insertIntoINTERNATIONAL(
-                        jsonNodeRoot.get("SupplierID").asText(),
-                        jsonNodeRoot.get("ImportTax").asText()
+                        String.valueOf(mc.getInternational().getSupplierID()),
+                        String.valueOf(mc.getInternational().getImportTax())
                 );
 
         }
@@ -133,13 +186,13 @@ public class Response {
                 break;
             case "USER":
                 message= jdbc.validateLogin(jsonNodeRoot.get("username").asText(), jsonNodeRoot.get("password").asText());
-//               
+                break;
             default:
                 break;
-                
+
         }
         return message;
-        
+
     }
 
     static void deleteHandler(String request) throws JsonProcessingException {
@@ -152,12 +205,12 @@ public class Response {
             case "TOOL":
                 sql = "DELETE FROM TOOL WHERE "+
                         jsonNodeRoot.get("field").asText()+" = "+jsonNodeRoot.get("field_value");
-                System.err.println(sql);
                 jdbc.query(sql);
                 break;
             case "CLIENT":
                 sql= "DELETE FROM CLIENT WHERE "+
                         jsonNodeRoot.get("field").asText()+" = "+jsonNodeRoot.get("field_value");
+                System.out.println(sql);
                 jdbc.query(sql);
                 break;
 
@@ -172,6 +225,11 @@ public class Response {
                 break;
             case "PURCHASE":
             case "SUPPLIER":
+                sql= "DELETE FROM SUPPLIER WHERE "+
+                        jsonNodeRoot.get("field").asText()+" = "+jsonNodeRoot.get("field_value");
+                System.out.println(sql);
+                jdbc.query(sql);
+                break;
             case "ELECTRICAL":
             case "INTERNATIONAL":
                 break;

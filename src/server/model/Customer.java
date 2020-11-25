@@ -14,7 +14,7 @@ public class Customer {
     private String phoneNumber;
     private String clientType;
 
-    public Customer(int clientID, String firstName, String lastName, String address, String postolCode, String phoneNumber, String clientType) {
+    public Customer(int clientID, String firstName, String lastName, String clientType, String phoneNumber, String address, String postolCode) {
         this.clientID = clientID;
         this.firstName = firstName;
         this.lastName = lastName;

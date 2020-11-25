@@ -11,9 +11,22 @@ import java.util.ArrayList;
 public class Supplier {
 	private int id;
 	private String supplierName;
+	private String type;
 	private String supplierAddress;
 	private String salesPerson;
+	private String phoneNumber;
 	private ArrayList<Item> itemArrayList = new ArrayList<Item>();
+
+	public Supplier(){}
+
+	public Supplier(int id, String supplierName, String type, String supplierAddress, String salesPerson, String phoneNumber) {
+		this.id = id;
+		this.supplierName = supplierName;
+		this.type = type;
+		this.supplierAddress = supplierAddress;
+		this.salesPerson = salesPerson;
+		this.phoneNumber = phoneNumber;
+	}
 
 	/**
 	 * Sets id.
@@ -105,6 +118,25 @@ public class Supplier {
 		return salesPerson;
 	}
 
+	public String getPhoneNumber() {
+		return phoneNumber;
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setPhoneNumber(String phoneNumber) {
+		this.phoneNumber = phoneNumber;
+	}
+
+	public void setItemArrayList(ArrayList<Item> itemArrayList) {
+		this.itemArrayList = itemArrayList;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
 
 	@Override
 	public String toString() {
