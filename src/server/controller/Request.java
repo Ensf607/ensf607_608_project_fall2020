@@ -18,7 +18,7 @@ public class Request {
                 System.out.println(r); // disable this for production
                 break;
             case "POST":
-                r = response.postHandler(request);
+                 response.postHandler(request);
                 System.out.println(r);
                 break;
             case "PUT":

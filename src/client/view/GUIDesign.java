@@ -37,6 +37,8 @@ import javax.swing.event.CaretListener;
 import javax.swing.event.CaretEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import javax.swing.event.ListSelectionListener;
+import javax.swing.event.ListSelectionEvent;
 
 public class GUIDesign {
 
@@ -585,6 +587,11 @@ public class GUIDesign {
 		searchClientPanel.add(scrollPane_1, gbc_scrollPane_1);
 		
 		JList list = new JList();
+		list.addListSelectionListener(new ListSelectionListener() {
+			public void valueChanged(ListSelectionEvent e) {
+				System.err.println(list.getSelectedValue().toString());
+			}
+		});
 		scrollPane_1.setViewportView(list);
 		list.setModel(new AbstractListModel() {
 			String[] values = new String[] {"hello", "is", "me"};
@@ -743,6 +750,7 @@ public class GUIDesign {
 		
 		JComboBox comboBoxClientMgmnt = new JComboBox();
 		comboBoxClientMgmnt.setModel(new DefaultComboBoxModel(new String[] {"R", "C"}));
+		comboBoxClientMgmnt.setSelectedIndex(1);
 		GridBagConstraints gbc_comboBoxClientMgmnt = new GridBagConstraints();
 		gbc_comboBoxClientMgmnt.anchor = GridBagConstraints.NORTHEAST;
 		gbc_comboBoxClientMgmnt.insets = new Insets(0, 0, 5, 5);

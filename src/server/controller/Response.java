@@ -16,7 +16,7 @@ public class Response {
             case "select":
                 String field = jsonNodeRoot.get("field").asText();
                 String fieldValue = jsonNodeRoot.get("field_value").asText();
-//                System.out.println(field + " " + fieldValue);
+                System.out.println(field + " " + fieldValue+" "+tableName);
                 return jdbc.getSearchResult(tableName, field, fieldValue);
             default:
                 return "";
