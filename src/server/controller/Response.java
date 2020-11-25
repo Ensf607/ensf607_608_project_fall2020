@@ -169,6 +169,7 @@ public class Response {
                         +"SupplierID = "+jsonNodeRoot.get("SupplierID").asText()
                         + " WHERE " + "ToolID"+" = "+jsonNodeRoot.get("ToolID").asText()+";"; // this will be ToolID, no wrapping needed
                 jdbc.query(sql);
+                jdbc.checkInventory();
                 break;
             case "CLIENT":
                 sql = "UPDATE CLIENT "
@@ -181,13 +182,17 @@ public class Response {
                         + " WHERE " + "ClientID" +" = "+jsonNodeRoot.get("ClientID").asText()+";";
                 System.out.println(sql);
                 jdbc.query(sql);
+                jdbc.checkInventory();
                 break;
             case "USER":
                 message= jdbc.validateLogin(jsonNodeRoot.get("username").asText(), jsonNodeRoot.get("password").asText());
+                break;
             default:
                 break;
+
         }
         return message;
+
     }
 
     static void deleteHandler(String request) throws JsonProcessingException {

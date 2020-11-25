@@ -10,6 +10,7 @@ import java.awt.Insets;
 import java.awt.SystemColor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 import javax.swing.AbstractListModel;
 import javax.swing.ButtonGroup;
@@ -25,10 +26,17 @@ import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import client.controller.Observer;
 
-public class CMS extends JPanel implements ActionListener {
+public class CMS extends JPanel implements ActionListener, ListSelectionListener {
 	private Observer mc;
 	private JTextField search;
 	private JButton searchClient;
@@ -37,7 +45,6 @@ public class CMS extends JPanel implements ActionListener {
 	private JTextField clientIDCMS;
 	private JTextField fnameCMS;
 	private JTextField lNameCMS;
-	private Component lblAddress_1;
 	private JTextField addressCMS;
 	private JTextField postalCodeCMS;
 	private JTextField phoneCMS;
@@ -46,35 +53,41 @@ public class CMS extends JPanel implements ActionListener {
 	private JButton clearBtn;
 	int option;
 	private JComboBox comboBoxClientMgmnt;
+	private JRadioButton clientType;
+	private JRadioButton lName;
+	private JRadioButton clientID;
+	ObjectMapper mapper = new ObjectMapper();
+	ObjectNode[] array;
+	private ArrayList<String> values;
 
 	public CMS(Observer mc) {
-		this.mc=mc;
+		this.mc = mc;
 		setLayout(new BorderLayout(0, 0));
 		JPanel panel_1 = new JPanel();
 		panel_1.setFont(new Font("Tahoma", Font.PLAIN, 89));
 		panel_1.setBackground(SystemColor.controlDkShadow);
 		panel_1.setPreferredSize(new Dimension(10, 100));
 		add(panel_1, BorderLayout.NORTH);
-		
+
 		JLabel lblNewLabel_3 = new JLabel("Client Management Screen");
 		lblNewLabel_3.setForeground(SystemColor.window);
 		lblNewLabel_3.setFont(new Font("Tahoma", Font.PLAIN, 29));
 		panel_1.add(lblNewLabel_3);
-		
+
 		JSplitPane splitPane_1 = new JSplitPane();
 		add(splitPane_1, BorderLayout.CENTER);
-		
+
 		JPanel searchClientPanel = new JPanel();
 		searchClientPanel.setMinimumSize(new Dimension(900, 10));
 		searchClientPanel.setPreferredSize(new Dimension(500, 10));
 		splitPane_1.setLeftComponent(searchClientPanel);
 		GridBagLayout gbl_searchClientPanel = new GridBagLayout();
-		gbl_searchClientPanel.columnWidths = new int[]{170, 53, 113, 0};
-		gbl_searchClientPanel.rowHeights = new int[]{16, 28, 25, 25, 25, 50, 25, 174, 0};
-		gbl_searchClientPanel.columnWeights = new double[]{0.0, 0.0, 0.0, Double.MIN_VALUE};
-		gbl_searchClientPanel.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+		gbl_searchClientPanel.columnWidths = new int[] { 170, 53, 113, 0 };
+		gbl_searchClientPanel.rowHeights = new int[] { 16, 28, 25, 25, 25, 50, 25, 174, 0 };
+		gbl_searchClientPanel.columnWeights = new double[] { 0.0, 0.0, 0.0, Double.MIN_VALUE };
+		gbl_searchClientPanel.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE };
 		searchClientPanel.setLayout(gbl_searchClientPanel);
-		
+
 		JLabel lblNewLabel_4 = new JLabel("Select type of search to be performed");
 		GridBagConstraints gbc_lblNewLabel_4 = new GridBagConstraints();
 		gbc_lblNewLabel_4.anchor = GridBagConstraints.NORTH;
@@ -84,8 +97,8 @@ public class CMS extends JPanel implements ActionListener {
 		gbc_lblNewLabel_4.gridx = 0;
 		gbc_lblNewLabel_4.gridy = 0;
 		searchClientPanel.add(lblNewLabel_4, gbc_lblNewLabel_4);
-		ButtonGroup bg1 =new ButtonGroup();
-		JRadioButton clientID = new JRadioButton("Client ID");
+		ButtonGroup bg1 = new ButtonGroup();
+		clientID = new JRadioButton("Client ID");
 		GridBagConstraints gbc_clientID = new GridBagConstraints();
 		gbc_clientID.anchor = GridBagConstraints.NORTH;
 		gbc_clientID.fill = GridBagConstraints.HORIZONTAL;
@@ -95,7 +108,9 @@ public class CMS extends JPanel implements ActionListener {
 		gbc_clientID.gridy = 2;
 		searchClientPanel.add(clientID, gbc_clientID);
 		bg1.add(clientID);
-		JRadioButton lName = new JRadioButton("Last Name");
+		clientID.addActionListener(this);
+
+		lName = new JRadioButton("Last Name");
 		GridBagConstraints gbc_lName = new GridBagConstraints();
 		gbc_lName.anchor = GridBagConstraints.NORTHWEST;
 		gbc_lName.insets = new Insets(0, 0, 5, 5);
@@ -103,7 +118,9 @@ public class CMS extends JPanel implements ActionListener {
 		gbc_lName.gridy = 3;
 		searchClientPanel.add(lName, gbc_lName);
 		bg1.add(lName);
-		JRadioButton clientType = new JRadioButton("Client Type");
+		lName.addActionListener(this);
+
+		clientType = new JRadioButton("Client Type");
 		GridBagConstraints gbc_clientType = new GridBagConstraints();
 		gbc_clientType.anchor = GridBagConstraints.NORTHWEST;
 		gbc_clientType.insets = new Insets(0, 0, 5, 5);
@@ -111,7 +128,8 @@ public class CMS extends JPanel implements ActionListener {
 		gbc_clientType.gridy = 4;
 		searchClientPanel.add(clientType, gbc_clientType);
 		bg1.add(clientType);
-		
+		clientType.addActionListener(this);
+
 		search = new JTextField();
 		GridBagConstraints gbc_textField = new GridBagConstraints();
 		gbc_textField.insets = new Insets(0, 0, 5, 5);
@@ -119,7 +137,7 @@ public class CMS extends JPanel implements ActionListener {
 		gbc_textField.gridy = 6;
 		searchClientPanel.add(search, gbc_textField);
 		search.setColumns(10);
-		
+
 		searchClient = new JButton("Search");
 		GridBagConstraints gbc_searchClient = new GridBagConstraints();
 		gbc_searchClient.anchor = GridBagConstraints.NORTH;
@@ -128,7 +146,8 @@ public class CMS extends JPanel implements ActionListener {
 		gbc_searchClient.gridx = 2;
 		gbc_searchClient.gridy = 6;
 		searchClientPanel.add(searchClient, gbc_searchClient);
-		
+		searchClient.addActionListener(this);
+
 		JScrollPane scrollPane_1 = new JScrollPane();
 		GridBagConstraints gbc_scrollPane_1 = new GridBagConstraints();
 		gbc_scrollPane_1.anchor = GridBagConstraints.SOUTH;
@@ -137,31 +156,33 @@ public class CMS extends JPanel implements ActionListener {
 		gbc_scrollPane_1.gridx = 0;
 		gbc_scrollPane_1.gridy = 7;
 		searchClientPanel.add(scrollPane_1, gbc_scrollPane_1);
-		
-		 list = new JList();
+
+		list = new JList();
 		scrollPane_1.setViewportView(list);
-		
+
 		list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		
-		 clearSearch = new JButton("Clear Search");
+
+		clearSearch = new JButton("Clear Search");
 		GridBagConstraints gbc_clearSearch = new GridBagConstraints();
 		gbc_clearSearch.anchor = GridBagConstraints.NORTHWEST;
 		gbc_clearSearch.gridx = 2;
 		gbc_clearSearch.gridy = 7;
 		searchClientPanel.add(clearSearch, gbc_clearSearch);
-		
+		clearSearch.addActionListener(this);
+
 		JPanel clientInfoPanel = new JPanel();
 		clientInfoPanel.setBackground(SystemColor.inactiveCaption);
 		clientInfoPanel.setMinimumSize(new Dimension(900, 10));
 		clientInfoPanel.setPreferredSize(new Dimension(500, 10));
 		splitPane_1.setRightComponent(clientInfoPanel);
 		GridBagLayout gbl_clientInfoPanel = new GridBagLayout();
-		gbl_clientInfoPanel.columnWidths = new int[]{97, 97, 38, 274, 0};
-		gbl_clientInfoPanel.rowHeights = new int[]{16, 67, 22, 22, 22, 22, 22, 22, 37, 22, 61, 25, 0};
-		gbl_clientInfoPanel.columnWeights = new double[]{0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
-		gbl_clientInfoPanel.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+		gbl_clientInfoPanel.columnWidths = new int[] { 97, 97, 38, 274, 0 };
+		gbl_clientInfoPanel.rowHeights = new int[] { 16, 67, 22, 22, 22, 22, 22, 22, 37, 22, 61, 25, 0 };
+		gbl_clientInfoPanel.columnWeights = new double[] { 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE };
+		gbl_clientInfoPanel.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+				Double.MIN_VALUE };
 		clientInfoPanel.setLayout(gbl_clientInfoPanel);
-		
+
 		JLabel lblClientInformation = new JLabel("Client Information");
 		GridBagConstraints gbc_lblClientInformation = new GridBagConstraints();
 		gbc_lblClientInformation.anchor = GridBagConstraints.NORTH;
@@ -170,7 +191,7 @@ public class CMS extends JPanel implements ActionListener {
 		gbc_lblClientInformation.gridx = 3;
 		gbc_lblClientInformation.gridy = 0;
 		clientInfoPanel.add(lblClientInformation, gbc_lblClientInformation);
-		
+
 		JLabel lblNewLabel_5 = new JLabel("Clinet ID");
 		GridBagConstraints gbc_lblNewLabel_5 = new GridBagConstraints();
 		gbc_lblNewLabel_5.anchor = GridBagConstraints.WEST;
@@ -178,7 +199,7 @@ public class CMS extends JPanel implements ActionListener {
 		gbc_lblNewLabel_5.gridx = 1;
 		gbc_lblNewLabel_5.gridy = 2;
 		clientInfoPanel.add(lblNewLabel_5, gbc_lblNewLabel_5);
-		
+
 		clientIDCMS = new JTextField();
 		GridBagConstraints gbc_clientIDCMS = new GridBagConstraints();
 		gbc_clientIDCMS.anchor = GridBagConstraints.NORTHWEST;
@@ -188,7 +209,7 @@ public class CMS extends JPanel implements ActionListener {
 		gbc_clientIDCMS.gridy = 2;
 		clientInfoPanel.add(clientIDCMS, gbc_clientIDCMS);
 		clientIDCMS.setColumns(10);
-		
+
 		JLabel lblFirstName = new JLabel("First Name");
 		GridBagConstraints gbc_lblFirstName = new GridBagConstraints();
 		gbc_lblFirstName.anchor = GridBagConstraints.WEST;
@@ -196,7 +217,7 @@ public class CMS extends JPanel implements ActionListener {
 		gbc_lblFirstName.gridx = 1;
 		gbc_lblFirstName.gridy = 3;
 		clientInfoPanel.add(lblFirstName, gbc_lblFirstName);
-		
+
 		fnameCMS = new JTextField();
 		fnameCMS.setColumns(10);
 		GridBagConstraints gbc_fnameCMS = new GridBagConstraints();
@@ -206,7 +227,7 @@ public class CMS extends JPanel implements ActionListener {
 		gbc_fnameCMS.gridx = 2;
 		gbc_fnameCMS.gridy = 3;
 		clientInfoPanel.add(fnameCMS, gbc_fnameCMS);
-		
+
 		JLabel lblLastName_1 = new JLabel("Last Name");
 		GridBagConstraints gbc_lblLastName_1 = new GridBagConstraints();
 		gbc_lblLastName_1.anchor = GridBagConstraints.WEST;
@@ -214,7 +235,7 @@ public class CMS extends JPanel implements ActionListener {
 		gbc_lblLastName_1.gridx = 1;
 		gbc_lblLastName_1.gridy = 4;
 		clientInfoPanel.add(lblLastName_1, gbc_lblLastName_1);
-		
+
 		lNameCMS = new JTextField();
 		lNameCMS.setColumns(10);
 		GridBagConstraints gbc_lNameCMS = new GridBagConstraints();
@@ -224,7 +245,7 @@ public class CMS extends JPanel implements ActionListener {
 		gbc_lNameCMS.gridx = 2;
 		gbc_lNameCMS.gridy = 4;
 		clientInfoPanel.add(lNameCMS, gbc_lNameCMS);
-		
+
 		JLabel lblAddress_1 = new JLabel("Address");
 		GridBagConstraints gbc_lblAddress_1 = new GridBagConstraints();
 		gbc_lblAddress_1.anchor = GridBagConstraints.WEST;
@@ -232,7 +253,7 @@ public class CMS extends JPanel implements ActionListener {
 		gbc_lblAddress_1.gridx = 1;
 		gbc_lblAddress_1.gridy = 5;
 		clientInfoPanel.add(lblAddress_1, gbc_lblAddress_1);
-		
+
 		addressCMS = new JTextField();
 		addressCMS.setColumns(10);
 		GridBagConstraints gbc_addressCMS = new GridBagConstraints();
@@ -242,7 +263,7 @@ public class CMS extends JPanel implements ActionListener {
 		gbc_addressCMS.gridx = 2;
 		gbc_addressCMS.gridy = 5;
 		clientInfoPanel.add(addressCMS, gbc_addressCMS);
-		
+
 		JLabel lblPostalCode = new JLabel("Postal Code");
 		GridBagConstraints gbc_lblPostalCode = new GridBagConstraints();
 		gbc_lblPostalCode.fill = GridBagConstraints.HORIZONTAL;
@@ -250,7 +271,7 @@ public class CMS extends JPanel implements ActionListener {
 		gbc_lblPostalCode.gridx = 1;
 		gbc_lblPostalCode.gridy = 6;
 		clientInfoPanel.add(lblPostalCode, gbc_lblPostalCode);
-		
+
 		postalCodeCMS = new JTextField();
 		postalCodeCMS.setColumns(10);
 		GridBagConstraints gbc_postalCodeCMS = new GridBagConstraints();
@@ -260,7 +281,7 @@ public class CMS extends JPanel implements ActionListener {
 		gbc_postalCodeCMS.gridx = 2;
 		gbc_postalCodeCMS.gridy = 6;
 		clientInfoPanel.add(postalCodeCMS, gbc_postalCodeCMS);
-		
+
 		JLabel lblPhoneNumber_1 = new JLabel("Phone Number");
 		GridBagConstraints gbc_lblPhoneNumber_1 = new GridBagConstraints();
 		gbc_lblPhoneNumber_1.fill = GridBagConstraints.HORIZONTAL;
@@ -268,7 +289,7 @@ public class CMS extends JPanel implements ActionListener {
 		gbc_lblPhoneNumber_1.gridx = 1;
 		gbc_lblPhoneNumber_1.gridy = 7;
 		clientInfoPanel.add(lblPhoneNumber_1, gbc_lblPhoneNumber_1);
-		
+
 		phoneCMS = new JTextField();
 		phoneCMS.setColumns(10);
 		GridBagConstraints gbc_phoneCMS = new GridBagConstraints();
@@ -278,7 +299,7 @@ public class CMS extends JPanel implements ActionListener {
 		gbc_phoneCMS.gridx = 2;
 		gbc_phoneCMS.gridy = 7;
 		clientInfoPanel.add(phoneCMS, gbc_phoneCMS);
-		
+
 		JLabel lblClientType = new JLabel("Client Type");
 		GridBagConstraints gbc_lblClientType = new GridBagConstraints();
 		gbc_lblClientType.fill = GridBagConstraints.HORIZONTAL;
@@ -286,25 +307,26 @@ public class CMS extends JPanel implements ActionListener {
 		gbc_lblClientType.gridx = 1;
 		gbc_lblClientType.gridy = 9;
 		clientInfoPanel.add(lblClientType, gbc_lblClientType);
-		
+
 		comboBoxClientMgmnt = new JComboBox();
-		comboBoxClientMgmnt.setModel(new DefaultComboBoxModel(new String[] {"R", "C"}));
+		comboBoxClientMgmnt.setModel(new DefaultComboBoxModel(new String[] { "R", "C" }));
 		GridBagConstraints gbc_comboBoxClientMgmnt = new GridBagConstraints();
 		gbc_comboBoxClientMgmnt.anchor = GridBagConstraints.NORTHEAST;
 		gbc_comboBoxClientMgmnt.insets = new Insets(0, 0, 5, 5);
 		gbc_comboBoxClientMgmnt.gridx = 2;
 		gbc_comboBoxClientMgmnt.gridy = 9;
 		clientInfoPanel.add(comboBoxClientMgmnt, gbc_comboBoxClientMgmnt);
-		
-		 saveBtn = new JButton("Save");
+
+		saveBtn = new JButton("Save");
 		GridBagConstraints gbc_saveBtn = new GridBagConstraints();
 		gbc_saveBtn.anchor = GridBagConstraints.NORTHEAST;
 		gbc_saveBtn.insets = new Insets(0, 0, 0, 5);
 		gbc_saveBtn.gridx = 0;
 		gbc_saveBtn.gridy = 11;
 		clientInfoPanel.add(saveBtn, gbc_saveBtn);
-		
-		 deleteBtn = new JButton("Delete");
+		saveBtn.addActionListener(this);
+
+		deleteBtn = new JButton("Delete");
 		GridBagConstraints gbc_deleteBtn = new GridBagConstraints();
 		gbc_deleteBtn.anchor = GridBagConstraints.NORTH;
 		gbc_deleteBtn.insets = new Insets(0, 0, 0, 5);
@@ -312,54 +334,135 @@ public class CMS extends JPanel implements ActionListener {
 		gbc_deleteBtn.gridx = 1;
 		gbc_deleteBtn.gridy = 11;
 		clientInfoPanel.add(deleteBtn, gbc_deleteBtn);
-		
-		 clearBtn = new JButton("Clear");
+		deleteBtn.addActionListener(this);
+
+		clearBtn = new JButton("Clear");
 		GridBagConstraints gbc_clearBtn = new GridBagConstraints();
 		gbc_clearBtn.anchor = GridBagConstraints.NORTHWEST;
 		gbc_clearBtn.gridx = 3;
 		gbc_clearBtn.gridy = 11;
 		clientInfoPanel.add(clearBtn, gbc_clearBtn);
+		clearBtn.addActionListener(this);
+		list.addListSelectionListener(this);
+
 	}
-	public void populateList(String json) {
+
+	public void populateList(String json) throws JsonMappingException, JsonProcessingException {
+		array = mapper.readValue(json, ObjectNode[].class);
+		values = new ArrayList<String>();
+		for (int i = 0; i < array.length; i++) {
+//			System.out.println(array[i].get("FName").asText());
+			values.add(array[i].get("FName").asText() + " " + array[i].get("LName").asText() + " "
+					+ array[i].get("Type").asText());
+		}
+
+		System.err.println(values.toString());
 		list.setModel(new AbstractListModel() {
-			String[] values = new String[] {"hello", "is", "me"};
 			public int getSize() {
-				return values.length;
+				return values.size();
 			}
+
 			public Object getElementAt(int index) {
-				return values[index];
+				return values.get(index);
 			}
 		});
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if(e.getSource()==searchClient) {
-			if (option ==1) {
-				//using ID
-				search.getText();
-				populateList(mc.request("BBB"));
-			}
-			else if (option==2) {
-				//lname
-				populateList(mc.request("BBB"));
-			}
-			else if (option==3) {
-				//type
-			}
-			else {
+		if (e.getSource() == searchClient) {
+			if (option == 1) {
+				// using ID
+				String request = "{\"type\":\"GET\",\"table\":\"CLIENT\",\"scope\":\"select\",\"field\":\"ClientID\",\"field_value\":\""
+						+ search.getText() + "\"}";
+				String response = mc.request(request);
+				if (response.length() > 3) {
+					try {
+						populateList(response);
+					} catch (JsonProcessingException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+				} else
+					JOptionPane.showMessageDialog(null, "Client Not Found");
+			} else if (option == 2) {
+				String request = "{\"type\":\"GET\",\"table\":\"CLIENT\",\"scope\":\"select\",\"field\":\"LName\",\"field_value\":\""
+						+ search.getText() + "\"}";
+				String response = mc.request(request);
+				if (response.length() > 3) {
+					try {
+						populateList(response);
+					} catch (JsonProcessingException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+				} else
+					JOptionPane.showMessageDialog(null, "Client Not Found");
+				// lname
+				// populateList(mc.request("BBB"));
+			} else if (option == 3) {
+				String request = "{\"type\":\"GET\",\"table\":\"CLIENT\",\"scope\":\"select\",\"field\":\"Type\",\"field_value\":\""
+						+ search.getText() + "\"}";
+				String response = mc.request(request);
+				if (response.length() > 3) {
+					try {
+						populateList(response);
+					} catch (JsonProcessingException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+				} else
+					JOptionPane.showMessageDialog(null, "Client Not Found!!");
+			} else {
 				JOptionPane.showMessageDialog(null, "Select a option");
 			}
+		} else if (e.getSource() == saveBtn) {
+			// TODO algo to make changes// mus check if id exsist
+		} else if (e.getSource() == deleteBtn) {
+			// TODO algo to delete
+		} else if (e.getSource() == clearBtn) {
+			clientIDCMS.setText("");
+			fnameCMS.setText("");
+			lNameCMS.setText("");
+			addressCMS.setText("");
+			postalCodeCMS.setText("");
+			phoneCMS.setText("");
+			comboBoxClientMgmnt.setSelectedIndex(-1);
+			
+//			list.setSe
+		} else if (e.getSource() == clientID) {
+			option = 1;
+		} else if (e.getSource() == lName) {
+			option = 2;
+		} else if (e.getSource() == clientType) {
+			option = 3;
 		}
-		else if (e.getSource()==saveBtn) {
-			//TODO algo to make changes// mus check if id exsist
+		else if (e.getSource()==clearSearch) {
+			search.setText("");
+			try {
+				populateList("[]");
+			} catch (JsonProcessingException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 		}
-		else if (e.getSource()==deleteBtn) {
-			//TODO algo to delete 
-		}
-		else if (e.getSource()==clearBtn) {
-			//TOFO clear all fields
-		}
+	}
+
+	@Override
+	public void valueChanged(ListSelectionEvent e) {
+//		System.err.println(list.getSelectedIndex()+"  INDEXXXX "+ array[list.getSelectedIndex()].get("PhoneNum").asText());
+		ObjectNode dummy = array[list.getSelectedIndex()];
+
+		clientIDCMS.setText(dummy.get("ClientID").asText());
+		fnameCMS.setText(dummy.get("FName").asText());
+		lNameCMS.setText(dummy.get("LName").asText());
+		addressCMS.setText(dummy.get("Address").asText());
+		postalCodeCMS.setText(dummy.get("PostalCode").asText());
+		phoneCMS.setText(dummy.get("PhoneNum").asText());
+		if (dummy.get("Type").asText().equals("Residential"))
+			comboBoxClientMgmnt.setSelectedIndex(0);
+		else
+			comboBoxClientMgmnt.setSelectedIndex(1);
 	}
 
 }

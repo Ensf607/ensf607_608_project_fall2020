@@ -37,6 +37,8 @@ import javax.swing.event.CaretListener;
 import javax.swing.event.CaretEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import javax.swing.event.ListSelectionListener;
+import javax.swing.event.ListSelectionEvent;
 
 public class GUIDesign {
 
@@ -63,6 +65,8 @@ public class GUIDesign {
 	private JTextField postalCodeCMS;
 	private JTextField phoneCMS;
 	private JTextField totalField;
+	private JTextField userNameField;
+	private JTextField passwordField;
 
 	/**
 	 * Launch the application.
@@ -583,6 +587,11 @@ public class GUIDesign {
 		searchClientPanel.add(scrollPane_1, gbc_scrollPane_1);
 		
 		JList list = new JList();
+		list.addListSelectionListener(new ListSelectionListener() {
+			public void valueChanged(ListSelectionEvent e) {
+				System.err.println(list.getSelectedValue().toString());
+			}
+		});
 		scrollPane_1.setViewportView(list);
 		list.setModel(new AbstractListModel() {
 			String[] values = new String[] {"hello", "is", "me"};
@@ -741,6 +750,7 @@ public class GUIDesign {
 		
 		JComboBox comboBoxClientMgmnt = new JComboBox();
 		comboBoxClientMgmnt.setModel(new DefaultComboBoxModel(new String[] {"R", "C"}));
+		comboBoxClientMgmnt.setSelectedIndex(1);
 		GridBagConstraints gbc_comboBoxClientMgmnt = new GridBagConstraints();
 		gbc_comboBoxClientMgmnt.anchor = GridBagConstraints.NORTHEAST;
 		gbc_comboBoxClientMgmnt.insets = new Insets(0, 0, 5, 5);
@@ -771,5 +781,32 @@ public class GUIDesign {
 		gbc_clearBtn.gridx = 3;
 		gbc_clearBtn.gridy = 11;
 		clientInfoPanel.add(clearBtn, gbc_clearBtn);
+		
+		JPanel loginPanel = new JPanel();
+		loginPanel.setBackground(SystemColor.activeCaption);
+		panel.add(loginPanel, "name_48048621038600");
+		loginPanel.setLayout(null);
+		
+		JLabel userNamelbl = new JLabel("User Name");
+		userNamelbl.setBounds(222, 96, 85, 16);
+		loginPanel.add(userNamelbl);
+		
+		userNameField = new JTextField();
+		userNameField.setBounds(319, 93, 116, 22);
+		loginPanel.add(userNameField);
+		userNameField.setColumns(10);
+		
+		JLabel lblPassword = new JLabel("Password");
+		lblPassword.setBounds(222, 141, 85, 16);
+		loginPanel.add(lblPassword);
+		
+		passwordField = new JTextField();
+		passwordField.setColumns(10);
+		passwordField.setBounds(319, 138, 116, 22);
+		loginPanel.add(passwordField);
+		
+		JButton loginBtn = new JButton("Login");
+		loginBtn.setBounds(267, 209, 97, 25);
+		loginPanel.add(loginBtn);
 	}
 }

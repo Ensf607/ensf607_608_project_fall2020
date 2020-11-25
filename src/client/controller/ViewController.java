@@ -40,36 +40,16 @@ import javax.swing.event.MenuListener;
 
 import client.view.CMS;
 import client.view.InventoryPanel;
+import client.view.LoginPanel;
 
 import javax.swing.AbstractListModel;
 
 public class ViewController {
 
 	private JFrame frame;
-	private JTextField toolIDField;
-	private JTextField toolNameField;
-	private JTable table;
-	private JTextField qtyField;
-	private JTextField toolIDPurchase;
-	private JTextField toolNamePurchase;
-	private JTextField toolType;
-	private JTextField toolPrice;
-	private JTextField clientIDPurchase;
-	private JTextField fNameClient;
-	private JTextField fNameNew;
-	private JTextField lNameNew;
-	private JTextField addressNew;
-	private JTextField postalCodeNew;
-	private JTextField phoneNew;
-	private JTextField textField;
-	private JTextField clientIDCMS;
-	private JTextField fnameCMS;
-	private JTextField lNameCMS;
-	private JTextField addressCMS;
-	private JTextField postalCodeCMS;
-	private JTextField phoneCMS;
 	private Observer mc;
 	private InventoryPanel inventoryPanel;
+	private LoginPanel loginPanel;
 
 	/**
 	 * Launch the application.
@@ -110,16 +90,21 @@ public class ViewController {
 		 inventoryPanel = new InventoryPanel(mc);
 		inventoryPanel.setBackground(SystemColor.inactiveCaption);
 		panel.add(inventoryPanel, "inventory");
-		c.show(panel, "inventory");
+//		c.show(panel, "inventory");
+		
 	
 		
 		
 		
-//		
+		
 		CMS clientMgmntPanel = new CMS(mc);
 		panel.add(clientMgmntPanel, "CMS");
-		//clientMgmntPanel.setLayout(new BorderLayout(0, 0));
-//		
+		
+		loginPanel=new LoginPanel(mc,c,panel);
+		loginPanel.setBackground(SystemColor.inactiveCaption);
+		panel.add(loginPanel,"login");
+		
+		
 	
 		frame.setVisible(true);
 		inventory.addMouseListener(new MouseListener() {
@@ -184,7 +169,10 @@ public class ViewController {
 			
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				c.show(panel,"CMS");
+//			/	if(loginPanel.isLoginStatus()==false)
+//				c.show(panel,"login");
+//				else
+					c.show(panel, "CMS");
 				
 			}
 		});
