@@ -17,6 +17,8 @@ public class Supplier {
 	private String phoneNumber;
 	private ArrayList<Item> itemArrayList = new ArrayList<Item>();
 
+	public Supplier(){}
+
 	public Supplier(int id, String supplierName, String type, String supplierAddress, String salesPerson, String phoneNumber) {
 		this.id = id;
 		this.supplierName = supplierName;

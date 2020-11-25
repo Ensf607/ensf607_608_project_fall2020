@@ -131,9 +131,12 @@ public class Response {
                 );
                 break;
             case "INTERNATIONAL":
+                mc.setInternational(new International());
+                mc.getInternational().setSupplierID(jsonNodeRoot.get("SupplierID").asInt());
+                mc.getInternational().setImportTax(jsonNodeRoot.get("ImportTax").asDouble());
                 jdbc.insertIntoINTERNATIONAL(
-                        jsonNodeRoot.get("SupplierID").asText(),
-                        jsonNodeRoot.get("ImportTax").asText()
+                        String.valueOf(mc.getInternational().getSupplierID()),
+                        String.valueOf(mc.getInternational().getImportTax())
                 );
 
         }
