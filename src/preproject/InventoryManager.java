@@ -19,7 +19,7 @@ public class InventoryManager {
 	// Students should configure these variables for their own MySQL environment
 	// If you have not created your first database in mySQL yet, you can leave the 
 	// "[DATABASE NAME]" blank to get a connection and create one with the createDB() method.
-	public String connectionInfo = "jdbc:mysql://localhost:3306/tool_shop",
+	public String connectionInfo = "jdbc:mysql://localhost:3306/"+databaseName,
 			login          = "testadmin",
 			password       = "passw0rd";
 
@@ -32,7 +32,7 @@ public class InventoryManager {
 			// If this throws an error, make sure you have added the mySQL connector JAR to the project
 			Class.forName("com.mysql.jdbc.Driver");
 			// If this fails make sure your connectionInfo and login/password are correct
-			this.connectDB("localhost:3306","mysql","testadmin", "passw0rd");
+			this.connectDB("localhost:3306",databaseName,login, password);
 
 		} catch(Exception e) { e.printStackTrace(); }
 	}
@@ -41,11 +41,12 @@ public class InventoryManager {
 	// (e.g. if you are connected to "jdbc:mysql://localhost:3306", the database will be created at "jdbc:mysql://localhost:3306/InventoryDB")
 	public void createDB(){
 		try {
-			query("drop schema if exists tool_shop;");
-			query("create schema tool_shop;");
-			query("drop table if exists  items;"); // items has to be dropped first due to referential integrity
-			query("drop table if exists  suppliers;");
-			query("use tool_shop;");
+			query("use "+databaseName+";");
+			query("drop schema if exists "+databaseName+";");
+			query("create schema "+databaseName+";");
+			query("use "+databaseName+";");
+			query("drop table if exists items;"); // items has to be dropped first due to referential integrity
+			query("drop table if exists suppliers;");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -212,7 +213,7 @@ public class InventoryManager {
 		String [] columns =  {"id", "description_name", "quantity_in_stock", "price", "supplier_id"};
 		String searchText = String.valueOf(toolID);
 		try {
-			query("use tool_shop;");
+			query("use "+databaseName+";");
 			String query = "select * from " +
 					"items" +
 					" where " +
@@ -246,7 +247,7 @@ public class InventoryManager {
 		System.out.println("Reading all tools from the table:\nTools:");
 		try {
 			String table = "items";
-			query("use tool_shop;");
+			query("use "+databaseName+";");
 			String query = "select * from " +
 					table;
 			PreparedStatement pStat = jdbc_connection.prepareStatement(query);
@@ -269,7 +270,7 @@ public class InventoryManager {
 		System.out.println("Reading all suppliers from the table:\nSuppliers:");
 		try {
 			String table = "suppliers";
-			query("use tool_shop;");
+			query("use "+databaseName+";");
 			String query = "select * from " +
 					table;
 			PreparedStatement pStat = jdbc_connection.prepareStatement(query);
@@ -321,7 +322,7 @@ public class InventoryManager {
 		jdbc.searchTools(1002);
 		System.out.println("Searching table for tool 9000: should fail to find a tool");
 		jdbc.searchTools(9000);
-		jdbc.removeTables();
+//		jdbc.removeTables();
 		jdbc.close();
 		System.out.println("The program is finished running");
 	}
