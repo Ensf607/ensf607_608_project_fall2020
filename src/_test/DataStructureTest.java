@@ -13,10 +13,9 @@ public class DataStructureTest {
     public void customerTest() {
         Customer c = new Customer(01,"Jason",
                 "Lol",
-                "1234 Campus Drive",
-                "T9X5X4",
-                "468-854-6548",
-                "International");
+                "International", "468-854-6548", "1234 Campus Drive",
+                "T9X5X4"
+        );
 
         c.toJSON();
     }

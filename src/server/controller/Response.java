@@ -1,8 +1,10 @@
 package server.controller;
 
+import client.controller.Client;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import server.model.Customer;
 
 public class Response {
     static String getHandler(String request) throws JsonProcessingException {
@@ -31,16 +33,23 @@ public class Response {
         switch (jsonNodeRoot.get("table").asText())
         {
             case "CLIENT":
-
-
-
-                jdbc.insertIntoCLIENT(jsonNodeRoot.get("ClientID").asText(),
+                mc.setClient(new Customer(
+                        jsonNodeRoot.get("ClientID").asInt(),
                         jsonNodeRoot.get("LName").asText(),
                         jsonNodeRoot.get("FName").asText(),
                         jsonNodeRoot.get("Type").asText(),
                         jsonNodeRoot.get("PhoneNum").asText(),
                         jsonNodeRoot.get("Address").asText(),
                         jsonNodeRoot.get("PostalCode").asText()
+                ));
+                System.out.println(mc.getClient().toString());
+                jdbc.insertIntoCLIENT(String.valueOf(mc.getClient().getClientID()),
+                        mc.getClient().getFirstName(),
+                        mc.getClient().getLastName(),
+                        mc.getClient().getClientType(),
+                        mc.getClient().getPhoneNumber(),
+                        mc.getClient().getAddress(),
+                        mc.getClient().getPostolCode()
                 );
                 break;
             case "ORDER":
