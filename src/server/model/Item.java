@@ -9,11 +9,13 @@ package server.model;
 public class Item {
 	private int itemID;
 	private String itemName;
+	private String type;
 	private int quantity;
 	private double price;
 	private int supplierId;
 	private Supplier supplier;
 
+<<<<<<< HEAD
     public Item(int parseInt, String s, int parseInt1, double parseDouble, int parseInt2) {
     	this.itemID=parseInt;
     	this.itemName=s;
@@ -23,6 +25,39 @@ public class Item {
     }
 
     /**
+=======
+	public Item(){}
+
+    public Item(int id, String name, int quantity, double price, int supplierID) {
+    	this.itemID=id;
+    	this.itemName=name;
+    	this.quantity=quantity;
+    	this.price=price;
+    	this.supplierId=supplierID;
+    }
+
+	public Item(int itemID, String itemName, String type, int quantity, double price, int supplierId) {
+		this.itemID = itemID;
+		this.itemName = itemName;
+		this.type = type;
+		this.quantity = quantity;
+		this.price = price;
+		this.supplierId = supplierId;
+	}
+
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
+
+
+
+	/**
+>>>>>>> develop_ziad
 	 * Sets item id.
 	 *
 	 * @param itemID the item id

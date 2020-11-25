@@ -18,6 +18,7 @@ public class Request {
                 System.out.println(r); // disable this for production
                 break;
             case "POST":
+<<<<<<< HEAD
                 response.postHandler(request);
                 break;
             case "PUT":
@@ -25,10 +26,28 @@ public class Request {
                 break;
             case "DELETE":
                 response.deleteHandler(request);
+=======
+                 response.postHandler(request);
+                System.out.println(r);
+                break;
+            case "PUT":
+                response.putHandler(request); // TODO: complete full api by returning error message
+                break;
+            case "DELETE":
+                response.deleteHandler(request); //TODO: complete full api by returning error message
+>>>>>>> develop_ziad
             default:
                 break;
         }
         return r;
+<<<<<<< HEAD
+=======
+    }
+
+
+    public static void main(String[] args) throws JsonProcessingException {
+
+>>>>>>> develop_ziad
     }
 
 }

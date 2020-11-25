@@ -53,8 +53,14 @@ public class ServerController {
 				aSocket = serverSocket.accept();
 				socketIn = new BufferedReader(new InputStreamReader(aSocket.getInputStream()));
 				socketOut = new PrintWriter(aSocket.getOutputStream(), true);
+<<<<<<< HEAD
 				ModelController modelController = new ModelController(this);
 				pool.execute(modelController);
+=======
+				ThreadPool threadPool = new ThreadPool(this);
+				pool.execute(threadPool);
+				System.err.println("Accepte");
+>>>>>>> develop_ziad
 			}
 
 		} catch (IOException e) {
@@ -70,6 +76,7 @@ public class ServerController {
 	 * Based on message the client will decode and print the respective form of table on GUI
 	 * Send a jason object {message: displayTool,tool:[]}
 	 */
+<<<<<<< HEAD
 	public void send() {
 	}
 
@@ -80,6 +87,12 @@ public class ServerController {
 	 **/
 	public void recieve() {
 	}
+=======
+	
+	
+
+
+>>>>>>> develop_ziad
 
 
 

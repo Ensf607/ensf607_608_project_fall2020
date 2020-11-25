@@ -94,7 +94,7 @@ public class JDBC {
     public void selectUser() {
         try {
             stmt = conn.createStatement();
-            String query = "SELECT * FROM USERS";
+            String query = "SELECT * FROM USER";
             rs = stmt.executeQuery(query);
             while (rs.next()) {
                 System.out.println(rs.getString("username") + " " +
@@ -111,8 +111,8 @@ public class JDBC {
     public void insertUser() {
         try {
             stmt = conn.createStatement();
-            String insert = "INSERT INTO users (ID, username,password) values " +
-                    "(1004, 'newUser','newPass')";
+            String insert = "INSERT INTO USER (username,password) values " +
+                    "('newUser','newPass')";
             int rowCount = stmt.executeUpdate(insert);
             System.out.println("row Count = " + rowCount);
         } catch (SQLException e) {
@@ -126,7 +126,7 @@ public class JDBC {
     public void deleteUser() {
         try {
             stmt = conn.createStatement();
-            String delete = "DELETE FROM users WHERE username = 'newUser'";
+            String delete = "DELETE FROM USER WHERE username = 'newUser'";
             int rowCount = stmt.executeUpdate(delete);
             System.out.println("row Count = " + rowCount);
         } catch (SQLException e) {
@@ -136,24 +136,27 @@ public class JDBC {
     /**
      * D2L provided code
      * Validate login.
-     *
-     * @param username the username
+     *  @param username the username
      * @param password the password
+     * @return
      */
-    public void validateLogin(String username, String password) {
+    public String validateLogin(String username, String password) {
         try {
             stmt = conn.createStatement();
-            String query = "SELECT * FROM users WHERE username = '" + username
+            String query = "SELECT * FROM USER WHERE username = '" + username
                     + "' and password ='" + password + "'";
             rs = stmt.executeQuery(query);
             if (rs.next()) {
                 System.out.println("User is logged in");
+                return "{\"valid\":\"1\"}"; // {"valid":"1"}
             } else {
                 System.out.println("Invalid Username and Password");
+                return "{\"valid\":\"0\"}";
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        return "{\"valid\":\"1\", \"error\": \"1\"}"; //  {"valid":"1", "error": "1"}
     }
     /**
      * D2L provided code
@@ -194,18 +197,40 @@ public class JDBC {
             e.printStackTrace();
         }
     }
+<<<<<<< HEAD
+=======
+    public void searchGeneralPurpose(String table, String column, String strWithWildcard) throws JsonProcessingException{
+        try {
+            query("use ToolShop;");
+            String query= "SELECT T.ToolID,T.Name,T.Type,T.Quantity,T.Price,T.SupplierID,E.PowerType FROM  TOOL AS T \n"+
+            "LEFT OUTER JOIN ELECTRICAL AS E ON T.ToolID=E.ToolID\n"+
+            "WHERE T."+column+" like ?";
+            
+            PreparedStatement pStat = conn.prepareStatement(query);
+            pStat.setString(1, strWithWildcard);
+            rs = pStat.executeQuery();
+            metaData=rs.getMetaData();
+            toJsonToolList();
+            pStat.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+>>>>>>> develop_ziad
     private void displayReturnStatement(String[] columns) throws SQLException {
         for (int i = 0; i < columns.length; i++)
             System.out.print (rs.getString(columns[i])+ "\t");
     }
-    /**
-     * NEED TO CHANGE
-     public ResultSet searchForToolID(int toolID){
-     return searchGeneralPurpose("items","id", String.valueOf(toolID));
+    
+     public String searchForToolID(int toolID) throws JsonProcessingException{
+    		 searchGeneralPurpose("TOOL","ToolID", "%"+toolID+"%");
+    		 
+    		 return json;
      }
-     public ResultSet searchForToolName(String toolName){
-     return searchGeneralPurpose("items","description_name", toolName);
-     }*/
+     public String searchForToolName(String toolName) throws JsonProcessingException{
+      searchGeneralPurpose("TOOL","Name","%"+toolName+"%");
+      return json;
+     }
     public void checkInventory() {
         try {
             String table = "TOOL";
@@ -213,6 +238,7 @@ public class JDBC {
             String query = "SELECT ToolID,Quantity,SupplierID FROM "+table+" WHERE Quantity < ?";
             PreparedStatement pStat = conn.prepareStatement(query);
             pStat.setInt(1, 40);
+         
             rs=pStat.executeQuery();
 
             if (rs.next())
@@ -357,6 +383,11 @@ public class JDBC {
                     query = "SELECT O.OrderID,O.Date,T.Name,S.Name,L.Quantity FROM ToolShop.ORDERLINE AS L ,ToolShop.ORDER_ AS O ,ToolShop.TOOL AS T , ToolShop.SUPPLIER AS S\n"+
                             "WHERE L.OrderID=O.OrderID AND L.ToolID =  T.ToolID AND L.SupplierID=S.SupplierID"
                             + " AND O." + column + " LIKE ?; ";
+<<<<<<< HEAD
+=======
+                case "USER":
+                	 query ="SELECT * FROM ToolShop.USER WHERE "+column+"=?";
+>>>>>>> develop_ziad
                     break;
                 default:
                     break;
@@ -390,6 +421,11 @@ public class JDBC {
                     break;
                 case "ORDER":
                     toJsonOrder();
+<<<<<<< HEAD
+=======
+                case "USER":
+                    toJsonUser();
+>>>>>>> develop_ziad
                     break;
                 default:
                     break;
@@ -400,7 +436,12 @@ public class JDBC {
         }
         return json;
     }
+<<<<<<< HEAD
     public String getItemsList() throws JsonProcessingException{
+=======
+ 
+	public String getItemsList() throws JsonProcessingException{
+>>>>>>> develop_ziad
         try {
             String query = "SELECT T.ToolID,T.Name,T.Type,T.Quantity,T.Price,T.SupplierID,E.PowerType FROM ToolShop.TOOL AS T \n" +
                     "LEFT OUTER JOIN ToolShop.ELECTRICAL AS E ON T.ToolID=E.ToolID";
@@ -516,6 +557,16 @@ public class JDBC {
         }
         json=mapper.writerWithDefaultPrettyPrinter().writeValueAsString(arrayNode);
     }
+    private void toJsonUser() throws SQLException, JsonProcessingException {
+    	 ObjectNode node = new ObjectMapper().createObjectNode();
+         while(rs.next()) {
+            
+             node.put(metaData.getColumnName(1), rs.getString(1));
+             node.put(metaData.getColumnName(2), rs.getString(2));
+ 	}
+         json=new ObjectMapper().writeValueAsString(node);
+         
+    }
     public void toJsonCustomerList() throws SQLException, JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
         ArrayNode arrayNode = mapper.createArrayNode();
@@ -538,6 +589,8 @@ public class JDBC {
     public void toJsonOrder() throws SQLException, JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
         ArrayNode arrayNode = mapper.createArrayNode();
+        
+        
 
         while(rs.next()) {
             ObjectNode node = new ObjectMapper().createObjectNode();
@@ -546,6 +599,7 @@ public class JDBC {
             node.put(metaData.getColumnName(3), rs.getString(3));
             node.put(metaData.getColumnName(4), rs.getString(4));
             node.put(metaData.getColumnName(5), rs.getInt(5));
+            
             arrayNode.addAll(Arrays.asList(node));
 
         }
@@ -559,10 +613,11 @@ public class JDBC {
             switch (server.controller.Utils.parseColumn(row[i])){
                 case "int":
                 case "float":
+                case "timestamp":
                     sqlSB.append(row[i]);
                     break;
                 default:
-                    sqlSB.append("'" + row[i]+ "'");
+                    sqlSB.append("'"+row[i]+"'");
                     break;
             }
             if (i+1< row.length)
@@ -609,7 +664,47 @@ public class JDBC {
         String [] row = {ClientID, LName, FName, Type, PhoneNum, Address, PostalCode};
         insertIntoTable("CLIENT", row);
     }
+ 
+}
 
+
+
+
+class Utils {
+    public static boolean isInteger(String str) {
+        if (str == null) {
+            return false;
+        }
+        int length = str.length();
+        if (length == 0) {
+            return false;
+        }
+        int i = 0;
+        if (str.charAt(0) == '-') {
+            if (length == 1) {
+                return false;
+            }
+            i = 1;
+        }
+        for (; i < length; i++) {
+            char c = str.charAt(i);
+            if (c < '0' || c > '9') {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public static boolean isNumeric(String str) {
+        try {
+            Double.parseDouble(str);
+            return true;
+        } catch(NumberFormatException e){
+            return false;
+        }
+    }
+
+<<<<<<< HEAD
 }
 
 
@@ -652,6 +747,12 @@ class Utils {
     public static String parseColumn(String str){
         if (isInteger(str)) return "int";
         if (isNumeric(str)) return "float";
+=======
+    public static String parseColumn(String str){
+        if (isInteger(str)) return "int";
+        if (isNumeric(str)) return "float";
+        if (str == "CURRENT_TIMESTAMP" ) return "timestamp";
+>>>>>>> develop_ziad
         return "text";
     }
 }
