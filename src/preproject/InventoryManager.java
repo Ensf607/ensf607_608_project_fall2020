@@ -1,13 +1,9 @@
 package preproject;
 
-import server.model.Item;
-
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.sql.*;
-import java.util.Scanner;
 
 // Pre-Project Exercise 
 
@@ -122,79 +118,24 @@ public class InventoryManager {
 	}
 
 	// Fills the data table with all the tools from the text file 'items.txt' if found
-	public void fillTable(){
-		try{
-			Scanner sc = new Scanner(new FileReader(dataFile));
-			while(sc.hasNext())
-			{
-				String toolInfo[] = sc.nextLine().split(";");
-				addItem( new Item( Integer.parseInt(toolInfo[0]),
-						toolInfo[1],
-						Integer.parseInt(toolInfo[2]),
-						Double.parseDouble(toolInfo[3]),
-						Integer.parseInt(toolInfo[4])) );
-			}
-			sc.close();
-		}
-		catch(FileNotFoundException e)
-		{
-			System.err.println("File " + dataFile + " Not Found!");
-		}
-		catch(Exception e)
-		{
-			e.printStackTrace();
-		}
-	}
-
-	// Add a tool to the database table
-	public void addItem(Item tool){
-		String sql = "INSERT INTO " + tableName +
-				" VALUES ( " + tool.getItemID() + ", '" +
-				tool.getItemName() + "', " +
-				tool.getQuantity() + ", " +
-				tool.getPrice() + ", " +
-				tool.getSupplierId() + ");";
-		try{
-			statement = jdbc_connection.createStatement();
-			statement.executeUpdate(sql);
-		}
-		catch(SQLException e)
-		{
-			e.printStackTrace();
-		}
-	}
-
-	public void addItem(String fileName) {
+	public void fillToolsTable(String fileName) throws IOException {
 		System.out.print("Filling the table with tools");
+		reader = new BufferedReader(new FileReader(fileName));
+		String line ="";
 		try {
-			reader = new BufferedReader(new FileReader(fileName));
-			String line = reader.readLine();
 			line = reader.readLine();
 			while (line != null) {
 				String temp[];
-
+				line = reader.readLine();
 				temp = line.split("[;]");
 				int id = Integer.parseInt(temp[0]);
 				String description = temp[1];
 				int quantity = Integer.parseInt(temp[2]);
 				float price = Float.parseFloat(temp[3]);
 				int supplierId = Integer.parseInt(temp[4]);
-				String query ="INSERT INTO items(id,description_name,quantity_in_stock,price,supplier_id) VALUES (?,?,?,?,?)";;
+				Tool tool=new Tool(id, description, quantity,price,supplierId);
 
-
-				try {
-					preparedStmt = jdbc_connection.prepareStatement(query);
-					preparedStmt.setInt(1, id);
-					preparedStmt.setString(2, description);
-					preparedStmt.setInt(3, quantity);
-					preparedStmt.setFloat(4, price);
-					preparedStmt.setInt(5, supplierId);
-//                    System.out.println(preparedStmt);
-					preparedStmt.executeUpdate();
-				} catch (SQLException e) {
-					System.out.println(e);
-				}
-
+				addItem(tool);
 				line = reader.readLine();
 			}
 			reader.close();
@@ -204,7 +145,29 @@ public class InventoryManager {
 		System.out.println("\t--Done");
 	}
 
-	public void addSupplier(String fileName) {
+	// Add a tool to the database table
+	private void addItem(Tool temp) {
+		int id = temp.getItemID();
+		String description = temp.getItemName();
+		int quantity = temp.getQuantity();
+		float price = (float) temp.getPrice();
+		int supplierId = temp.getSupplierId();
+		String query ="INSERT INTO items(id,description_name,quantity_in_stock,price,supplier_id) VALUES (?,?,?,?,?)";
+		try {
+			preparedStmt = jdbc_connection.prepareStatement(query);
+			preparedStmt.setInt(1, id);
+			preparedStmt.setString(2, description);
+			preparedStmt.setInt(3, quantity);
+			preparedStmt.setFloat(4, price);
+			preparedStmt.setInt(5, supplierId);
+//                    System.out.println(preparedStmt);
+			preparedStmt.executeUpdate();
+		} catch (SQLException e) {
+			System.out.println(e);
+		}
+	}
+
+	public void fillSupplierTable(String fileName) {
 		System.out.print("Filling the table with suppliers");
 		try {
 
@@ -330,7 +293,6 @@ public class InventoryManager {
 
 	public void query(String sql){
 		try (Statement stmt = jdbc_connection.createStatement()) {
-
 			stmt.executeUpdate(sql);
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -347,13 +309,12 @@ public class InventoryManager {
 		return;
 	}
 
-	public static void main(String args[])
-	{
+	public static void main(String args[]) throws IOException {
 		InventoryManager jdbc = new InventoryManager();
 		jdbc.createDB();
 		jdbc.createTables();
-		jdbc.addSupplier("suppliers.txt");
-		jdbc.addItem("items.txt");
+		jdbc.fillSupplierTable("suppliers.txt");
+		jdbc.fillToolsTable("items.txt");
 		jdbc.printTableItems();
 		jdbc.printTableSuppliers();
 		System.out.println("Searching table for tool 1002: should return 'Grommets'");

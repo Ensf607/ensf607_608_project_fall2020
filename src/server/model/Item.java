@@ -14,12 +14,12 @@ public class Item {
 	private int supplierId;
 	private Supplier supplier;
 
-    public Item(int parseInt, String s, int parseInt1, double parseDouble, int parseInt2) {
-    	this.itemID=parseInt;
-    	this.itemName=s;
-    	this.quantity=parseInt;
-    	this.price=parseDouble;
-    	this.supplierId=parseInt2;
+    public Item(int id, String name, int quantity, double price, int supplierID) {
+    	this.itemID=id;
+    	this.itemName=name;
+    	this.quantity=quantity;
+    	this.price=price;
+    	this.supplierId=supplierID;
     }
 
     /**
