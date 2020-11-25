@@ -121,9 +121,13 @@ public class Response {
                 );
                 break;
             case "ELECTRICAL":
+                mc.setElectrical(new Electrical());
+                mc.getElectrical().setToolID(jsonNodeRoot.get("ToolID").asInt());
+                mc.getElectrical().setPowerType(jsonNodeRoot.get("PowerType").asText());
+
                 jdbc.insertIntoELECTRICAL(
-                        jsonNodeRoot.get("ToolID").asText(),
-                        jsonNodeRoot.get("PowerType").asText()
+                        String.valueOf(mc.getElectrical().getToolID()),
+                        mc.getElectrical().getPowerType()
                 );
                 break;
             case "INTERNATIONAL":

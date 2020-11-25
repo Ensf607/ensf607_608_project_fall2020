@@ -15,6 +15,8 @@ public class Item {
 	private int supplierId;
 	private Supplier supplier;
 
+	public Item(){}
+
     public Item(int id, String name, int quantity, double price, int supplierID) {
     	this.itemID=id;
     	this.itemName=name;
