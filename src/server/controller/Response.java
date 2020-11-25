@@ -4,10 +4,7 @@ import client.controller.Client;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import server.model.Customer;
-import server.model.Order;
-import server.model.OrderLine;
-import server.model.Supplier;
+import server.model.*;
 
 public class Response {
     static String getHandler(String request) throws JsonProcessingException {
@@ -77,9 +74,14 @@ public class Response {
                 );
                 break;
             case "PURCHASE":
-                jdbc.insertIntoPURCHASE(jsonNodeRoot.get("ClientID").asText(),
-                        jsonNodeRoot.get("ToolID").asText(),
+                mc.setPurchase(new Purchase(
+                        jsonNodeRoot.get("ClientID").asInt(),
+                        jsonNodeRoot.get("ToolID").asInt(),
                         jsonNodeRoot.get("Date").asText()
+                ));
+                jdbc.insertIntoPURCHASE(String.valueOf(mc.getPurchase().getClientID()),
+                        String.valueOf(mc.getPurchase().getToolID()),
+                        mc.getPurchase().getDate()
                         );
                 break;
             case "SUPPLIER":
