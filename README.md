@@ -1,46 +1,38 @@
-# ensf607_608_project_fall2020
-This is a joint, cross-course project with ENSF 607/608. 
+# Classic ToolShop Desktop App with API
+This is a joint, cross-course project with ENSF 607/608. It is a classic Tool Shop desktop application written in Java. 
 
+## Contributors
 
+Ziad Chemali, Stan Chen
 
+## Architecture
 
-# students
+![image-20201125012932150](README.assets/image-20201125012932150.png)
 
-student 1: Stan Chen
+## Testing
 
-student 2: Ziad Chemali
+Jenkins were introduced as a tool to help with the deployment/testing purposes. Script used for compiling and running the backend server in Jenkins build execute shell: 
 
-
-
-# setup
-
-1. this is classic java project. `jars/mysql-connector-java-8.0.22.jar` needs to be added to class path. (alternatively, if you're using maven, just use pom.xml to fullfil the dependencies. ) 
-2. using IDE is preferred
-
-
-
-   
-
-# development
-
-- code style: as long as readable
-- project structure
-
-```
-src/
-├── client
-├── devops
-├── server
-└── test
+```shell
+# export CLASSPATH=jars/*.jar
+mvn -v
+echo "building maven package"
+mvn clean install -U
+mvn clean package
+echo "initing server"
+echo "building maven package"
+mvn package
+echo "initing server"
+mvn exec:java -Dexec.mainClass="server.controller.ServerController" -Dexec.classpathScope=runtime 
 ```
 
-- isolating test classes recommended
-
-# using it as references
-
-project will remain public/open. 
 
 
 
-please practice safe refactoring if heavily referencing this code
 
+
+
+## Develop setup
+
+1. this is classic java project. `jars/mysql-connector-java-8.0.22.jar` needs to be added to class path. 
+2. Alternatively, if using maven, just use pom.xml to fullfil the dependencies. 
