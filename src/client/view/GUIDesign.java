@@ -617,9 +617,9 @@ public class GUIDesign {
 		clientInfoPanel.setPreferredSize(new Dimension(500, 10));
 		splitPane_1.setRightComponent(clientInfoPanel);
 		GridBagLayout gbl_clientInfoPanel = new GridBagLayout();
-		gbl_clientInfoPanel.columnWidths = new int[]{97, 97, 38, 274, 0};
+		gbl_clientInfoPanel.columnWidths = new int[]{97, 97, 38, 141, 0, 0};
 		gbl_clientInfoPanel.rowHeights = new int[]{16, 67, 22, 22, 22, 22, 22, 22, 37, 22, 61, 25, 0};
-		gbl_clientInfoPanel.columnWeights = new double[]{0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+		gbl_clientInfoPanel.columnWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
 		gbl_clientInfoPanel.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
 		clientInfoPanel.setLayout(gbl_clientInfoPanel);
 		
@@ -627,7 +627,7 @@ public class GUIDesign {
 		GridBagConstraints gbc_lblClientInformation = new GridBagConstraints();
 		gbc_lblClientInformation.anchor = GridBagConstraints.NORTH;
 		gbc_lblClientInformation.fill = GridBagConstraints.HORIZONTAL;
-		gbc_lblClientInformation.insets = new Insets(0, 0, 5, 0);
+		gbc_lblClientInformation.insets = new Insets(0, 0, 5, 5);
 		gbc_lblClientInformation.gridx = 3;
 		gbc_lblClientInformation.gridy = 0;
 		clientInfoPanel.add(lblClientInformation, gbc_lblClientInformation);
@@ -643,7 +643,7 @@ public class GUIDesign {
 		clientIDCMS = new JTextField();
 		GridBagConstraints gbc_clientIDCMS = new GridBagConstraints();
 		gbc_clientIDCMS.anchor = GridBagConstraints.NORTHWEST;
-		gbc_clientIDCMS.insets = new Insets(0, 0, 5, 0);
+		gbc_clientIDCMS.insets = new Insets(0, 0, 5, 5);
 		gbc_clientIDCMS.gridwidth = 2;
 		gbc_clientIDCMS.gridx = 2;
 		gbc_clientIDCMS.gridy = 2;
@@ -662,7 +662,7 @@ public class GUIDesign {
 		fnameCMS.setColumns(10);
 		GridBagConstraints gbc_fnameCMS = new GridBagConstraints();
 		gbc_fnameCMS.anchor = GridBagConstraints.NORTHWEST;
-		gbc_fnameCMS.insets = new Insets(0, 0, 5, 0);
+		gbc_fnameCMS.insets = new Insets(0, 0, 5, 5);
 		gbc_fnameCMS.gridwidth = 2;
 		gbc_fnameCMS.gridx = 2;
 		gbc_fnameCMS.gridy = 3;
@@ -680,7 +680,7 @@ public class GUIDesign {
 		lNameCMS.setColumns(10);
 		GridBagConstraints gbc_lNameCMS = new GridBagConstraints();
 		gbc_lNameCMS.anchor = GridBagConstraints.NORTHWEST;
-		gbc_lNameCMS.insets = new Insets(0, 0, 5, 0);
+		gbc_lNameCMS.insets = new Insets(0, 0, 5, 5);
 		gbc_lNameCMS.gridwidth = 2;
 		gbc_lNameCMS.gridx = 2;
 		gbc_lNameCMS.gridy = 4;
@@ -698,7 +698,7 @@ public class GUIDesign {
 		addressCMS.setColumns(10);
 		GridBagConstraints gbc_addressCMS = new GridBagConstraints();
 		gbc_addressCMS.anchor = GridBagConstraints.NORTHWEST;
-		gbc_addressCMS.insets = new Insets(0, 0, 5, 0);
+		gbc_addressCMS.insets = new Insets(0, 0, 5, 5);
 		gbc_addressCMS.gridwidth = 2;
 		gbc_addressCMS.gridx = 2;
 		gbc_addressCMS.gridy = 5;
@@ -716,7 +716,7 @@ public class GUIDesign {
 		postalCodeCMS.setColumns(10);
 		GridBagConstraints gbc_postalCodeCMS = new GridBagConstraints();
 		gbc_postalCodeCMS.anchor = GridBagConstraints.NORTHWEST;
-		gbc_postalCodeCMS.insets = new Insets(0, 0, 5, 0);
+		gbc_postalCodeCMS.insets = new Insets(0, 0, 5, 5);
 		gbc_postalCodeCMS.gridwidth = 2;
 		gbc_postalCodeCMS.gridx = 2;
 		gbc_postalCodeCMS.gridy = 6;
@@ -734,7 +734,7 @@ public class GUIDesign {
 		phoneCMS.setColumns(10);
 		GridBagConstraints gbc_phoneCMS = new GridBagConstraints();
 		gbc_phoneCMS.anchor = GridBagConstraints.NORTHWEST;
-		gbc_phoneCMS.insets = new Insets(0, 0, 5, 0);
+		gbc_phoneCMS.insets = new Insets(0, 0, 5, 5);
 		gbc_phoneCMS.gridwidth = 2;
 		gbc_phoneCMS.gridx = 2;
 		gbc_phoneCMS.gridy = 7;
@@ -777,10 +777,17 @@ public class GUIDesign {
 		
 		JButton clearBtn = new JButton("Clear");
 		GridBagConstraints gbc_clearBtn = new GridBagConstraints();
+		gbc_clearBtn.insets = new Insets(0, 0, 0, 5);
 		gbc_clearBtn.anchor = GridBagConstraints.NORTHWEST;
 		gbc_clearBtn.gridx = 3;
 		gbc_clearBtn.gridy = 11;
 		clientInfoPanel.add(clearBtn, gbc_clearBtn);
+		
+		JButton addCusttomer = new JButton("Clear");
+		GridBagConstraints gbc_addCusttomer = new GridBagConstraints();
+		gbc_addCusttomer.gridx = 4;
+		gbc_addCusttomer.gridy = 11;
+		clientInfoPanel.add(addCusttomer, gbc_addCusttomer);
 		
 		JPanel loginPanel = new JPanel();
 		loginPanel.setBackground(SystemColor.activeCaption);

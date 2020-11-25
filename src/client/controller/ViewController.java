@@ -169,9 +169,9 @@ public class ViewController {
 			
 			@Override
 			public void mouseClicked(MouseEvent e) {
-//			/	if(loginPanel.isLoginStatus()==false)
-//				c.show(panel,"login");
-//				else
+				if(loginPanel.isLoginStatus()==false)
+				c.show(panel,"login");
+				else
 					c.show(panel, "CMS");
 				
 			}

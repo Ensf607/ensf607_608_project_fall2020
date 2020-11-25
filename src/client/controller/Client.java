@@ -20,7 +20,6 @@ public class Client {
 	private PrintWriter socketOut;
 	private Socket palinSocket;
 	private BufferedReader socketIn;
-	private BufferedReader stdIn;
 
 
 	/**
@@ -30,49 +29,22 @@ public class Client {
 	 * @param portNumber
 	 */
 	public Client(String serverName, int portNumber) {
-		//sendMSG=new ServerSideRequestHandler();//NOTE: its just a test, this must be on server side
-//		try {
-//			palinSocket = new Socket(serverName, portNumber);
-//			socketIn = new BufferedReader(new InputStreamReader(palinSocket.getInputStream()));
-//			socketOut = new PrintWriter((palinSocket.getOutputStream()), true);
-//			
-//		} catch (IOException e) {
-//			System.err.println(e.getStackTrace());
-//		}
 		try {
 			palinSocket = new Socket(serverName, portNumber);
 			socketIn = new BufferedReader(new InputStreamReader(palinSocket.getInputStream()));
 			socketOut = new PrintWriter((palinSocket.getOutputStream()), true);
-//			initGUI();
 		} catch (IOException e) {
 			System.err.println(e.getStackTrace());
 		}
 	}
 	
 	public String send(String json) throws IOException {
-		//THIS WHAT U WILL HAVE
-//		socketOut.print(json);//sends request
-//		StringBuffer sb =new StringBuffer();
-//		String line=socketIn.readLine();
-//		sb.append(line);
-//		while(line!=null) {
-//			line=socketIn.readLine();
-//		sb.append(line);}
-//		return sb.toString();
 
-	/**
-	 * initialize GUI
-	 */
-//	private void initGUI() {
-//		this.gui = new GUI();
-//		//TODO: @Ziad, connect gui items to event listeners
-//	}
-		//TEST
 		System.out.println("SENDNG MSG TO  RequestHandler on SERVER SIDE....via sockets and wait for response");
 		System.err.println(json);
 		socketOut.println(json);
 		String response=getServerResponse();
-	return response;
+		return response;
 		
 	}
 	/**
@@ -83,22 +55,9 @@ public class Client {
 	public void communicate() throws InterruptedException, IOException {
 		
 	
-		String line = "";
-		String response = "";
 		boolean running = true;
-		Scanner scan =new Scanner(System.in);
 		while (running) {
 //			sleep(500);
-			//				line = socketIn.readLine();
-			// TODO: need to connect GUI to get line value (request string)
-//			line = "{ \"type\" : \"GET\", \"table\" : \"TOOL\" , \"scope\":\"all\"}";
-//			System.out.println("request is:"+line);
-//
-//			socketOut.println(line); // sending client request
-////			response = socketIn.lines().collect(Collectors.joining());; // receiving server response
-//			response = getServerResponse();
-//
-//			System.out.println("(Response): \n"+ response);
 
 		}
 		try {
@@ -118,7 +77,7 @@ public class Client {
 		while ((line = socketIn.readLine()) != null) {
 			s += line;
 			if (!socketIn.ready()){
-//				sleep(100); //manually introduce delay
+				sleep(100); //manually introduce delay
 				if (!socketIn.ready())
 					break;
 			}

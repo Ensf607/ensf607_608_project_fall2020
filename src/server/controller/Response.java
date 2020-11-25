@@ -108,7 +108,7 @@ public class Response {
         {
             case "TOOL":
                 sql = "UPDATE TOOL "
-//                        +"SET ToolID = "+jsonNodeRoot.get("ToolID").asText()+", "
+                        +"SET ToolID = "+jsonNodeRoot.get("ToolID").asText()+", "
                         +"SET Name = '"+jsonNodeRoot.get("Name").asText()+"', "
                         +"Type = '"+jsonNodeRoot.get("Type").asText()+"', "
                         +"Quantity = "+jsonNodeRoot.get("Quantity").asText()+", "
@@ -151,22 +151,23 @@ public class Response {
         {
             case "TOOL":
                 sql = "DELETE FROM TOOL WHERE "+
-                        jsonNodeRoot.get("field").asText()+" == "+jsonNodeRoot.get("field_value");
+                        jsonNodeRoot.get("field").asText()+" = "+jsonNodeRoot.get("field_value");
+                System.err.println(sql);
                 jdbc.query(sql);
                 break;
             case "CLIENT":
                 sql= "DELETE FROM CLIENT WHERE "+
-                        jsonNodeRoot.get("field").asText()+" == "+jsonNodeRoot.get("field_value");
+                        jsonNodeRoot.get("field").asText()+" = "+jsonNodeRoot.get("field_value");
                 jdbc.query(sql);
                 break;
 
             case "ORDERLINE":
             case "ORDER":
                 sql= "DELETE FROM ORDER_ WHERE "+
-                        jsonNodeRoot.get("field").asText()+" == "+jsonNodeRoot.get("field_value");
+                        jsonNodeRoot.get("field").asText()+" = "+jsonNodeRoot.get("field_value");
                 jdbc.query(sql);
                 sql= "DELETE FROM ORDERLINE WHERE "+
-                        jsonNodeRoot.get("field").asText()+" == "+jsonNodeRoot.get("field_value");
+                        jsonNodeRoot.get("field").asText()+" = "+jsonNodeRoot.get("field_value");
                 jdbc.query(sql);
                 break;
             case "PURCHASE":

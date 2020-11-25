@@ -71,17 +71,8 @@ public class ServerController {
 	 * Based on message the client will decode and print the respective form of table on GUI
 	 * Send a jason object {message: displayTool,tool:[]}
 	 */
-	public void send() {
-	}
-
-
-	/**
-	 * Recieve jason object from client in {message: purchase,itemID:2,Quantity:5}
-	 * get requests example: { "type": "get", "table": "ORDER_", "scope": "all"}
-	 **/
-	public void recieve() {
-	}
-
+	
+	
 
 
 
