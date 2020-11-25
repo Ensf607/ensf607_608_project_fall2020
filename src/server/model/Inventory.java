@@ -11,7 +11,7 @@ import java.util.ArrayList;
 public class Inventory {
 	private Item item;
 	private ArrayList <Item> itemsList = new ArrayList<Item>();
-	private Order order =new Order();
+	private Order order;
 
 	/**
 	 * Sets item.

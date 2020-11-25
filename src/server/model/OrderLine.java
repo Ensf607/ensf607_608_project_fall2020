@@ -7,10 +7,61 @@ package server.model;
  * @since Oct 13, 2020
  */
 public class OrderLine {
-	private Item item;
-	private String itemName;
+	private int orderID;
+	private int toolID;
+	private int supplierID;
 	private int amount;
+
+	private Item item;
+
+	private String itemName;
 	private String supplierName;
+	public OrderLine() {
+
+	}
+
+	public OrderLine(int orderID, int toolID, int supplierID, int amount) {
+		this.orderID = orderID;
+		this.toolID = toolID;
+		this.supplierID = supplierID;
+		this.amount = amount;
+	}
+
+	public int getSupplierID() {
+		return supplierID;
+	}
+
+	public int getOrderID() {
+		return orderID;
+	}
+
+	public int getToolID() {
+		return toolID;
+	}
+
+	public void setOrderID(int orderID) {
+		this.orderID = orderID;
+	}
+
+	public void setSupplierID(int supplierID) {
+		this.supplierID = supplierID;
+	}
+
+	public void setAmount(int amount) {
+		this.amount = amount;
+	}
+
+	public void setItemName(String itemName) {
+		this.itemName = itemName;
+	}
+
+	public void setSupplierName(String supplierName) {
+		this.supplierName = supplierName;
+	}
+
+	public void setToolID(int toolID) {
+		this.toolID = toolID;
+	}
 
 	/**
 	 * Sets item.

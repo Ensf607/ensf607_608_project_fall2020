@@ -5,6 +5,8 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import server.model.Customer;
+import server.model.Order;
+import server.model.OrderLine;
 import server.model.Supplier;
 
 public class Response {
@@ -54,14 +56,24 @@ public class Response {
                 );
                 break;
             case "ORDER":
-                jdbc.insertIntoORDER_(jsonNodeRoot.get("OrderID").asText(),
-                        jsonNodeRoot.get("Date").asText());
+                mc.setOrder(new Order(jsonNodeRoot.get("OrderID").asInt(),
+                        jsonNodeRoot.get("Date").asText()));
+
+                jdbc.insertIntoORDER_(String.valueOf(mc.getOrder().getOrderID()),
+                        mc.getOrder().getDate());
                 break;
             case "ORDERLINE":
-                jdbc.insertIntoORDERLINE(jsonNodeRoot.get("OrderID").asText(),
-                        jsonNodeRoot.get("ToolID").asText(),
-                        jsonNodeRoot.get("SupplierID").asText(),
-                        jsonNodeRoot.get("Quantity").asText()
+
+                mc.setOrderLine(new OrderLine(
+                        jsonNodeRoot.get("OrderID").asInt(),
+                        jsonNodeRoot.get("ToolID").asInt(),
+                        jsonNodeRoot.get("SupplierID").asInt(),
+                        jsonNodeRoot.get("Quantity").asInt()
+                ));
+                jdbc.insertIntoORDERLINE(String.valueOf(mc.getOrderLine().getOrderID()),
+                        String.valueOf(mc.getOrderLine().getToolID()),
+                        String.valueOf(mc.getOrderLine().getSupplierID()),
+                        String.valueOf(mc.getOrderLine().getAmount())
                 );
                 break;
             case "PURCHASE":

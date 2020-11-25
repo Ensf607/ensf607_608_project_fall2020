@@ -1,8 +1,6 @@
 package server.model;
 
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.Random;
 
 /**
@@ -13,15 +11,31 @@ import java.util.Random;
  */
 public class Order {
 
-	private String orderDate = Calendar.getInstance().getTime().toString();
+	private int orderID;
+	private String date;
+
+	public Order(int orderID, String date) {
+		this.orderID = orderID;
+		this.date = date;
+	}
+
 	private ArrayList <OrderLine> orderLineArrayList = new ArrayList <OrderLine>();
+
+
 
 	/**
 	 * Sets date.
 	 */
-	public void setDate() {
-		Date today = Calendar.getInstance().getTime();
-		this.orderDate = today.toString();
+	public void setDate(String date) {
+		this.date = date;
+	}
+
+	public void setOrderID(int orderID) {
+		this.orderID = orderID;
+	}
+
+	public int getOrderID() {
+		return orderID;
 	}
 
 	/**
@@ -43,8 +57,8 @@ public class Order {
 	 *
 	 * @return the order date
 	 */
-	public String getOrderDate() {
-		return orderDate;
+	public String getDate() {
+		return date;
 	}
 
 	/**
@@ -73,7 +87,7 @@ public class Order {
 		String s = "**********************************************************************";
 		for(int i = 0; i< orderLineArrayList.size(); i++) {
 			s+="\nORDER ID:\t\t\t"+(generateOrderID()+i);
-			s+="\nDate Ordered:\t\t"+ orderDate +"\n\n";
+			s+="\nDate Ordered:\t\t"+ date +"\n\n";
 			s+= orderLineArrayList.get(i).toString();
 			s+="**********************************************************************";
 		}
