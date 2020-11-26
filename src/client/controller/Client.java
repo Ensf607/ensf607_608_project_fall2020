@@ -51,23 +51,23 @@ public class Client {
 	 * This method is responsible with communicating with Server and GUI
 	 * 
 	 * @throws InterruptedException
-	 */
-	public void communicate() throws InterruptedException, IOException {
-		
-	
-		boolean running = true;
-		while (running) {
-//			sleep(500);
-
-		}
-		try {
-			socketIn.close();
-			socketOut.close();
-		} catch (IOException e) {
-			System.out.println("Closing error: " + e.getMessage());
-		}
-
-	}
+//	 */
+//	public void communicate() throws InterruptedException, IOException {
+//		
+//	
+//		boolean running = true;
+//		while (running) {
+////			sleep(500);
+//
+//		}
+//		try {
+//			socketIn.close();
+//			socketOut.close();
+//		} catch (IOException e) {
+//			System.out.println("Closing error: " + e.getMessage());
+//		}
+//
+//	}
 	
 
 
