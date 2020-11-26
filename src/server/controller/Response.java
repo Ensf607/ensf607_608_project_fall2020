@@ -162,7 +162,7 @@ public class Response {
             case "TOOL":
                 sql = "UPDATE TOOL "
                         +"SET ToolID = "+jsonNodeRoot.get("ToolID").asText()+", "
-                        +"SET Name = '"+jsonNodeRoot.get("Name").asText()+"', "
+                        +" Name = '"+jsonNodeRoot.get("Name").asText()+"', "
                         +"Type = '"+jsonNodeRoot.get("Type").asText()+"', "
                         +"Quantity = "+jsonNodeRoot.get("Quantity").asText()+", "
                         +"Price = "+jsonNodeRoot.get("Price").asText()+", "

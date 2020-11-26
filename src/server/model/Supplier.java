@@ -8,7 +8,7 @@ import java.util.ArrayList;
  * @version 1.0
  * @since Oct 13, 2020
  */
-public class Supplier {
+public class   Supplier {
 	private int id;
 	private String supplierName;
 	private String type;

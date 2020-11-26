@@ -91,5 +91,13 @@ public class Client {
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-	}}
+	}
+	
+	public static void main (String [] arg) {
+		Client c =new Client("localhost", 9090);
+		ModelController mc =new ModelController(c);
+		ViewController vc=new ViewController(mc);
+	}
+	
+}
 			
