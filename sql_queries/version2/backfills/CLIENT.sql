@@ -1,0 +1,11 @@
+INSERT INTO ToolShop.CLIENT (ClientID, LName, FName, Type, PhoneNum, Address, PostalCode) VALUES (17561, 'White', 'Teressa', 'Residential', '4030012891', '289  Sweetwood Drive', 'T1X 0L3');
+INSERT INTO ToolShop.CLIENT (ClientID, LName, FName, Type, PhoneNum, Address, PostalCode) VALUES (17562, 'sTANNN', 'lEEEE', 'Residential', '4039996666', '7899  Washington Street', 'T1X 0L4');
+INSERT INTO ToolShop.CLIENT (ClientID, LName, FName, Type, PhoneNum, Address, PostalCode) VALUES (17564, 'Cena', 'Moe', 'Residential', '4030012927', '3410  Coburn Hollow Road', 'T1X 0L6');
+INSERT INTO ToolShop.CLIENT (ClientID, LName, FName, Type, PhoneNum, Address, PostalCode) VALUES (17565, 'Kang', 'Khaled', 'Residential', '4030012937', '2223  Washington Street', 'T1X 1E1');
+INSERT INTO ToolShop.CLIENT (ClientID, LName, FName, Type, PhoneNum, Address, PostalCode) VALUES (17566, 'Xing', 'Omar', 'Residential', '4030012953', '2775  Colonial Drive', 'T1X 1G3');
+INSERT INTO ToolShop.CLIENT (ClientID, LName, FName, Type, PhoneNum, Address, PostalCode) VALUES (17567, 'Simmon', 'Jing', 'Commercial', '4030012961', '3120  Euclid Avenue', 'T1X 1G4');
+INSERT INTO ToolShop.CLIENT (ClientID, LName, FName, Type, PhoneNum, Address, PostalCode) VALUES (17568, 'Boggs', 'Jacob', 'Commercial', '4030012967', '3012  Fannie Street', 'T1X 1G5');
+INSERT INTO ToolShop.CLIENT (ClientID, LName, FName, Type, PhoneNum, Address, PostalCode) VALUES (17569, 'Voss', 'Edward', 'Residential', '4030012985', '3009  Fannie Street', 'T1X 0L6');
+INSERT INTO ToolShop.CLIENT (ClientID, LName, FName, Type, PhoneNum, Address, PostalCode) VALUES (17570, 'Walter', 'White', 'Residential', '4030012985', '3410  Coburn Hollow Road', '0X0 OYO');
+INSERT INTO ToolShop.CLIENT (ClientID, LName, FName, Type, PhoneNum, Address, PostalCode) VALUES (17571, 'Black', 'Teressa', 'Residential', '4030012891', '289  Sweetwood Drive', 'T1X 1G4');
+INSERT INTO ToolShop.CLIENT (ClientID, LName, FName, Type, PhoneNum, Address, PostalCode) VALUES (17572, 'Smith', 'Mike', 'Residential', '4030012907', '2378  Riverside Drive', 'T1X 0L5');

@@ -30,8 +30,6 @@ create table TOOL
 
 
 
-
-
 create table ORDER_
 (
     OrderID int auto_increment
