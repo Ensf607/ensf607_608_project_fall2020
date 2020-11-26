@@ -98,7 +98,6 @@ public class ViewController {
 		 inventoryPanel = new InventoryPanel(mc);
 		inventoryPanel.setBackground(SystemColor.inactiveCaption);
 		panel.add(inventoryPanel, "inventory");
-//		c.show(panel, "inventory");
 		
 	
 		

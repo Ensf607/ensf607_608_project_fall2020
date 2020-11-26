@@ -37,13 +37,6 @@ public class Client {
 		}
 	}
 	
-	/**
-	 * Sends request to server and gets a response via sockets
-	 * @param json
-	 * @return
-	 * @throws IOException
-	 */
-	public String send(String json) throws IOException {
 
     /**
      * Send string.
@@ -92,11 +85,7 @@ public class Client {
 		}
 	}
 	
-	public static void main (String [] arg) {
-		Client c =new Client("localhost", 9090);
-		ModelController mc =new ModelController(c);
-		ViewController vc=new ViewController(mc);
-	}
+
 	
 }
 			

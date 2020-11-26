@@ -99,99 +99,57 @@ public class CMS extends JPanel implements ActionListener, ListSelectionListener
 
 		JSplitPane splitPane_1 = new JSplitPane();
 		add(splitPane_1, BorderLayout.CENTER);
-
 		JPanel searchClientPanel = new JPanel();
 		searchClientPanel.setMinimumSize(new Dimension(900, 10));
 		searchClientPanel.setPreferredSize(new Dimension(500, 10));
 		splitPane_1.setLeftComponent(searchClientPanel);
-		GridBagLayout gbl_searchClientPanel = new GridBagLayout();
-		gbl_searchClientPanel.columnWidths = new int[] { 170, 53, 113, 0 };
-		gbl_searchClientPanel.rowHeights = new int[] { 16, 28, 25, 25, 25, 50, 25, 174, 0 };
-		gbl_searchClientPanel.columnWeights = new double[] { 0.0, 0.0, 0.0, Double.MIN_VALUE };
-		gbl_searchClientPanel.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE };
-		searchClientPanel.setLayout(gbl_searchClientPanel);
-
+		ButtonGroup bg1 =new ButtonGroup();
+		searchClientPanel.setLayout(null);
+		
 		JLabel lblNewLabel_4 = new JLabel("Select type of search to be performed");
-		GridBagConstraints gbc_lblNewLabel_4 = new GridBagConstraints();
-		gbc_lblNewLabel_4.anchor = GridBagConstraints.NORTH;
-		gbc_lblNewLabel_4.fill = GridBagConstraints.HORIZONTAL;
-		gbc_lblNewLabel_4.insets = new Insets(0, 0, 5, 0);
-		gbc_lblNewLabel_4.gridwidth = 3;
-		gbc_lblNewLabel_4.gridx = 0;
-		gbc_lblNewLabel_4.gridy = 0;
-		searchClientPanel.add(lblNewLabel_4, gbc_lblNewLabel_4);
-		ButtonGroup bg1 = new ButtonGroup();
+		lblNewLabel_4.setBounds(116, 0, 217, 16);
+		searchClientPanel.add(lblNewLabel_4);
 		clientID = new JRadioButton("Client ID");
-		GridBagConstraints gbc_clientID = new GridBagConstraints();
-		gbc_clientID.anchor = GridBagConstraints.NORTH;
-		gbc_clientID.fill = GridBagConstraints.HORIZONTAL;
-		gbc_clientID.insets = new Insets(0, 0, 5, 0);
-		gbc_clientID.gridwidth = 3;
-		gbc_clientID.gridx = 0;
-		gbc_clientID.gridy = 2;
-		searchClientPanel.add(clientID, gbc_clientID);
+		clientID.setBounds(27, 90, 217, 25);
+		searchClientPanel.add(clientID);
 		bg1.add(clientID);
 		clientID.addActionListener(this);
-
 		lName = new JRadioButton("Last Name");
-		GridBagConstraints gbc_lName = new GridBagConstraints();
-		gbc_lName.anchor = GridBagConstraints.NORTHWEST;
-		gbc_lName.insets = new Insets(0, 0, 5, 5);
-		gbc_lName.gridx = 0;
-		gbc_lName.gridy = 3;
-		searchClientPanel.add(lName, gbc_lName);
+		lName.setBounds(27, 136, 89, 25);
+		searchClientPanel.add(lName);
 		bg1.add(lName);
 		lName.addActionListener(this);
-
 		clientType = new JRadioButton("Client Type");
-		GridBagConstraints gbc_clientType = new GridBagConstraints();
-		gbc_clientType.anchor = GridBagConstraints.NORTHWEST;
-		gbc_clientType.insets = new Insets(0, 0, 5, 5);
-		gbc_clientType.gridx = 0;
-		gbc_clientType.gridy = 4;
-		searchClientPanel.add(clientType, gbc_clientType);
+		clientType.setBounds(27, 175, 93, 25);
+		searchClientPanel.add(clientType);
 		bg1.add(clientType);
 		clientType.addActionListener(this);
-
+		
 		search = new JTextField();
-		GridBagConstraints gbc_textField = new GridBagConstraints();
-		gbc_textField.insets = new Insets(0, 0, 5, 5);
-		gbc_textField.gridx = 0;
-		gbc_textField.gridy = 6;
-		searchClientPanel.add(search, gbc_textField);
+		search.setBounds(27, 252, 217, 22);
+		searchClientPanel.add(search);
 		search.setColumns(10);
-
-		searchClient = new JButton("Search");
-		GridBagConstraints gbc_searchClient = new GridBagConstraints();
-		gbc_searchClient.anchor = GridBagConstraints.NORTH;
-		gbc_searchClient.fill = GridBagConstraints.HORIZONTAL;
-		gbc_searchClient.insets = new Insets(0, 0, 5, 0);
-		gbc_searchClient.gridx = 2;
-		gbc_searchClient.gridy = 6;
-		searchClientPanel.add(searchClient, gbc_searchClient);
+		
+		 searchClient = new JButton("Search");
+		searchClient.setBounds(334, 218, 107, 25);
+		searchClientPanel.add(searchClient);
 		searchClient.addActionListener(this);
-
+		
+		clearSearch = new JButton("Clear Search");
+		clearSearch.setBounds(334, 251, 107, 25);
+		searchClientPanel.add(clearSearch);
+		clearSearch.addActionListener(this);
+		
 		JScrollPane scrollPane_1 = new JScrollPane();
-		GridBagConstraints gbc_scrollPane_1 = new GridBagConstraints();
-		gbc_scrollPane_1.anchor = GridBagConstraints.SOUTH;
-		gbc_scrollPane_1.fill = GridBagConstraints.HORIZONTAL;
-		gbc_scrollPane_1.gridwidth = 3;
-		gbc_scrollPane_1.gridx = 0;
-		gbc_scrollPane_1.gridy = 7;
-		searchClientPanel.add(scrollPane_1, gbc_scrollPane_1);
-
+		scrollPane_1.setBounds(27, 280, 414, 156);
+		searchClientPanel.add(scrollPane_1);
+		
 		list = new JList();
 		scrollPane_1.setViewportView(list);
-
+		list.addListSelectionListener(this) ;
+			
 		list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
-		clearSearch = new JButton("Clear Search");
-		GridBagConstraints gbc_clearSearch = new GridBagConstraints();
-		gbc_clearSearch.anchor = GridBagConstraints.NORTHWEST;
-		gbc_clearSearch.gridx = 2;
-		gbc_clearSearch.gridy = 7;
-		searchClientPanel.add(clearSearch, gbc_clearSearch);
-		clearSearch.addActionListener(this);
 
 		JPanel clientInfoPanel = new JPanel();
 		clientInfoPanel.setBackground(SystemColor.inactiveCaption);
@@ -516,11 +474,11 @@ public class CMS extends JPanel implements ActionListener, ListSelectionListener
 			comboBoxClientMgmnt.setSelectedIndex(-1);
 
 		} else if (e.getSource() == clientID) {
-			option = 1;
+			this.option = 1;
 		} else if (e.getSource() == lName) {
-			option = 2;
+			this.option = 2;
 		} else if (e.getSource() == clientType) {
-			option = 3;
+			this.option = 3;
 		} else if (e.getSource() == clearSearch) {
 			empty = true;
 			search.setText("");
