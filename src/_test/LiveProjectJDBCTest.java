@@ -1,3 +1,5 @@
+package _test;
+
 import com.fasterxml.jackson.core.JsonProcessingException;
 import liveops.classes.JDBCAdminRoutines;
 import org.junit.Test;

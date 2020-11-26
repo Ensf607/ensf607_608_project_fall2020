@@ -1,3 +1,6 @@
+package _test;
+
+
 import org.junit.Test;
 import server.model.Customer;
 
