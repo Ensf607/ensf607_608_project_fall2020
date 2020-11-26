@@ -23,7 +23,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import client.controller.Observer;
-
+/**
+ * This is the purchase panel , created after the user elects a row in the tablepanel
+ * @author zchem
+ *
+ */
 public class PurchasePanel extends JPanel implements ActionListener{
 
 	private Observer mc;
@@ -167,6 +171,7 @@ public class PurchasePanel extends JPanel implements ActionListener{
 		gbc_totalField.gridx = 1;
 		gbc_totalField.gridy = 6;
 		add(totalField, gbc_totalField);
+		//To check if the actual quatitiy is > than purchased quantity
 		qtyField.addCaretListener(new CaretListener() {
 			public void caretUpdate(CaretEvent e) {
 				if(Integer.parseInt(qtyField.getText())>(Integer)variableList.get(3)) {
@@ -262,6 +267,7 @@ public class PurchasePanel extends JPanel implements ActionListener{
 						 response=mc.request(request);
 						 System.err.println("response"+response);
 						 JOptionPane.showMessageDialog(null, "Thank you for your purchase "+arrayNode[0].get("FName").asText()+"!");
+						 
 						 c.show(panel,"table");
 						}
 					else 

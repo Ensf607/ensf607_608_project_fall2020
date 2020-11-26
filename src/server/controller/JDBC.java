@@ -239,8 +239,7 @@ public class JDBC {
                 int orderID=generateOrderID();
                 createOrder(orderID);
                 createOrderLine(orderID);
-                //updateToolTable(rs);
-                //do we update ITEM ??
+                updateToolTable(rs);
             }
             else
                 System.err.println("No New ORDERES CREATED");
@@ -251,7 +250,7 @@ public class JDBC {
     }
     private void updateToolTable(ResultSet rs2) {
         try {
-            System.err.println("UPDATEING TOOL");
+            System.err.println("UPDATEING TOOL TABLE!! WITH NEW ORDERS");
             String table = "TOOL";
             query("use ToolShop;");
             String query = "UPDATE "+table+" SET Quantity=? WHERE ToolID= ?";
@@ -385,9 +384,7 @@ public class JDBC {
 
             PreparedStatement pStat = null;
             if (Utils.isInteger(strWithWildcard)||Utils.isNumeric(strWithWildcard)){
-//                System.out.println(Utils.isInteger(strWithWildcard) +" "+  Utils.isNumeric(strWithWildcard));
                 query = query.replace("?",strWithWildcard);
-//                System.out.println(query);
                 pStat = conn.prepareStatement(query);
             }
             if (!(Utils.isInteger(strWithWildcard)||Utils.isNumeric(strWithWildcard))){
@@ -395,7 +392,6 @@ public class JDBC {
                 pStat.setString(1, strWithWildcard);
             }
 
-            System.out.println(strWithWildcard+ " "+ pStat);
             rs = pStat.executeQuery();
             metaData=rs.getMetaData();
             switch (table){
@@ -525,7 +521,6 @@ public class JDBC {
         ArrayNode arrayNode = mapper.createArrayNode();
 
         while(rs.next()) {
-            System.err.println(metaData.getColumnName(1)+rs.getInt(1));
             ObjectNode node = new ObjectMapper().createObjectNode();
             node.put(metaData.getColumnName(1), rs.getInt(1));
             node.put(metaData.getColumnName(2), rs.getString(2));
@@ -554,7 +549,6 @@ public class JDBC {
         ArrayNode arrayNode = mapper.createArrayNode();
 
         while(rs.next()) {
-            System.err.println(metaData.getColumnName(1)+rs.getInt(1));
             ObjectNode node = new ObjectMapper().createObjectNode();
             node.put(metaData.getColumnName(1), rs.getInt(1));
             node.put(metaData.getColumnName(2), rs.getString(2));

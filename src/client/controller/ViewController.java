@@ -43,7 +43,12 @@ import client.view.InventoryPanel;
 import client.view.LoginPanel;
 
 import javax.swing.AbstractListModel;
-
+/**
+ * This class is the main controller for all of the GUI controlleres , it is responsible of crearitn all the necessary panel nedde for the 
+ * gui
+ * @author zchem
+ *
+ */
 public class ViewController {
 
 	private JFrame frame;
@@ -52,11 +57,8 @@ public class ViewController {
 	private LoginPanel loginPanel;
 
 	/**
-	 * Launch the application.
-	 */
-
-	/**
-	 * Create the application.
+	 * Ctor
+	 * @param mc
 	 */
 	public ViewController(Observer mc) {
 		this.mc=mc;

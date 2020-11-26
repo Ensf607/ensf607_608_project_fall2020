@@ -26,7 +26,6 @@ public class ThreadPool implements Runnable{
 			String request = "";
 			String response = "";
 			try {
-				System.err.println(request);
 				request = thread.stdIn();
 				System.out.println("client request: "+request);
 			} catch (IOException e) {
@@ -43,7 +42,7 @@ public class ThreadPool implements Runnable{
 
 
 //			System.out.println("model controller running");
-			//sleep(100);
+			sleep(100);
 		}
 	}
 

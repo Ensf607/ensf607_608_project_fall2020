@@ -15,11 +15,9 @@ public class Request {
         switch (type){
             case "GET":
                 r = response.getHandler(request);
-                System.out.println(r); // disable this for production
                 break;
             case "POST":
                  response.postHandler(request);
-                System.out.println(r);
                 break;
             case "PUT":
                 response.putHandler(request); // TODO: complete full api by returning error message

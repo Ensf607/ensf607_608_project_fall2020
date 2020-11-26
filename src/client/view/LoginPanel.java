@@ -27,7 +27,12 @@ boolean loginStatus=false;
 private JsonParser respose;
 private CardLayout c;
 private JPanel panel;
-
+/**
+ * Login panel to get to CMS, this panel will be skipped if the loginStatus is true
+ * @param mc
+ * @param c
+ * @param panel
+ */
 public LoginPanel(Observer mc, CardLayout c, JPanel panel) {
 	 this.mc=mc;
 	 this.c=c;
@@ -77,7 +82,6 @@ public void actionPerformed(ActionEvent e) {
 						JOptionPane.showMessageDialog(null,"Wrong login !!");
 				
 			} catch (IOException e1) {
-				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
 		}

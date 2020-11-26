@@ -25,7 +25,11 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import client.controller.Observer;
-
+/**
+ * In
+ * @author zchem
+ *
+ */
 public class InventoryPanel extends JPanel implements ActionListener{
 private JButton search;
 private JButton listTools;
@@ -42,6 +46,7 @@ public InventoryPanel(Observer mc) {
 	this.mc=mc;
 	setBackground(SystemColor.inactiveCaption);
 	setLayout(new BorderLayout(0, 0));
+	//splits the panel into two section, header contains all the buttons search,listtool
 	JSplitPane splitPane = new JSplitPane();
 	splitPane.setDoubleBuffered(true);
 	splitPane.setOrientation(JSplitPane.VERTICAL_SPLIT);
@@ -78,7 +83,7 @@ public InventoryPanel(Observer mc) {
 	listTools.setBounds(485, 61, 134, 25);
 	headerPanel.add(listTools);
 	listTools.addActionListener(this);
-	
+	//Bottom half of the panel contains multiple panels such as table and purchase panels
 	displayPanel = new JPanel();
 	displayPanel.setBackground(SystemColor.scrollbar);
 	displayPanel.setMinimumSize(new Dimension(10, 600));
@@ -104,23 +109,13 @@ public void actionPerformed(ActionEvent e) {
 		if (response!=null) {
 		try {
 			arrayNode=mapper.readValue(response, ObjectNode[].class);
-			tablePanel.populateTable(arrayNode);
+			tablePanel.populateTable(arrayNode);//fills the table with response
 		} catch (JsonProcessingException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}}
 		else 
 			JOptionPane.showMessageDialog(null, "Error reading tool list");
-//		 ArrayList<Object>temp =new ArrayList<Object>();
-//		 temp.add(1000);
-//		 temp.add("baolloon");
-//		 temp.add("NON");
-//		 temp.add(60);
-//		 temp.add(12.5);
-//		 temp.add(100022);
-//		 temp.add("NON");
-//		 System.err.println(temp.toString());
-//		tablePanel.populateTable(temp);
+
 	}
 	else if (e.getSource()==search) {
 		if(comboBox.getSelectedItem().equals("Search by ToolID"))
@@ -129,8 +124,6 @@ public void actionPerformed(ActionEvent e) {
 			String request="{ \"type\" : \"GET\", \"table\" : \"TOOL\" , \"scope\":\"select\",\"field\":\"ToolID\",\"field_value\":\""+Integer.parseInt(searchField.getText())+"\"}";
 		
 			String response=mc.request(request);
-			System.err.println(response.isEmpty());
-			System.err.println(response.length());
 			if (response.length()>3) {//for somereason len of response is 3 for tools not found
 				try {
 					arrayNode=mapper.readValue(response, ObjectNode[].class);

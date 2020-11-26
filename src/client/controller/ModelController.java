@@ -6,25 +6,26 @@ import java.io.IOException;
 
 public class ModelController implements Observer{
 	private Client c;
+	/**
+	 * ctor to set Client object
+	 * @param c
+	 */
 	public ModelController(Client c) {
 		this.c=c;
 	
 	}
 	/**
-	 * This method is used by you gui whenever a button is pressed
-	 * @param json
-	 * @return
+	 * implement the method in Observer interface
 	 */
 	public String request(String json) {
-		//sends msg to server/ and gets response
 		
 		System.out.println("GOT A MESSAGE FROM GUI EVENT");
 		
 		try {
 			String response =c.send(json);
+			System.out.println("Got response from server !!");
 			return response;
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return null;

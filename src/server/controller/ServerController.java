@@ -55,7 +55,7 @@ public class ServerController {
 				socketOut = new PrintWriter(aSocket.getOutputStream(), true);
 				ThreadPool threadPool = new ThreadPool(this);
 				pool.execute(threadPool);
-				System.err.println("Accepte");
+				System.err.println("Accepted connection");
 			}
 
 		} catch (IOException e) {

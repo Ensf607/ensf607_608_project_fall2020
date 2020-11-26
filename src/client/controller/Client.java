@@ -38,36 +38,21 @@ public class Client {
 		}
 	}
 	
+	/**
+	 * Sends request to server and gets a response via sockets
+	 * @param json
+	 * @return
+	 * @throws IOException
+	 */
 	public String send(String json) throws IOException {
 
 		System.out.println("SENDNG MSG TO  RequestHandler on SERVER SIDE....via sockets and wait for response");
-		System.err.println(json);
 		socketOut.println(json);
 		String response=getServerResponse();
 		return response;
 		
 	}
-	/**
-	 * This method is responsible with communicating with Server and GUI
-	 * 
-	 * @throws InterruptedException
-//	 */
-//	public void communicate() throws InterruptedException, IOException {
-//		
-//	
-//		boolean running = true;
-//		while (running) {
-////			sleep(500);
-//
-//		}
-//		try {
-//			socketIn.close();
-//			socketOut.close();
-//		} catch (IOException e) {
-//			System.out.println("Closing error: " + e.getMessage());
-//		}
-//
-//	}
+	
 	
 
 

@@ -18,7 +18,6 @@ public class Response {
             case "select":
                 String field = jsonNodeRoot.get("field").asText();
                 String fieldValue = jsonNodeRoot.get("field_value").asText();
-//                System.out.println(field + " " + fieldValue);
                 return jdbc.getSearchResult(tableName, field, fieldValue);
             default:
                 return "";
@@ -42,7 +41,6 @@ public class Response {
                         jsonNodeRoot.get("Address").asText(),
                         jsonNodeRoot.get("PostalCode").asText()
                 ));
-//                System.out.println(mc.getClient().toString());
                 jdbc.insertIntoCLIENT(String.valueOf(mc.getClient().getClientID()),
                         mc.getClient().getFirstName(),
                         mc.getClient().getLastName(),
@@ -180,7 +178,6 @@ public class Response {
                         +"Address = '"+jsonNodeRoot.get("Address").asText()+"', "
                         +"PostalCode = '"+jsonNodeRoot.get("PostalCode").asText()+"'"
                         + " WHERE " + "ClientID" +" = "+jsonNodeRoot.get("ClientID").asText()+";";
-                System.out.println(sql);
                 jdbc.query(sql);
                 jdbc.checkInventory();
                 break;
@@ -239,11 +236,9 @@ public class Response {
 
     private static JDBC getJdbc() {
         JDBC jdbc = new JDBC();
-//        jdbc.connectDB("18.236.191.241:3306", "ToolShop", "testadmin", "passw0rd");
         jdbc.query("use ToolShop;");
         return jdbc;
     }
 
-    public static void main(String[] args) throws JsonProcessingException {
-    }
+   
 }

@@ -37,6 +37,12 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import client.controller.Observer;
 
+/**
+ * Client Management system controller
+ * 
+ * @author zchem
+ *
+ */
 public class CMS extends JPanel implements ActionListener, ListSelectionListener {
 	private Observer mc;
 	private JTextField search;
@@ -59,7 +65,7 @@ public class CMS extends JPanel implements ActionListener, ListSelectionListener
 	private JRadioButton clientID;
 	ObjectMapper mapper = new ObjectMapper();
 	ObjectNode[] array;
-	boolean empty=true;
+	boolean empty = true;
 	private ArrayList<String> values;
 	private JButton addCustomer;
 
@@ -392,13 +398,12 @@ public class CMS extends JPanel implements ActionListener, ListSelectionListener
 					try {
 						populateList(response);
 					} catch (JsonProcessingException e1) {
-						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
 				} else
 					JOptionPane.showMessageDialog(null, "Client Not Found");
 			} else if (option == 2) {
-				//using lname
+				// using lname
 				String request = "{\"type\":\"GET\",\"table\":\"CLIENT\",\"scope\":\"select\",\"field\":\"LName\",\"field_value\":\""
 						+ search.getText() + "\"}";
 				String response = mc.request(request);
@@ -412,7 +417,7 @@ public class CMS extends JPanel implements ActionListener, ListSelectionListener
 				} else
 					JOptionPane.showMessageDialog(null, "Client Not Found");
 			} else if (option == 3) {
-				//using  type
+				// using type
 				String request = "{\"type\":\"GET\",\"table\":\"CLIENT\",\"scope\":\"select\",\"field\":\"Type\",\"field_value\":\""
 						+ search.getText() + "\"}";
 				String response = mc.request(request);
@@ -428,14 +433,18 @@ public class CMS extends JPanel implements ActionListener, ListSelectionListener
 				JOptionPane.showMessageDialog(null, "Select a option");
 			}
 		} else if (e.getSource() == saveBtn) {
-				if(!empty) {
-	        String type="";
-	        if (comboBoxClientMgmnt.getSelectedIndex()==0)
-	        	type="Residential";
-	        else if (comboBoxClientMgmnt.getSelectedIndex()==1)
-	        	type="Commercial";
-			String request="{\"type\":\"POST\",\"table\":\"CLIENT\",\"ClientID\":\""+clientIDCMS.getText()+"\",\"LName\":\""+lNameCMS.getText()+"\",\"FName\":\""+fnameCMS.getText()+"\",\"Type\":\""+type+"\",\"PhoneNum\":\""+phoneCMS.getText()+"\",\"Address\":\""+addressCMS.getText()+"\",\"PostalCode\":\""+postalCodeCMS.getText()+"\"}";
+			if (!empty) {
+				String type = "";
+				if (comboBoxClientMgmnt.getSelectedIndex() == 0)
+					type = "Residential";
+				else if (comboBoxClientMgmnt.getSelectedIndex() == 1)
+					type = "Commercial";
+				String request = "{\"type\":\"POST\",\"table\":\"CLIENT\",\"ClientID\":\"" + clientIDCMS.getText()
+						+ "\",\"LName\":\"" + lNameCMS.getText() + "\",\"FName\":\"" + fnameCMS.getText()
+						+ "\",\"Type\":\"" + type + "\",\"PhoneNum\":\"" + phoneCMS.getText() + "\",\"Address\":\""
+						+ addressCMS.getText() + "\",\"PostalCode\":\"" + postalCodeCMS.getText() + "\"}";
 				mc.request(request);
+				// clearing fields/list
 				clientIDCMS.setText("");
 				fnameCMS.setText("");
 				lNameCMS.setText("");
@@ -447,16 +456,17 @@ public class CMS extends JPanel implements ActionListener, ListSelectionListener
 				try {
 					populateList("[]");
 				} catch (JsonProcessingException e1) {
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
-				}
-				else JOptionPane.showMessageDialog(null, "Search for client first");
+			} else
+				JOptionPane.showMessageDialog(null, "Search for client first");
 		} else if (e.getSource() == deleteBtn) {
-			if(!empty) {
-				String request="{\"type\":\"DELETE\",\"table\":\"CLIENT\",\"field\":\"ClientID\",\"field_value\":\""+clientIDCMS.getText()+"\"}";
+			if (!empty) {
+				String request = "{\"type\":\"DELETE\",\"table\":\"CLIENT\",\"field\":\"ClientID\",\"field_value\":\""
+						+ clientIDCMS.getText() + "\"}";
 				mc.request(request);
-				empty=true;
+				// clearing fields/list
+				empty = true;
 				clientIDCMS.setText("");
 				fnameCMS.setText("");
 				lNameCMS.setText("");
@@ -468,17 +478,14 @@ public class CMS extends JPanel implements ActionListener, ListSelectionListener
 				try {
 					populateList("[]");
 				} catch (JsonProcessingException e1) {
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
-				
-			}
-			else JOptionPane.showMessageDialog(null, "Search for client first");
-			
-			
-		} 
-		else if (e.getSource() == clearBtn) {
-			empty=true;
+
+			} else
+				JOptionPane.showMessageDialog(null, "Search for client first");
+
+		} else if (e.getSource() == clearBtn) {
+			empty = true;
 			clientIDCMS.setText("");
 			fnameCMS.setText("");
 			lNameCMS.setText("");
@@ -486,38 +493,41 @@ public class CMS extends JPanel implements ActionListener, ListSelectionListener
 			postalCodeCMS.setText("");
 			phoneCMS.setText("");
 			comboBoxClientMgmnt.setSelectedIndex(-1);
-			
+
 		} else if (e.getSource() == clientID) {
 			option = 1;
 		} else if (e.getSource() == lName) {
 			option = 2;
 		} else if (e.getSource() == clientType) {
 			option = 3;
-		}
-		else if (e.getSource()==clearSearch) {
-			empty=true;
+		} else if (e.getSource() == clearSearch) {
+			empty = true;
 			search.setText("");
 			try {
 				populateList("[]");
 			} catch (JsonProcessingException e1) {
-				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
-		}
-		else if (e.getSource()==addCustomer) {
-			if(lNameCMS.getText().isEmpty() || fnameCMS.getText().isEmpty() || comboBoxClientMgmnt.getSelectedIndex()==-1 ||phoneCMS.getText().isEmpty() || addressCMS.getText().isEmpty()||postalCodeCMS.getText().isEmpty())
-					JOptionPane.showMessageDialog(null, "Please fill all fields prior to creating new customer");
+		} else if (e.getSource() == addCustomer) {
+			if (lNameCMS.getText().isEmpty() || fnameCMS.getText().isEmpty()
+					|| comboBoxClientMgmnt.getSelectedIndex() == -1 || phoneCMS.getText().isEmpty()
+					|| addressCMS.getText().isEmpty() || postalCodeCMS.getText().isEmpty())
+				JOptionPane.showMessageDialog(null, "Please fill all fields prior to creating new customer");
 			else {
-				String type="";
-				if (comboBoxClientMgmnt.getSelectedIndex()==0)
-		        	type="Residential";
-		        else if (comboBoxClientMgmnt.getSelectedIndex()==1)
-		        	type="Commercial";
-				int id =generateCustomerID();
-				clientIDCMS.setText(id+"");
-				String request="{\"type\":\"PUT\",\"table\":\"CLIENT\",\"ClientID\":\""+clientIDCMS.getText()+"\",\"LName\":\""+lNameCMS.getText()+"\",\"FName\":\""+fnameCMS.getText()+"\",\"Type\":\""+type+"\",\"PhoneNum\":\""+phoneCMS.getText()+"\",\"Address\":\""+addressCMS.getText()+"\",\"PostalCode\":\""+postalCodeCMS.getText()+"\"}";
+				String type = "";
+				if (comboBoxClientMgmnt.getSelectedIndex() == 0)
+					type = "Residential";
+				else if (comboBoxClientMgmnt.getSelectedIndex() == 1)
+					type = "Commercial";
+				int id = generateCustomerID();
+				clientIDCMS.setText(id + "");
+				String request = "{\"type\":\"PUT\",\"table\":\"CLIENT\",\"ClientID\":\"" + clientIDCMS.getText()
+						+ "\",\"LName\":\"" + lNameCMS.getText() + "\",\"FName\":\"" + fnameCMS.getText()
+						+ "\",\"Type\":\"" + type + "\",\"PhoneNum\":\"" + phoneCMS.getText() + "\",\"Address\":\""
+						+ addressCMS.getText() + "\",\"PostalCode\":\"" + postalCodeCMS.getText() + "\"}";
 				mc.request(request);
-				empty=true;
+				// clearing fields/list
+				empty = true;
 				clientIDCMS.setText("");
 				fnameCMS.setText("");
 				lNameCMS.setText("");
@@ -527,15 +537,19 @@ public class CMS extends JPanel implements ActionListener, ListSelectionListener
 				comboBoxClientMgmnt.setSelectedIndex(-1);
 				JOptionPane.showMessageDialog(null, "Customer Added");
 			}
-				
+
 		}
 	}
 
+	/**
+	 * This method if for the JList , it will populate the fields in Client info
+	 * panel
+	 */
 	@Override
 	public void valueChanged(ListSelectionEvent e) {
-		empty=false;
-		ObjectNode dummy = array[list.getSelectedIndex()];
 
+		empty = false;
+		ObjectNode dummy = array[list.getSelectedIndex()];
 		clientIDCMS.setText(dummy.get("ClientID").asText());
 		fnameCMS.setText(dummy.get("FName").asText());
 		lNameCMS.setText(dummy.get("LName").asText());
@@ -547,9 +561,13 @@ public class CMS extends JPanel implements ActionListener, ListSelectionListener
 		else
 			comboBoxClientMgmnt.setSelectedIndex(1);
 	}
-	   public int generateCustomerID(){
-	        Random r = new Random( System.currentTimeMillis() );
-	        return ((1 + r.nextInt(2)) * 10000 + r.nextInt(10000));
-	    }
+/**
+ * Generate a unique client ID
+ * @return
+ */
+	public int generateCustomerID() {
+		Random r = new Random(System.currentTimeMillis());
+		return ((1 + r.nextInt(2)) * 10000 + r.nextInt(10000));
+	}
 
 }
