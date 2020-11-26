@@ -26,6 +26,8 @@ create table TOOL
     SupplierID int null,
     constraint TOOL_SUPPLIER_SupplierID_fk
         foreign key (SupplierID) references SUPPLIER (SupplierID)
+            on update cascade on delete restrict
+
 );
 
 
@@ -46,13 +48,13 @@ create table ORDERLINE
     primary key (OrderID, ToolID),
     constraint ORDERLINE_ORDER__OrderID_fk
         foreign key (OrderID) references ORDER_ (OrderID)
-            on update cascade,
+            on update cascade on delete restrict,
     constraint ORDERLINE_SUPPLIER_SupplierID_fk
         foreign key (SupplierID) references SUPPLIER (SupplierID)
-            on update cascade,
+            on update cascade on delete restrict,
     constraint ORDERLINE_TOOL_ToolID_fk
         foreign key (ToolID) references TOOL (ToolID)
-            on update cascade
+            on update cascade on delete restrict
 );
 
 create table CLIENT
@@ -75,10 +77,10 @@ create table PURCHASE
     primary key (ClientID, ToolID, Date),
     constraint PURCHASE_CLIENT_ClientID_fk
         foreign key (ClientID) references CLIENT (ClientID)
-            on update cascade,
+            on update cascade on delete restrict,
     constraint PURCHASE_TOOL_ToolID_fk
         foreign key (ToolID) references TOOL (ToolID)
-            on update cascade
+            on update cascade on delete restrict
 );
 
 create table ELECTRICAL
@@ -88,7 +90,7 @@ create table ELECTRICAL
     PowerType varchar(20) null,
     constraint ELECTRICAL_TOOL_ToolID_fk
         foreign key (ToolID) references TOOL (ToolID)
-            on update cascade
+            on update cascade on delete restrict
 );
 
 create table INTERNATIONAL
@@ -98,7 +100,7 @@ create table INTERNATIONAL
     ImportTax float null,
     constraint INTERNATIONAL_SUPPLIER_SupplierID_fk
         foreign key (SupplierID) references SUPPLIER (SupplierID)
-            on update cascade
+            on update cascade on delete restrict
 );
 
 
