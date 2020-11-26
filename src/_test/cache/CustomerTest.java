@@ -7,6 +7,11 @@ import server.model.Customer;
  * https://blog.codota.com/how-to-convert-a-java-object-into-a-json-string/
  */
 public class CustomerTest {
+    /**
+     * The entry point of application.
+     *
+     * @param args the input arguments
+     */
     public static void main(String[] args) {
         Customer testCustomer = new Customer(01,"Jason",
                 "Lol",

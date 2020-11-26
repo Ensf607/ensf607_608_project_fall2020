@@ -18,6 +18,9 @@ import javax.swing.JTextField;
 
 import client.controller.Observer;
 
+/**
+ * The type New customer panel.
+ */
 public class NewCustomerPanel extends JPanel implements ActionListener {
 private JTextField fNameNew;
 private JTextField lNameNew;
@@ -30,7 +33,12 @@ private JPanel panel;
 private Observer mc;
 private JButton createClient;
 
-public NewCustomerPanel(Observer mc) {
+    /**
+     * Instantiates a new New customer panel.
+     *
+     * @param mc the mc
+     */
+    public NewCustomerPanel(Observer mc) {
 	this.mc=mc;
 	setBackground(SystemColor.inactiveCaption);
 	GridBagLayout gbl_newCustomerPanel = new GridBagLayout();
@@ -158,10 +166,22 @@ public NewCustomerPanel(Observer mc) {
 	add(createClient, gbc_createClient);
 	createClient.addActionListener(this);
 }
-public void setCardLayout(CardLayout c) {
+
+    /**
+     * Sets card layout.
+     *
+     * @param c the c
+     */
+    public void setCardLayout(CardLayout c) {
 	this.c=c;
 }
-public void setPanel(JPanel panel) {
+
+    /**
+     * Sets panel.
+     *
+     * @param panel the panel
+     */
+    public void setPanel(JPanel panel) {
 	this.panel=panel;
 }
 @Override

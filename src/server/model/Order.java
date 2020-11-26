@@ -5,6 +5,7 @@ import java.util.Random;
 
 /**
  * The type Order.
+ *
  * @author stan chen
  * @version 1.0
  * @since Oct 13, 2020
@@ -14,7 +15,13 @@ public class Order {
 	private int orderID;
 	private String date;
 
-	public Order(int orderID, String date) {
+    /**
+     * Instantiates a new Order.
+     *
+     * @param orderID the order id
+     * @param date    the date
+     */
+    public Order(int orderID, String date) {
 		this.orderID = orderID;
 		this.date = date;
 	}
@@ -22,28 +29,39 @@ public class Order {
 	private ArrayList <OrderLine> orderLineArrayList = new ArrayList <OrderLine>();
 
 
-
-	/**
-	 * Sets date.
-	 */
-	public void setDate(String date) {
+    /**
+     * Sets date.
+     *
+     * @param date the date
+     */
+    public void setDate(String date) {
 		this.date = date;
 	}
 
-	public void setOrderID(int orderID) {
+    /**
+     * Sets order id.
+     *
+     * @param orderID the order id
+     */
+    public void setOrderID(int orderID) {
 		this.orderID = orderID;
 	}
 
-	public int getOrderID() {
+    /**
+     * Gets order id.
+     *
+     * @return the order id
+     */
+    public int getOrderID() {
 		return orderID;
 	}
 
-	/**
-	 * Check item.
-	 *
-	 * @param itemCheck the item to check
-	 */
-	public void checkItem(Item itemCheck) {
+    /**
+     * Check item.
+     *
+     * @param itemCheck the item to check
+     */
+    public void checkItem(Item itemCheck) {
 		OrderLine orderLine = new OrderLine();
 		orderLine.setItem(itemCheck);
 		orderLine.setAmount();
@@ -52,32 +70,32 @@ public class Order {
 		this.orderLineArrayList.add(orderLine);
 	}
 
-	/**
-	 * Gets order date.
-	 *
-	 * @return the order date
-	 */
-	public String getDate() {
+    /**
+     * Gets order date.
+     *
+     * @return the order date
+     */
+    public String getDate() {
 		return date;
 	}
 
-	/**
-	 * Generate order id int.
-	 *
-	 * @return the int
-	 */
-	public int generateOrderID(){
+    /**
+     * Generate order id int.
+     *
+     * @return the int
+     */
+    public int generateOrderID(){
 		Random r = new Random( System.currentTimeMillis() );
 		return ((1 + r.nextInt(2)) * 10000 + r.nextInt(10000));
 	}
 
 
-	/**
-	 * Gets order line array list.
-	 *
-	 * @return the order line array list
-	 */
-	public ArrayList<OrderLine> getOrderLineArrayList() {
+    /**
+     * Gets order line array list.
+     *
+     * @return the order line array list
+     */
+    public ArrayList<OrderLine> getOrderLineArrayList() {
 		return orderLineArrayList;
 	}
 

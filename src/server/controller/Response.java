@@ -1,12 +1,21 @@
 package server.controller;
 
-import client.controller.Client;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import server.model.*;
 
+/**
+ * The type Response.
+ */
 public class Response {
+    /**
+     * Gets handler.
+     *
+     * @param request the request
+     * @return the handler
+     * @throws JsonProcessingException the json processing exception
+     */
     static String getHandler(String request) throws JsonProcessingException {
         ObjectMapper objectMapper = new ObjectMapper();
         JsonNode jsonNodeRoot = objectMapper.readTree(request);
@@ -24,6 +33,12 @@ public class Response {
         }
     }
 
+    /**
+     * Put handler.
+     *
+     * @param request the request
+     * @throws JsonProcessingException the json processing exception
+     */
     public static void putHandler(String request) throws JsonProcessingException {
         ObjectMapper objectMapper = new ObjectMapper();
         JsonNode jsonNodeRoot = objectMapper.readTree(request);
@@ -145,9 +160,10 @@ public class Response {
 
     /**
      * Right now by default it's updating everything if gui need to enter something.
-     * @param request
-     * @throws JsonProcessingException
-     * @return
+     *
+     * @param request the request
+     * @return string
+     * @throws JsonProcessingException the json processing exception
      */
     static String postHandler(String request) throws JsonProcessingException {
         String message = "{\"error\" : \"0\" }"; // {"error" : "0" }
@@ -192,6 +208,12 @@ public class Response {
 
     }
 
+    /**
+     * Delete handler.
+     *
+     * @param request the request
+     * @throws JsonProcessingException the json processing exception
+     */
     static void deleteHandler(String request) throws JsonProcessingException {
         ObjectMapper objectMapper = new ObjectMapper();
         JsonNode jsonNodeRoot = objectMapper.readTree(request);
@@ -240,5 +262,12 @@ public class Response {
         return jdbc;
     }
 
-   
+    /**
+     * The entry point of application.
+     *
+     * @param args the input arguments
+     * @throws JsonProcessingException the json processing exception
+     */
+    public static void main(String[] args) throws JsonProcessingException {
+    }
 }

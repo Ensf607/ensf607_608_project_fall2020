@@ -1,10 +1,15 @@
 package client.controller;
+
 /**
- * Interface used by GUI controllers to send requests
- * @author zchem
- *
+ * The interface Observer.
  */
 public interface Observer {
 
-	public String request(String json);
+    /**
+     * Request string.
+     *
+     * @param json the json
+     * @return the string
+     */
+    public String request(String json);
 }

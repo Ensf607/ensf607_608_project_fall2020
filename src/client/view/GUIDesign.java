@@ -40,6 +40,9 @@ import java.awt.event.ActionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.event.ListSelectionEvent;
 
+/**
+ * The type Gui design.
+ */
 public class GUIDesign {
 
 	private JFrame frame;
@@ -68,10 +71,12 @@ public class GUIDesign {
 	private JTextField userNameField;
 	private JTextField passwordField;
 
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
+    /**
+     * Launch the application.
+     *
+     * @param args the input arguments
+     */
+    public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -84,10 +89,10 @@ public class GUIDesign {
 		});
 	}
 
-	/**
-	 * Create the application.
-	 */
-	public GUIDesign() {
+    /**
+     * Create the application.
+     */
+    public GUIDesign() {
 		initialize();
 	}
 

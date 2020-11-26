@@ -3,7 +3,15 @@ import liveops.classes.JDBCPreProject;
 
 import server.controller.JDBC;
 
+/**
+ * The type Pre project jdbc test.
+ */
 class PreProjectJDBCTest {
+    /**
+     * The entry point of application.
+     *
+     * @param args the input arguments
+     */
     public static void main(String[] args) {
         preProjectJDBCDemo();
     }

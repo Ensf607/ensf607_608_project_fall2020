@@ -11,6 +11,9 @@ import javax.rmi.CORBA.Util;
 
 import static java.lang.Thread.sleep;
 
+/**
+ * The type Request response test.
+ */
 public class RequestResponseTest {
 //    public static void main(String[] args) throws JsonProcessingException, InterruptedException {
 //        testSelectWhereOrder();
@@ -18,6 +21,11 @@ public class RequestResponseTest {
 //        testSelectWhereClient();
 //    }
 
+    /**
+     * Test select where order.
+     *
+     * @throws JsonProcessingException the json processing exception
+     */
     @Test
     public static void testSelectWhereOrder() throws JsonProcessingException {
         /**
@@ -30,6 +38,11 @@ public class RequestResponseTest {
 
     }
 
+    /**
+     * Test select where client.
+     *
+     * @throws JsonProcessingException the json processing exception
+     */
     @Test
     public static void testSelectWhereClient() throws JsonProcessingException {
         /**
@@ -40,6 +53,11 @@ public class RequestResponseTest {
         testRequest(getSelectTable);
     }
 
+    /**
+     * Test full select.
+     *
+     * @throws JsonProcessingException the json processing exception
+     */
     @Test
     public static void testFullSelect() throws JsonProcessingException {
         /**
@@ -50,6 +68,12 @@ public class RequestResponseTest {
         testRequest(getFullTable);
     }
 
+    /**
+     * Test request.
+     *
+     * @param request the request
+     * @throws JsonProcessingException the json processing exception
+     */
     public static void testRequest(String request) throws JsonProcessingException {
         Request r = new Request();
         System.out.println("response is :\n"+r.requestHandler(request));
@@ -66,12 +90,23 @@ public class RequestResponseTest {
     }
 
 
+    /**
+     * User login test.
+     *
+     * @throws JsonProcessingException the json processing exception
+     */
     @Test
     public static void userLoginTest() throws JsonProcessingException {
         Request r = new Request();
         String request = "{\"type\" : \"POST\", \"table\" : \"USER\", \"scope\": \"login\", \"username\":\"user01\", \"password\":\"hello123\"}"; //{"type" : "POST", "table" : "USER", "scope": "login", "username":"user01", "password":"hello123"}
         r.requestHandler(request);
     }
+
+    /**
+     * User login test 2.
+     *
+     * @throws JsonProcessingException the json processing exception
+     */
     @Test
     public static void userLoginTest2 () throws JsonProcessingException {
         Request r = new Request();
@@ -79,6 +114,12 @@ public class RequestResponseTest {
         r.requestHandler(request);
     }
 
+    /**
+     * The entry point of application.
+     *
+     * @param args the input arguments
+     * @throws JsonProcessingException the json processing exception
+     */
     public static void main(String[] args) throws JsonProcessingException {
 //        testSelectFieldFromOrder();
 //        userLoginTest();

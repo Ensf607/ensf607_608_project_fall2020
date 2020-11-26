@@ -3,14 +3,18 @@ package client.controller;
 import java.io.IOException;
 
 
-
+/**
+ * The type Model controller.
+ */
 public class ModelController implements Observer{
 	private Client c;
-	/**
-	 * ctor to set Client object
-	 * @param c
-	 */
-	public ModelController(Client c) {
+
+    /**
+     * Instantiates a new Model controller.
+     *
+     * @param c the c
+     */
+    public ModelController(Client c) {
 		this.c=c;
 	
 	}
@@ -31,6 +35,17 @@ public class ModelController implements Observer{
 		return null;
 		
 	}
+
+    /**
+     * The entry point of application.
+     *
+     * @param arg the input arguments
+     */
+    public static void main (String [] arg) {
+	Client c =new Client("localhost", 9090);
+	ModelController mc =new ModelController(c);
+	ViewController vc=new ViewController(mc);
+}
 
 
 }

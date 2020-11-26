@@ -25,10 +25,9 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import client.controller.Observer;
+
 /**
- * In
- * @author zchem
- *
+ * The type Inventory panel.
  */
 public class InventoryPanel extends JPanel implements ActionListener{
 private JButton search;
@@ -39,10 +38,21 @@ private JPanel displayPanel;
 private Observer mc;
 private JTextField searchField;
 private JComboBox comboBox;
-ObjectMapper mapper=new ObjectMapper();
-ObjectNode[] arrayNode;
+    /**
+     * The Mapper.
+     */
+    ObjectMapper mapper=new ObjectMapper();
+    /**
+     * The Array node.
+     */
+    ObjectNode[] arrayNode;
 
-public InventoryPanel(Observer mc) {
+    /**
+     * Instantiates a new Inventory panel.
+     *
+     * @param mc the mc
+     */
+    public InventoryPanel(Observer mc) {
 	this.mc=mc;
 	setBackground(SystemColor.inactiveCaption);
 	setLayout(new BorderLayout(0, 0));

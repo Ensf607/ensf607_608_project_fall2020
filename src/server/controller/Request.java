@@ -5,7 +5,17 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
+/**
+ * The type Request.
+ */
 public class Request {
+    /**
+     * Request handler string.
+     *
+     * @param request the request
+     * @return the string
+     * @throws JsonProcessingException the json processing exception
+     */
     public static String requestHandler(String request) throws JsonProcessingException {
         ObjectMapper objectMapper = new ObjectMapper();
         JsonNode jsonNodeRoot = objectMapper.readTree(request);
@@ -31,6 +41,12 @@ public class Request {
     }
 
 
+    /**
+     * The entry point of application.
+     *
+     * @param args the input arguments
+     * @throws JsonProcessingException the json processing exception
+     */
     public static void main(String[] args) throws JsonProcessingException {
 
     }

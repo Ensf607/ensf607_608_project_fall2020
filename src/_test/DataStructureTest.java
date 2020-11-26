@@ -1,3 +1,6 @@
+package _test;
+
+
 import org.junit.Test;
 import server.model.Customer;
 
@@ -6,9 +9,17 @@ import server.model.Customer;
  * https://blog.codota.com/how-to-convert-a-java-object-into-a-json-string/
  */
 public class DataStructureTest {
+    /**
+     * The entry point of application.
+     *
+     * @param args the input arguments
+     */
     public static void main(String[] args) {
     }
 
+    /**
+     * Customer test.
+     */
     @Test
     public void customerTest() {
         Customer c = new Customer(01,"Jason",

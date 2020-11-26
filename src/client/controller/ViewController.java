@@ -60,7 +60,13 @@ public class ViewController {
 	 * Ctor
 	 * @param mc
 	 */
-	public ViewController(Observer mc) {
+
+    /**
+     * Create the application.
+     *
+     * @param mc the mc
+     */
+    public ViewController(Observer mc) {
 		this.mc=mc;
 		initialize();
 	}

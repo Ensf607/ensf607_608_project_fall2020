@@ -26,11 +26,21 @@ public class JDBCPreProject {
     private ResultSet rs;
     private BufferedReader reader;
 
+    /**
+     * Gets conn.
+     *
+     * @return the conn
+     */
     public Connection getConn() {
 		return conn;
 	}
- 
-	public void setConn(Connection conn) {
+
+    /**
+     * Sets conn.
+     *
+     * @param conn the conn
+     */
+    public void setConn(Connection conn) {
         this.conn = conn;
     }
 
@@ -56,6 +66,11 @@ public class JDBCPreProject {
         }
     }
 
+    /**
+     * Query.
+     *
+     * @param sql the sql
+     */
     public void query(String sql){
         try (Statement stmt = conn.createStatement()) {
 //            System.out.println("Querying: \n" +
@@ -80,6 +95,9 @@ public class JDBCPreProject {
         }
     }
 
+    /**
+     * Create tables.
+     */
     public void createTables() {
         try {
             // flushing schema
@@ -234,6 +252,11 @@ public class JDBCPreProject {
         }
     }
 
+    /**
+     * Add item list.
+     *
+     * @param fileName the file name
+     */
     public void addItemList(String fileName) {
         System.out.print("Filling the table with tools");
         try {
@@ -275,6 +298,11 @@ public class JDBCPreProject {
         System.out.println("\t--Done");
     }
 
+    /**
+     * Add supplier list.
+     *
+     * @param fileName the file name
+     */
     public void addSupplierList(String fileName) {
         System.out.print("Filling the table with suppliers");
         try {
@@ -315,6 +343,14 @@ public class JDBCPreProject {
         System.out.println("\t--Done");
     }
 
+    /**
+     * Search general purpose.
+     *
+     * @param table           the table
+     * @param column          the column
+     * @param strWithWildcard the str with wildcard
+     * @param columns         the columns
+     */
     public void searchGeneralPurpose(String table, String column, String strWithWildcard, String[] columns){
         try {
             query("use tool_shop;");
@@ -350,6 +386,9 @@ public class JDBCPreProject {
             System.out.print (rs.getString(columns[i])+ "\t");
     }
 
+    /**
+     * Select from items.
+     */
     public void selectFromItems(){
         System.out.println("Reading all tools from the table:\nTools:");
         try {
@@ -373,6 +412,9 @@ public class JDBCPreProject {
         System.out.println("\n");
     }
 
+    /**
+     * Select from suppliers.
+     */
     public void selectFromSuppliers(){
         System.out.println("Reading all suppliers from the table:\nSuppliers:");
         try {
@@ -395,11 +437,19 @@ public class JDBCPreProject {
         System.out.println("\n");
     }
 
+    /**
+     * Search for tool id.
+     *
+     * @param toolID the tool id
+     */
     public void searchForToolID(int toolID){
         String [] columns =  {"id", "description_name", "quantity_in_stock", "price", "supplier_id"};
         searchGeneralPurpose("items","id", String.valueOf(toolID),columns);
     }
 
+    /**
+     * Remove tables.
+     */
     public void removeTables(){
         System.out.println("Trying to remove the table");
         query("drop table if exists  items;"); // items has to be dropped first due to referential integrity

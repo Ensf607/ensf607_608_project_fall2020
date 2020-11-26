@@ -38,10 +38,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import client.controller.Observer;
 
 /**
- * Client Management system controller
- * 
- * @author zchem
- *
+ * The type Cms.
  */
 public class CMS extends JPanel implements ActionListener, ListSelectionListener {
 	private Observer mc;
@@ -58,18 +55,35 @@ public class CMS extends JPanel implements ActionListener, ListSelectionListener
 	private JButton saveBtn;
 	private JButton deleteBtn;
 	private JButton clearBtn;
-	int option;
+    /**
+     * The Option.
+     */
+    int option;
 	private JComboBox comboBoxClientMgmnt;
 	private JRadioButton clientType;
 	private JRadioButton lName;
 	private JRadioButton clientID;
-	ObjectMapper mapper = new ObjectMapper();
-	ObjectNode[] array;
-	boolean empty = true;
+    /**
+     * The Mapper.
+     */
+    ObjectMapper mapper = new ObjectMapper();
+    /**
+     * The Array.
+     */
+    ObjectNode[] array;
+    /**
+     * The Empty.
+     */
+    boolean empty=true;
 	private ArrayList<String> values;
 	private JButton addCustomer;
 
-	public CMS(Observer mc) {
+    /**
+     * Instantiates a new Cms.
+     *
+     * @param mc the mc
+     */
+    public CMS(Observer mc) {
 		this.mc = mc;
 		setLayout(new BorderLayout(0, 0));
 		JPanel panel_1 = new JPanel();
@@ -362,7 +376,14 @@ public class CMS extends JPanel implements ActionListener, ListSelectionListener
 		addCustomer.addActionListener(this);
 	}
 
-	public void populateList(String json) throws JsonMappingException, JsonProcessingException {
+    /**
+     * Populate list.
+     *
+     * @param json the json
+     * @throws JsonMappingException    the json mapping exception
+     * @throws JsonProcessingException the json processing exception
+     */
+    public void populateList(String json) throws JsonMappingException, JsonProcessingException {
 		array = mapper.readValue(json, ObjectNode[].class);
 		values = new ArrayList<String>();
 		for (int i = 0; i < array.length; i++) {
@@ -561,13 +582,15 @@ public class CMS extends JPanel implements ActionListener, ListSelectionListener
 		else
 			comboBoxClientMgmnt.setSelectedIndex(1);
 	}
-/**
- * Generate a unique client ID
- * @return
- */
-	public int generateCustomerID() {
-		Random r = new Random(System.currentTimeMillis());
-		return ((1 + r.nextInt(2)) * 10000 + r.nextInt(10000));
-	}
+
+    /**
+     * Generate customer id int.
+     *
+     * @return the int
+     */
+    public int generateCustomerID(){
+	        Random r = new Random( System.currentTimeMillis() );
+	        return ((1 + r.nextInt(2)) * 10000 + r.nextInt(10000));
+	    }
 
 }

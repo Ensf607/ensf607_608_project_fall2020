@@ -5,7 +5,16 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import server.controller.Request;
 
+/**
+ * The type Model refactor test.
+ */
 public class ModelRefactorTest {
+    /**
+     * The entry point of application.
+     *
+     * @param args the input arguments
+     * @throws JsonProcessingException the json processing exception
+     */
     public static void main(String[] args) throws JsonProcessingException {
         Request r = new Request();
         ObjectMapper mapper = new ObjectMapper();

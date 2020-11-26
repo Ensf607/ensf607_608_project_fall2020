@@ -7,14 +7,35 @@ import java.sql.ResultSet;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import server.model.Shop;
 
+/**
+ * The type Thread pool.
+ */
 public class ThreadPool implements Runnable{
     private ResultSet rs;
-	ServerController server;
-	Shop shop;
-	JDBC jdbc;
-	connThread thread;
+    /**
+     * The Server.
+     */
+    ServerController server;
+    /**
+     * The Shop.
+     */
+    Shop shop;
+    /**
+     * The Jdbc.
+     */
+    JDBC jdbc;
+    /**
+     * The Thread.
+     */
+    connThread thread;
 
-	public ThreadPool(ServerController server) throws IOException {
+    /**
+     * Instantiates a new Thread pool.
+     *
+     * @param server the server
+     * @throws IOException the io exception
+     */
+    public ThreadPool(ServerController server) throws IOException {
 		this.server=server;
 		jdbc=new JDBC();
 		this.thread=new connThread(server.getaSocket());
@@ -55,6 +76,9 @@ public class ThreadPool implements Runnable{
 	}
 }
 
+/**
+ * The type Conn thread.
+ */
 class connThread {
 	private final PrintWriter socketOut;
 	/**
@@ -66,13 +90,25 @@ class connThread {
 	 */
 	private final BufferedReader stdIn;
 
-	connThread(Socket aSocket) throws IOException {
+    /**
+     * Instantiates a new Conn thread.
+     *
+     * @param aSocket the a socket
+     * @throws IOException the io exception
+     */
+    connThread(Socket aSocket) throws IOException {
 		this.aSocket = aSocket;
 		this.stdIn = new BufferedReader(new InputStreamReader(aSocket.getInputStream()));
 		this.socketOut = new PrintWriter(new OutputStreamWriter(aSocket.getOutputStream()), true);
 	}
 
-	public String stdIn() throws IOException {
+    /**
+     * Std in string.
+     *
+     * @return the string
+     * @throws IOException the io exception
+     */
+    public String stdIn() throws IOException {
 		StringBuffer buffer = null;
 		while (true) {
 			if (buffer == null) {
@@ -85,11 +121,19 @@ class connThread {
 		return string;
 	}
 
-	public void stdOut(String message) {
+    /**
+     * Std out.
+     *
+     * @param message the message
+     */
+    public void stdOut(String message) {
 		socketOut.println(message);
 	}
 
-	public void exit(){
+    /**
+     * Exit.
+     */
+    public void exit(){
 		socketOut.close();
 		try {
 			stdIn.close();

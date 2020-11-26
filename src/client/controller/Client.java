@@ -13,7 +13,6 @@ import java.util.stream.Collectors;
  * Implementation of the client class. This class communicates with the server
  * via sockets and invokes the GUI to display, also communicates with
  * {@link } if there are any actions occurred in the GUI
- *
  */
 public class Client {
 
@@ -22,13 +21,13 @@ public class Client {
 	private BufferedReader socketIn;
 
 
-	/**
-	 * Ctor to initialize @param
-	 * 
-	 * @param serverName
-	 * @param portNumber
-	 */
-	public Client(String serverName, int portNumber) {
+    /**
+     * Ctor to initialize @param
+     *
+     * @param serverName the server name
+     * @param portNumber the port number
+     */
+    public Client(String serverName, int portNumber) {
 		try {
 			palinSocket = new Socket(serverName, portNumber);
 			socketIn = new BufferedReader(new InputStreamReader(palinSocket.getInputStream()));
@@ -46,6 +45,15 @@ public class Client {
 	 */
 	public String send(String json) throws IOException {
 
+    /**
+     * Send string.
+     *
+     * @param json the json
+     * @return the string
+     * @throws IOException the io exception
+     */
+    public String send(String json) throws IOException {
+
 		System.out.println("SENDNG MSG TO  RequestHandler on SERVER SIDE....via sockets and wait for response");
 		socketOut.println(json);
 		String response=getServerResponse();
@@ -56,7 +64,13 @@ public class Client {
 	
 
 
-	public String getServerResponse() throws IOException {
+    /**
+     * Gets server response.
+     *
+     * @return the server response
+     * @throws IOException the io exception
+     */
+    public String getServerResponse() throws IOException {
 		String s="";
 		String line = "";
 		while ((line = socketIn.readLine()) != null) {

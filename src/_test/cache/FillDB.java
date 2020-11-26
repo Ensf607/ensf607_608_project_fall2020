@@ -21,8 +21,9 @@ import java.sql.Timestamp;
 
 
 /**
- * @author zchem
+ * The type Fill db.
  *
+ * @author zchem
  */
 public class FillDB {
 	private PreparedStatement preparedStmt;
@@ -30,7 +31,15 @@ public class FillDB {
 	private Connection con;
 	private BufferedReader reader;
 
-	public void connectDB(String host, String dbname, String username, String password) {
+    /**
+     * Connect db.
+     *
+     * @param host     the host
+     * @param dbname   the dbname
+     * @param username the username
+     * @param password the password
+     */
+    public void connectDB(String host, String dbname, String username, String password) {
 //        Path filePath = Paths.get(Paths.get(System.getProperty("user.dir")).toString(),host, dbname);
 		Timestamp ts = new Timestamp(System.currentTimeMillis());
 		String url = "jdbc:mysql://" + host + "/" + dbname;
@@ -77,7 +86,12 @@ public class FillDB {
 		}
 	}
 
-	public void addItemList(String fileName) {
+    /**
+     * Add item list.
+     *
+     * @param fileName the file name
+     */
+    public void addItemList(String fileName) {
 
 		try {
 
@@ -116,8 +130,13 @@ public class FillDB {
 		}
 
 	}
-	
-	public void addSupplierList(String fileName) {
+
+    /**
+     * Add supplier list.
+     *
+     * @param fileName the file name
+     */
+    public void addSupplierList(String fileName) {
 
 		try {
 
@@ -155,7 +174,10 @@ public class FillDB {
 
 	}
 
-	public void close() {
+    /**
+     * Close.
+     */
+    public void close() {
 		try {
 			stmt.close();
 			con.close();
@@ -164,7 +186,13 @@ public class FillDB {
 		}
 	}
 
-	public static void main(String[] args) throws SQLException {
+    /**
+     * The entry point of application.
+     *
+     * @param args the input arguments
+     * @throws SQLException the sql exception
+     */
+    public static void main(String[] args) throws SQLException {
 
 		FillDB fill = new FillDB();
 		fill.connectDB("localhost:3306", "tool_shop", "testadmin", "passw0rd");
