@@ -50,18 +50,17 @@ import java.util.StringJoiner;
  * <p>Question:
  * <a target="_blank" href="http://tinyurl.com/q7lbqeh">How to display or
  * print the contents of a database table as is</a><br>
- *     People: sky scraper</p>
+ * People: sky scraper</p>
  *
  * <p>Question:
  * <a target="_blank" href="http://tinyurl.com/pbwgess">System.out.println()
  * from database into a table</a><br>
- *     People: Simon Cottrill, Tony Toews, Costis Aivali, Riggy, corsiKa</p>
+ * People: Simon Cottrill, Tony Toews, Costis Aivali, Riggy, corsiKa</p>
  *
  * <p>Question:
  * <a target="_blank" href="http://tinyurl.com/7x9qtyg">Simple way to repeat
  * a string in java</a><br>
- *     People: Everybody who contributed but especially user102008</p>
- *
+ * People: Everybody who contributed but especially user102008</p>
  */
 public class DBTablePrinter {
 
@@ -174,8 +173,8 @@ public class DBTablePrinter {
          * java.sql.Types
          * </a>)
          *
-         * @param label Column label or name
-         * @param type Generic SQL type
+         * @param label    Column label or name
+         * @param type     Generic SQL type
          * @param typeName Generic SQL type name
          */
         public Column (String label, int type, String typeName) {
@@ -265,7 +264,7 @@ public class DBTablePrinter {
          * this flag will be used to right or left justify the text.
          *
          * @return The {@link #justifyFlag} of this column
-         * @see #justifyLeft()
+         * @see #justifyLeft() #justifyLeft()
          */
         public String getJustifyFlag() {
             return justifyFlag;
@@ -308,7 +307,7 @@ public class DBTablePrinter {
      * {@link #DEFAULT_MAX_TEXT_COL_WIDTH} will be used to limit
      * the width of text columns (like a <code>VARCHAR</code> column).
      *
-     * @param conn Database connection object (java.sql.Connection)
+     * @param conn      Database connection object (java.sql.Connection)
      * @param tableName Name of the database table
      */
     public static void printTable(Connection conn, String tableName){
@@ -323,9 +322,9 @@ public class DBTablePrinter {
      * {@link #DEFAULT_MAX_TEXT_COL_WIDTH} will be used to limit
      * the width of text columns (like a <code>VARCHAR</code> column).
      *
-     * @param conn Database connection object (java.sql.Connection)
+     * @param conn      Database connection object (java.sql.Connection)
      * @param tableName Name of the database table
-     * @param maxRows Number of max. rows to query and print
+     * @param maxRows   Number of max. rows to query and print
      */
     public static void printTable(Connection conn, String tableName, int maxRows) {
         printTable(conn, tableName, maxRows, DEFAULT_MAX_TEXT_COL_WIDTH);
@@ -339,9 +338,9 @@ public class DBTablePrinter {
      * <code>maxStringColWidth</code> will be used to limit
      * the width of text columns (like a <code>VARCHAR</code> column).
      *
-     * @param conn Database connection object (java.sql.Connection)
-     * @param tableName Name of the database table
-     * @param maxRows Number of max. rows to query and print
+     * @param conn              Database connection object (java.sql.Connection)
+     * @param tableName         Name of the database table
+     * @param maxRows           Number of max. rows to query and print
      * @param maxStringColWidth Max. width of text columns
      */
     public static void printTable(Connection conn, String tableName, int maxRows, int maxStringColWidth) {
@@ -411,7 +410,7 @@ public class DBTablePrinter {
      * ResultSet</a> to standard out using <code>maxStringColWidth</code>
      * to limit the width of text columns.
      *
-     * @param rs The <code>ResultSet</code> to print
+     * @param rs                The <code>ResultSet</code> to print
      * @param maxStringColWidth Max. width of text columns
      */
     public static void printResultSet(ResultSet rs, int maxStringColWidth) {

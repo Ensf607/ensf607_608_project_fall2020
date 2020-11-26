@@ -44,6 +44,9 @@ import client.view.LoginPanel;
 
 import javax.swing.AbstractListModel;
 
+/**
+ * The type View controller.
+ */
 public class ViewController {
 
 	private JFrame frame;
@@ -55,10 +58,12 @@ public class ViewController {
 	 * Launch the application.
 	 */
 
-	/**
-	 * Create the application.
-	 */
-	public ViewController(Observer mc) {
+    /**
+     * Create the application.
+     *
+     * @param mc the mc
+     */
+    public ViewController(Observer mc) {
 		this.mc=mc;
 		initialize();
 	}

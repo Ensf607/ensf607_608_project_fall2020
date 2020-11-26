@@ -24,21 +24,47 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
  */
 public class JDBC {
     private PreparedStatement preparedStmt;
+    /**
+     * The Stmt.
+     */
     Statement stmt;
+    /**
+     * The Conn.
+     */
     Connection conn;
+    /**
+     * The Rs.
+     */
     ResultSet rs;
     private BufferedReader reader;
     private String json = new String();
     private ResultSetMetaData metaData;
+
+    /**
+     * Gets conn.
+     *
+     * @return the conn
+     */
     public Connection getConn() {
         return conn;
     }
+
+    /**
+     * Sets conn.
+     *
+     * @param conn the conn
+     */
     public void setConn(Connection conn) {
         this.conn = conn;
     }
+
+    /**
+     * Instantiates a new Jdbc.
+     */
     public JDBC() {
         connectDB("18.236.191.241:3306", "ToolShop", "testadmin", "passw0rd");
     }
+
     /**
      * Connect db.
      *
@@ -60,6 +86,12 @@ public class JDBC {
             System.out.println(e.getMessage());
         }
     }
+
+    /**
+     * Query.
+     *
+     * @param sql the sql
+     */
     public void query(String sql){
         try (Statement stmt = conn.createStatement()) {
 //            System.out.println("Querying: \n" +
@@ -69,6 +101,7 @@ public class JDBC {
             e.printStackTrace();
         }
     }
+
     /**
      * D2L provided code
      * close()
@@ -82,6 +115,7 @@ public class JDBC {
             e.printStackTrace();
         }
     }
+
     /**
      * Might create a User table that contains login info in Mysql
      * Select user.
@@ -99,6 +133,7 @@ public class JDBC {
             e.printStackTrace();
         }
     }
+
     /**
      * D2L provided code
      * Insert user.
@@ -114,6 +149,7 @@ public class JDBC {
             e.printStackTrace();
         }
     }
+
     /**
      * D2L provided code
      * Delete user.
@@ -128,12 +164,14 @@ public class JDBC {
             e.printStackTrace();
         }
     }
+
     /**
      * D2L provided code
      * Validate login.
-     *  @param username the username
+     *
+     * @param username the username
      * @param password the password
-     * @return
+     * @return string
      */
     public String validateLogin(String username, String password) {
         try {
@@ -153,6 +191,7 @@ public class JDBC {
         }
         return "{\"valid\":\"1\", \"error\": \"1\"}"; //  {"valid":"1", "error": "1"}
     }
+
     /**
      * D2L provided code
      * Select user prepared statement.
@@ -173,6 +212,7 @@ public class JDBC {
             e.printStackTrace();
         }
     }
+
     /**
      * D2L provided code
      * Insert user prepared statement.
@@ -192,6 +232,15 @@ public class JDBC {
             e.printStackTrace();
         }
     }
+
+    /**
+     * Search general purpose.
+     *
+     * @param table           the table
+     * @param column          the column
+     * @param strWithWildcard the str with wildcard
+     * @throws JsonProcessingException the json processing exception
+     */
     public void searchGeneralPurpose(String table, String column, String strWithWildcard) throws JsonProcessingException{
         try {
             query("use ToolShop;");
@@ -213,16 +262,35 @@ public class JDBC {
         for (int i = 0; i < columns.length; i++)
             System.out.print (rs.getString(columns[i])+ "\t");
     }
-    
-     public String searchForToolID(int toolID) throws JsonProcessingException{
+
+    /**
+     * Search for tool id string.
+     *
+     * @param toolID the tool id
+     * @return the string
+     * @throws JsonProcessingException the json processing exception
+     */
+    public String searchForToolID(int toolID) throws JsonProcessingException{
     		 searchGeneralPurpose("TOOL","ToolID", "%"+toolID+"%");
     		 
     		 return json;
      }
-     public String searchForToolName(String toolName) throws JsonProcessingException{
+
+    /**
+     * Search for tool name string.
+     *
+     * @param toolName the tool name
+     * @return the string
+     * @throws JsonProcessingException the json processing exception
+     */
+    public String searchForToolName(String toolName) throws JsonProcessingException{
       searchGeneralPurpose("TOOL","Name","%"+toolName+"%");
       return json;
      }
+
+    /**
+     * Check inventory.
+     */
     public void checkInventory() {
         try {
             String table = "TOOL";
@@ -265,6 +333,14 @@ public class JDBC {
             System.err.println(e);
         }
     }
+
+    /**
+     * Purchase.
+     *
+     * @param toolID     the tool id
+     * @param quantity   the quantity
+     * @param customerID the customer id
+     */
     public void purchase (int toolID, int quantity,int customerID) {
         try {
             updatePurchaseTable(toolID, customerID);//customer ID
@@ -348,10 +424,25 @@ public class JDBC {
         }
 
     }
+
+    /**
+     * Generate order id int.
+     *
+     * @return the int
+     */
     public int generateOrderID(){
         Random r = new Random( System.currentTimeMillis() );
         return ((1 + r.nextInt(2)) * 10000 + r.nextInt(10000));
     }
+
+    /**
+     * Get search result string.
+     *
+     * @param table           the table
+     * @param column          the column
+     * @param strWithWildcard the str with wildcard
+     * @return the string
+     */
     public String getSearchResult(String table, String column, String strWithWildcard){
         try {
             query("use ToolShop;");
@@ -422,8 +513,14 @@ public class JDBC {
         }
         return json;
     }
- 
-	public String getItemsList() throws JsonProcessingException{
+
+    /**
+     * Gets items list.
+     *
+     * @return the items list
+     * @throws JsonProcessingException the json processing exception
+     */
+    public String getItemsList() throws JsonProcessingException{
         try {
             String query = "SELECT T.ToolID,T.Name,T.Type,T.Quantity,T.Price,T.SupplierID,E.PowerType FROM ToolShop.TOOL AS T \n" +
                     "LEFT OUTER JOIN ToolShop.ELECTRICAL AS E ON T.ToolID=E.ToolID";
@@ -438,6 +535,13 @@ public class JDBC {
         }
         return json;
     }
+
+    /**
+     * Gets suppliers list.
+     *
+     * @return the suppliers list
+     * @throws JsonProcessingException the json processing exception
+     */
     public String getSuppliersList() throws JsonProcessingException{
         try {
             query("use ToolShop;");
@@ -454,6 +558,13 @@ public class JDBC {
         }
         return json;
     }
+
+    /**
+     * Gets customers list.
+     *
+     * @return the customers list
+     * @throws JsonProcessingException the json processing exception
+     */
     public String getCustomersList() throws JsonProcessingException {
         try {
             String table = "CLIENT";
@@ -471,6 +582,13 @@ public class JDBC {
         }
         return json;
     }
+
+    /**
+     * Gets order list.
+     *
+     * @return the order list
+     * @throws JsonProcessingException the json processing exception
+     */
     public String getOrderList() throws JsonProcessingException {
         try {
             query("use ToolShop;");
@@ -488,6 +606,14 @@ public class JDBC {
         }
         return json;
     }
+
+    /**
+     * Gets table.
+     *
+     * @param tableName the table name
+     * @return the table
+     * @throws JsonProcessingException the json processing exception
+     */
     public String getTable(String tableName) throws JsonProcessingException {
         switch (tableName){
             case "TOOL":
@@ -502,6 +628,13 @@ public class JDBC {
                 return null;
         }
     }
+
+    /**
+     * To json tool list.
+     *
+     * @throws SQLException            the sql exception
+     * @throws JsonProcessingException the json processing exception
+     */
     public void toJsonToolList() throws SQLException, JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
         ArrayNode arrayNode = mapper.createArrayNode();
@@ -520,6 +653,13 @@ public class JDBC {
         }
         json=mapper.writerWithDefaultPrettyPrinter().writeValueAsString(arrayNode);
     }
+
+    /**
+     * To json supplier list.
+     *
+     * @throws SQLException            the sql exception
+     * @throws JsonProcessingException the json processing exception
+     */
     public void toJsonSupplierList() throws SQLException, JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
         ArrayNode arrayNode = mapper.createArrayNode();
@@ -549,6 +689,13 @@ public class JDBC {
          json=new ObjectMapper().writeValueAsString(node);
          
     }
+
+    /**
+     * To json customer list.
+     *
+     * @throws SQLException            the sql exception
+     * @throws JsonProcessingException the json processing exception
+     */
     public void toJsonCustomerList() throws SQLException, JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
         ArrayNode arrayNode = mapper.createArrayNode();
@@ -568,6 +715,13 @@ public class JDBC {
         }
         json=mapper.writerWithDefaultPrettyPrinter().writeValueAsString(arrayNode);
     }
+
+    /**
+     * To json order.
+     *
+     * @throws SQLException            the sql exception
+     * @throws JsonProcessingException the json processing exception
+     */
     public void toJsonOrder() throws SQLException, JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
         ArrayNode arrayNode = mapper.createArrayNode();
@@ -587,7 +741,12 @@ public class JDBC {
         }
         json=mapper.writerWithDefaultPrettyPrinter().writeValueAsString(arrayNode);
     }
-    /** Update SQL DB **/
+
+    /**
+     * Update SQL DB  @param tableName the table name
+     *
+     * @param row the row
+     */
     public void insertIntoTable(String tableName, String[] row){
         StringBuilder sqlSB = new StringBuilder();
         sqlSB.append("INSERT INTO `" + tableName +"` "+"values(");
@@ -614,34 +773,106 @@ public class JDBC {
             e.printStackTrace();
         }
     }
+
+    /**
+     * Insert into tool.
+     *
+     * @param ToolID     the tool id
+     * @param Name       the name
+     * @param Type       the type
+     * @param Quantity   the quantity
+     * @param Price      the price
+     * @param SupplierID the supplier id
+     */
     public void insertIntoTOOL(String ToolID, String Name, String Type, String Quantity, String Price, String SupplierID){
         String[] row = {ToolID,Name,Type,Quantity,Price,SupplierID};
         insertIntoTable("TOOL", row);
     }
+
+    /**
+     * Insert into supplier.
+     *
+     * @param SupplierID the supplier id
+     * @param Name       the name
+     * @param Type       the type
+     * @param Address    the address
+     * @param CName      the c name
+     * @param Phone      the phone
+     */
     public void insertIntoSUPPLIER (String SupplierID, String Name, String Type, String Address, String CName, String Phone){
         String [] row = {SupplierID, Name, Type, Address, CName, Phone};
         insertIntoTable("SUPPLIER", row);
     }
+
+    /**
+     * Insert into purchase.
+     *
+     * @param ClientID the client id
+     * @param ToolID   the tool id
+     * @param Data     the data
+     */
     public void insertIntoPURCHASE (String ClientID, String ToolID, String Data){
         String [] row = {ClientID, ToolID, Data};
         insertIntoTable("PURCHASE", row);
     }
+
+    /**
+     * Insert into orderline.
+     *
+     * @param OrderID    the order id
+     * @param ToolID     the tool id
+     * @param SupplierID the supplier id
+     * @param Quantity   the quantity
+     */
     public void insertIntoORDERLINE (String OrderID, String ToolID, String SupplierID, String Quantity){
         String [] row = {OrderID, ToolID, SupplierID, Quantity};
         insertIntoTable("ORDERLINE", row);
     }
+
+    /**
+     * Insert into order.
+     *
+     * @param OrderID the order id
+     * @param Date    the date
+     */
     public void insertIntoORDER_ (String OrderID, String Date){
         String [] row = {OrderID, Date};
         insertIntoTable("ORDER_", row);
     }
+
+    /**
+     * Insert into international.
+     *
+     * @param SupplierID the supplier id
+     * @param ImportTax  the import tax
+     */
     public void insertIntoINTERNATIONAL (String SupplierID, String ImportTax){
         String [] row = {SupplierID, ImportTax};
         insertIntoTable("INTERNATIONAL", row);
     }
+
+    /**
+     * Insert into electrical.
+     *
+     * @param ToolID    the tool id
+     * @param PowerType the power type
+     */
     public void insertIntoELECTRICAL (String ToolID, String PowerType){
         String [] row = {ToolID, PowerType};
         insertIntoTable("ELECTRICAL", row);
     }
+
+    /**
+     * Insert into client.
+     *
+     * @param ClientID   the client id
+     * @param LName      the l name
+     * @param FName      the f name
+     * @param Type       the type
+     * @param PhoneNum   the phone num
+     * @param Address    the address
+     * @param PostalCode the postal code
+     */
     public void insertIntoCLIENT(String ClientID, String LName, String FName, String Type, String PhoneNum, String Address, String PostalCode){
         String [] row = {ClientID, LName, FName, Type, PhoneNum, Address, PostalCode};
         insertIntoTable("CLIENT", row);
@@ -650,9 +881,16 @@ public class JDBC {
 }
 
 
-
-
+/**
+ * The type Utils.
+ */
 class Utils {
+    /**
+     * Is integer boolean.
+     *
+     * @param str the str
+     * @return the boolean
+     */
     public static boolean isInteger(String str) {
         if (str == null) {
             return false;
@@ -677,6 +915,12 @@ class Utils {
         return true;
     }
 
+    /**
+     * Is numeric boolean.
+     *
+     * @param str the str
+     * @return the boolean
+     */
     public static boolean isNumeric(String str) {
         try {
             Double.parseDouble(str);
@@ -686,6 +930,12 @@ class Utils {
         }
     }
 
+    /**
+     * Parse column string.
+     *
+     * @param str the str
+     * @return the string
+     */
     public static String parseColumn(String str){
         if (isInteger(str)) return "int";
         if (isNumeric(str)) return "float";

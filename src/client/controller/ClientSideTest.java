@@ -11,11 +11,19 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
+/**
+ * The type Client side test.
+ */
 class ClientSideTest {
 
-	
 
-	@Test
+    /**
+     * Test.
+     *
+     * @throws JsonProcessingException the json processing exception
+     * @throws IOException             the io exception
+     */
+    @Test
 	void test() throws JsonProcessingException, IOException {
 		Client aClient = new Client("localhost", 9090);
 		ModelController mc =new ModelController(aClient);

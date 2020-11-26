@@ -24,6 +24,9 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import client.controller.Observer;
 
+/**
+ * The type Purchase panel.
+ */
 public class PurchasePanel extends JPanel implements ActionListener{
 
 	private Observer mc;
@@ -39,9 +42,22 @@ public class PurchasePanel extends JPanel implements ActionListener{
 	private JButton purchaseBtn;
 	private CardLayout c;
 	private JPanel panel;
-	ObjectMapper mapper=new ObjectMapper();
-	ObjectNode[] arrayNode;
-	public PurchasePanel(Observer mc, ArrayList<Object> variableList) {
+    /**
+     * The Mapper.
+     */
+    ObjectMapper mapper=new ObjectMapper();
+    /**
+     * The Array node.
+     */
+    ObjectNode[] arrayNode;
+
+    /**
+     * Instantiates a new Purchase panel.
+     *
+     * @param mc           the mc
+     * @param variableList the variable list
+     */
+    public PurchasePanel(Observer mc, ArrayList<Object> variableList) {
 		this.mc=mc;
 		this.variableList=variableList;
 		setBackground(SystemColor.inactiveCaption);
@@ -280,13 +296,23 @@ public class PurchasePanel extends JPanel implements ActionListener{
 			
 	}
 
-	public void setCardLayout(CardLayout c) {
+    /**
+     * Sets card layout.
+     *
+     * @param c the c
+     */
+    public void setCardLayout(CardLayout c) {
 		this.c=c;
 	
 		
 	}
 
-	public void setPanel(JPanel panel) {
+    /**
+     * Sets panel.
+     *
+     * @param panel the panel
+     */
+    public void setPanel(JPanel panel) {
 		this.panel=panel;
 		
 	}

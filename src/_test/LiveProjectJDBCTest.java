@@ -5,10 +5,23 @@ import server.controller.JDBC;
 
 import java.sql.SQLException;
 
+/**
+ * The type Live project jdbc test.
+ */
 public class LiveProjectJDBCTest {
+    /**
+     * The entry point of application.
+     *
+     * @param args the input arguments
+     * @throws SQLException            the sql exception
+     * @throws JsonProcessingException the json processing exception
+     */
     public static void main(String[] args) throws SQLException, JsonProcessingException {
     }
 
+    /**
+     * Create tables test.
+     */
     @Test
     public void createTablesTest() {
         JDBCAdminRoutines setup = new JDBCAdminRoutines();
@@ -18,36 +31,69 @@ public class LiveProjectJDBCTest {
 //        setup.dropAllTables();
     }
 
+    /**
+     * Gets order list test.
+     *
+     * @throws JsonProcessingException the json processing exception
+     */
     @Test
     public void getOrderListTest() throws JsonProcessingException {
         JDBC jdbc = getJdbc();
         System.out.println(jdbc.getOrderList());
     }
 
+    /**
+     * Gets customers list test.
+     *
+     * @throws SQLException            the sql exception
+     * @throws JsonProcessingException the json processing exception
+     */
     @Test
     public void getCustomersListTest() throws SQLException, JsonProcessingException {
         JDBC jdbc = getJdbc();
         System.out.println(jdbc.getCustomersList());
     }
 
+    /**
+     * Gets items list test.
+     *
+     * @throws JsonProcessingException the json processing exception
+     */
     @Test
     public void getItemsListTest() throws JsonProcessingException {
         JDBC jdbc = getJdbc();
         System.out.println(jdbc.getItemsList());
     }
 
+    /**
+     * Gets suppliers list test.
+     *
+     * @throws JsonProcessingException the json processing exception
+     */
     @Test
     public void getSuppliersListTest() throws JsonProcessingException {
         JDBC jdbc = getJdbc();
         System.out.println(jdbc.getSuppliersList());
     }
 
+    /**
+     * Check inventory test.
+     *
+     * @throws SQLException            the sql exception
+     * @throws JsonProcessingException the json processing exception
+     */
     @Test
     public void checkInventoryTest() throws SQLException, JsonProcessingException {
         JDBC jdbc = getJdbc();
         jdbc.checkInventory();
     }
 
+    /**
+     * Insert into tests.
+     *
+     * @throws SQLException            the sql exception
+     * @throws JsonProcessingException the json processing exception
+     */
     @Test
     public void insertIntoTests() throws SQLException, JsonProcessingException {
         JDBC jdbc = getJdbc();
@@ -61,6 +107,11 @@ public class LiveProjectJDBCTest {
         jdbc.insertIntoTOOL("1095","Test Tool2", "Electric","20","150", "8022");
     }
 
+    /**
+     * Gets search result test.
+     *
+     * @throws JsonProcessingException the json processing exception
+     */
     @Test
     public void getSearchResultTest() throws JsonProcessingException {
         JDBC jdbc = getJdbc();

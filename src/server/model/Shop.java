@@ -4,6 +4,7 @@ import java.io.FileNotFoundException;
 
 /**
  * The type Shop.
+ *
  * @author stan chen
  * @version 1.0
  * @since Oct 13, 2020
@@ -12,28 +13,31 @@ public class Shop {
 	private Inventory itemList = new Inventory();
 	private SupplierList supplierList =new SupplierList();
 
-	/**
-	 * Gets item list.
-	 *
-	 * @return the item list
-	 */
-	public Inventory getItemList() {
+    /**
+     * Gets item list.
+     *
+     * @return the item list
+     */
+    public Inventory getItemList() {
 		return itemList;
 	}
 
-	/**
-	 * Gets supplier list.
-	 *
-	 * @return the supplier list
-	 */
-	public SupplierList getSupplierList() {
+    /**
+     * Gets supplier list.
+     *
+     * @return the supplier list
+     */
+    public SupplierList getSupplierList() {
 		return supplierList;
 	}
 
-	/**
-	 * Instantiates a new Shop.
-	 */
-	public Shop(String itemsPath, String supplierPath){
+    /**
+     * Instantiates a new Shop.
+     *
+     * @param itemsPath    the items path
+     * @param supplierPath the supplier path
+     */
+    public Shop(String itemsPath, String supplierPath){
 		try {
 			ingestListData(itemsPath,supplierPath);
 		} catch (FileNotFoundException e) {
@@ -44,12 +48,14 @@ public class Shop {
 	// TODO: make this method to ingest data from mysql instead,
 	//  this may need to be modified if it's more suitable to query from db directly.
 
-	/**
-	 * Ingest list data.
-	 *
-	 * @throws FileNotFoundException the file not found exception
-	 */
-	public void ingestListData(String itemsPath, String supplierPath) throws FileNotFoundException {
+    /**
+     * Ingest list data.
+     *
+     * @param itemsPath    the items path
+     * @param supplierPath the supplier path
+     * @throws FileNotFoundException the file not found exception
+     */
+    public void ingestListData(String itemsPath, String supplierPath) throws FileNotFoundException {
 //		FileManager file = new FileManager();
 ////		itemsPath="TextFiles/items.txt";
 //		file.readFileFromPath(itemsPath);

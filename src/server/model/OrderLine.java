@@ -2,6 +2,7 @@ package server.model;
 
 /**
  * The type Order line.
+ *
  * @author stan chen
  * @version 1.0
  * @since Oct 13, 2020
@@ -16,116 +17,173 @@ public class OrderLine {
 
 	private String itemName;
 	private String supplierName;
-	public OrderLine() {
+
+    /**
+     * Instantiates a new Order line.
+     */
+    public OrderLine() {
 
 	}
 
-	public OrderLine(int orderID, int toolID, int supplierID, int amount) {
+    /**
+     * Instantiates a new Order line.
+     *
+     * @param orderID    the order id
+     * @param toolID     the tool id
+     * @param supplierID the supplier id
+     * @param amount     the amount
+     */
+    public OrderLine(int orderID, int toolID, int supplierID, int amount) {
 		this.orderID = orderID;
 		this.toolID = toolID;
 		this.supplierID = supplierID;
 		this.amount = amount;
 	}
 
-	public int getSupplierID() {
+    /**
+     * Gets supplier id.
+     *
+     * @return the supplier id
+     */
+    public int getSupplierID() {
 		return supplierID;
 	}
 
-	public int getOrderID() {
+    /**
+     * Gets order id.
+     *
+     * @return the order id
+     */
+    public int getOrderID() {
 		return orderID;
 	}
 
-	public int getToolID() {
+    /**
+     * Gets tool id.
+     *
+     * @return the tool id
+     */
+    public int getToolID() {
 		return toolID;
 	}
 
-	public void setOrderID(int orderID) {
+    /**
+     * Sets order id.
+     *
+     * @param orderID the order id
+     */
+    public void setOrderID(int orderID) {
 		this.orderID = orderID;
 	}
 
-	public void setSupplierID(int supplierID) {
+    /**
+     * Sets supplier id.
+     *
+     * @param supplierID the supplier id
+     */
+    public void setSupplierID(int supplierID) {
 		this.supplierID = supplierID;
 	}
 
-	public void setAmount(int amount) {
+    /**
+     * Sets amount.
+     *
+     * @param amount the amount
+     */
+    public void setAmount(int amount) {
 		this.amount = amount;
 	}
 
-	public void setItemName(String itemName) {
+    /**
+     * Sets item name.
+     *
+     * @param itemName the item name
+     */
+    public void setItemName(String itemName) {
 		this.itemName = itemName;
 	}
 
-	public void setSupplierName(String supplierName) {
+    /**
+     * Sets supplier name.
+     *
+     * @param supplierName the supplier name
+     */
+    public void setSupplierName(String supplierName) {
 		this.supplierName = supplierName;
 	}
 
-	public void setToolID(int toolID) {
+    /**
+     * Sets tool id.
+     *
+     * @param toolID the tool id
+     */
+    public void setToolID(int toolID) {
 		this.toolID = toolID;
 	}
 
-	/**
-	 * Sets item.
-	 *
-	 * @param item the item
-	 */
-	public void setItem(Item item) {
+    /**
+     * Sets item.
+     *
+     * @param item the item
+     */
+    public void setItem(Item item) {
 		this.item = item;
 	}
 
-	/**
-	 * Gets item.
-	 *
-	 * @return the item
-	 */
-	public Item getItem() {
+    /**
+     * Gets item.
+     *
+     * @return the item
+     */
+    public Item getItem() {
 		return item;
 	}
 
-	/**
-	 * Sets item name.
-	 */
-	public void setItemName() {
+    /**
+     * Sets item name.
+     */
+    public void setItemName() {
 		this.itemName = item.getItemName();
 	}
 
-	/**
-	 * Gets item name.
-	 *
-	 * @return the item name
-	 */
-	public String getItemName() {
+    /**
+     * Gets item name.
+     *
+     * @return the item name
+     */
+    public String getItemName() {
 		return itemName;
 	}
 
-	/**
-	 * Sets amount.
-	 */
-	public void setAmount() {
+    /**
+     * Sets amount.
+     */
+    public void setAmount() {
 		this.amount = 50-item.getQuantity();
 	}
 
-	/**
-	 * Gets amount.
-	 *
-	 * @return the amount
-	 */
-	public int getAmount() {
+    /**
+     * Gets amount.
+     *
+     * @return the amount
+     */
+    public int getAmount() {
 		return amount;
 	}
 
-	/**
-	 * Sets supplier name.
-	 */
-	public void setSupplierName() {
+    /**
+     * Sets supplier name.
+     */
+    public void setSupplierName() {
 		this.supplierName = item.getSupplier().getSupplierName();
 	}
 
-	/**
-	 * Gets supplier name.
-	 *
-	 * @return the supplier name
-	 */
-	public String getSupplierName() {
+    /**
+     * Gets supplier name.
+     *
+     * @return the supplier name
+     */
+    public String getSupplierName() {
 		return supplierName;
 	}
 

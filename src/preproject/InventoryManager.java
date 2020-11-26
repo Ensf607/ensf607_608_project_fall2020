@@ -7,27 +7,57 @@ import java.sql.*;
 
 // Pre-Project Exercise 
 
+/**
+ * The type Inventory manager.
+ */
 // This program allows you to create and manage a store inventory database.
 // It creates a database and datatable, then populates that table with tools from
 // items.txt.
 public class InventoryManager {
 
-	public Connection jdbc_connection;
-	public Statement statement;
-	public String databaseName = "InventoryDB", tableName = "ToolTable", dataFile = "items.txt";
+    /**
+     * The Jdbc connection.
+     */
+    public Connection jdbc_connection;
+    /**
+     * The Statement.
+     */
+    public Statement statement;
+    /**
+     * The Database name.
+     */
+    public String databaseName = "InventoryDB", /**
+     * The Table name.
+     */
+    tableName = "ToolTable", /**
+     * The Data file.
+     */
+    dataFile = "items.txt";
 
-	// Students should configure these variables for their own MySQL environment
+    /**
+     * The Connection info.
+     */
+// Students should configure these variables for their own MySQL environment
 	// If you have not created your first database in mySQL yet, you can leave the 
 	// "[DATABASE NAME]" blank to get a connection and create one with the createDB() method.
 	public String connectionInfo = "jdbc:mysql://localhost:3306/"+databaseName,
-			login          = "testadmin",
-			password       = "passw0rd";
+    /**
+     * The Login.
+     */
+    login          = "testadmin",
+    /**
+     * The Password.
+     */
+    password       = "passw0rd";
 
 	private PreparedStatement preparedStmt;
 	private ResultSet rs;
 	private BufferedReader reader;
 
-	public InventoryManager(){
+    /**
+     * Instantiates a new Inventory manager.
+     */
+    public InventoryManager(){
 		try{
 			// If this throws an error, make sure you have added the mySQL connector JAR to the project
 			Class.forName("com.mysql.jdbc.Driver");
@@ -37,7 +67,10 @@ public class InventoryManager {
 		} catch(Exception e) { e.printStackTrace(); }
 	}
 
-	// Use the jdbc connection to create a new database in MySQL.
+    /**
+     * Create db.
+     */
+// Use the jdbc connection to create a new database in MySQL.
 	// (e.g. if you are connected to "jdbc:mysql://localhost:3306", the database will be created at "jdbc:mysql://localhost:3306/InventoryDB")
 	public void createDB(){
 		try {
@@ -52,15 +85,15 @@ public class InventoryManager {
 		}
 	}
 
-	/**
-	 * Connect db.
-	 *
-	 * @param host     the host
-	 * @param dbname   the dbname
-	 * @param username the username
-	 * @param password the password
-	 */
-	public void connectDB(String host, String dbname, String username, String password) {
+    /**
+     * Connect db.
+     *
+     * @param host     the host
+     * @param dbname   the dbname
+     * @param username the username
+     * @param password the password
+     */
+    public void connectDB(String host, String dbname, String username, String password) {
 		Timestamp ts = new Timestamp(System.currentTimeMillis());
 		String url = "jdbc:mysql://"+host+"/"+dbname;
 		try (Connection conn = DriverManager.getConnection(url,username,password)) {
@@ -74,7 +107,10 @@ public class InventoryManager {
 		}
 	}
 
-	// Create a data table inside of the database to hold tools
+    /**
+     * Create tables.
+     */
+// Create a data table inside of the database to hold tools
 	public void createTables() {
 		try {
 			// flushing schema
@@ -109,7 +145,10 @@ public class InventoryManager {
 		}
 	}
 
-	// Removes the data table from the database (and all the data held within it!)
+    /**
+     * Remove tables.
+     */
+// Removes the data table from the database (and all the data held within it!)
 	public void removeTables(){
 		System.out.println("Trying to remove the table");
 		query("drop table if exists  items;"); // items has to be dropped first due to referential integrity
@@ -118,7 +157,13 @@ public class InventoryManager {
 		System.out.println("Removed Table suppliers");
 	}
 
-	// Fills the data table with all the tools from the text file 'items.txt' if found
+    /**
+     * Fill tools table.
+     *
+     * @param fileName the file name
+     * @throws IOException the io exception
+     */
+// Fills the data table with all the tools from the text file 'items.txt' if found
 	public void fillToolsTable(String fileName) throws IOException {
 		System.out.print("Filling the table with tools");
 		reader = new BufferedReader(new FileReader(fileName));
@@ -168,7 +213,12 @@ public class InventoryManager {
 		}
 	}
 
-	public void fillSupplierTable(String fileName) {
+    /**
+     * Fill supplier table.
+     *
+     * @param fileName the file name
+     */
+    public void fillSupplierTable(String fileName) {
 		System.out.print("Filling the table with suppliers");
 		try {
 
@@ -208,7 +258,12 @@ public class InventoryManager {
 		System.out.println("\t--Done");
 	}
 
-	// This method should search the database table for a tool matching the toolID parameter and return that tool.
+    /**
+     * Search tools.
+     *
+     * @param toolID the tool id
+     */
+// This method should search the database table for a tool matching the toolID parameter and return that tool.
 	public void searchTools(int toolID){
 		String [] columns =  {"id", "description_name", "quantity_in_stock", "price", "supplier_id"};
 		String searchText = String.valueOf(toolID);
@@ -242,7 +297,10 @@ public class InventoryManager {
 		}
 	}
 
-	// Prints all the items in the database to console
+    /**
+     * Print table items.
+     */
+// Prints all the items in the database to console
 	public void printTableItems(){
 		System.out.println("Reading all tools from the table:\nTools:");
 		try {
@@ -266,7 +324,10 @@ public class InventoryManager {
 		System.out.println("\n");
 	}
 
-	public void printTableSuppliers(){
+    /**
+     * Print table suppliers.
+     */
+    public void printTableSuppliers(){
 		System.out.println("Reading all suppliers from the table:\nSuppliers:");
 		try {
 			String table = "suppliers";
@@ -288,11 +349,21 @@ public class InventoryManager {
 		System.out.println("\n");
 	}
 
-	public void setJdbc_connection(Connection jdbc_connection) {
+    /**
+     * Sets jdbc connection.
+     *
+     * @param jdbc_connection the jdbc connection
+     */
+    public void setJdbc_connection(Connection jdbc_connection) {
 		this.jdbc_connection = jdbc_connection;
 	}
 
-	public void query(String sql){
+    /**
+     * Query.
+     *
+     * @param sql the sql
+     */
+    public void query(String sql){
 		try (Statement stmt = jdbc_connection.createStatement()) {
 			stmt.executeUpdate(sql);
 		} catch (SQLException e) {
@@ -300,7 +371,10 @@ public class InventoryManager {
 		}
 	}
 
-	public void close() {
+    /**
+     * Close.
+     */
+    public void close() {
 		try {
 			statement.close();
 			rs.close();
@@ -310,7 +384,13 @@ public class InventoryManager {
 		return;
 	}
 
-	public static void main(String args[]) throws IOException {
+    /**
+     * Main.
+     *
+     * @param args the args
+     * @throws IOException the io exception
+     */
+    public static void main(String args[]) throws IOException {
 		InventoryManager jdbc = new InventoryManager();
 		jdbc.createDB();
 		jdbc.createTables();

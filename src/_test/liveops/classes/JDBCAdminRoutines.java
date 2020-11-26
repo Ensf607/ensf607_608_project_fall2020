@@ -2,7 +2,13 @@ package liveops.classes;
 
 import server.controller.JDBC;
 
+/**
+ * The type Jdbc admin routines.
+ */
 public class JDBCAdminRoutines extends JDBC {
+    /**
+     * Create all tables.
+     */
     public void createAllTables(){
         createSupplier();
         createTool();
@@ -108,6 +114,9 @@ public class JDBCAdminRoutines extends JDBC {
                 "\n");
     }
 
+    /**
+     * Refresh schema.
+     */
     public void refreshSchema(){
         query("drop schema if exists ToolShop;");
         query("create schema ToolShop;");

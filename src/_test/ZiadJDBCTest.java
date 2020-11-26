@@ -18,9 +18,18 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import server.controller.JDBC;
 
+/**
+ * The type Ziad jdbc test.
+ */
 class ZiadJDBCTest {
 
-	@Test
+    /**
+     * Test.
+     *
+     * @throws SQLException the sql exception
+     * @throws IOException  the io exception
+     */
+    @Test
 	void test() throws SQLException, IOException {
 		
 		JDBC t= new JDBC();

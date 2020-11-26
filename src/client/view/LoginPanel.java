@@ -18,17 +18,30 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import client.controller.Observer;
 
+/**
+ * The type Login panel.
+ */
 public class LoginPanel extends JPanel implements ActionListener {
  private Observer mc;
 private JTextField userNameField;
 private JTextField passwordField;
 private JButton loginBtn;
-boolean loginStatus=false;
+    /**
+     * The Login status.
+     */
+    boolean loginStatus=false;
 private JsonParser respose;
 private CardLayout c;
 private JPanel panel;
 
-public LoginPanel(Observer mc, CardLayout c, JPanel panel) {
+    /**
+     * Instantiates a new Login panel.
+     *
+     * @param mc    the mc
+     * @param c     the c
+     * @param panel the panel
+     */
+    public LoginPanel(Observer mc, CardLayout c, JPanel panel) {
 	 this.mc=mc;
 	 this.c=c;
 	 this.panel=panel;
@@ -84,13 +97,23 @@ public void actionPerformed(ActionEvent e) {
 		else
 			JOptionPane.showMessageDialog(null,"Wrong login !!");
 	}
-	
 
-public boolean isLoginStatus() {
+
+    /**
+     * Is login status boolean.
+     *
+     * @return the boolean
+     */
+    public boolean isLoginStatus() {
 	return loginStatus;
 }
 
-public void setLoginStatus(boolean loginStatus) {
+    /**
+     * Sets login status.
+     *
+     * @param loginStatus the login status
+     */
+    public void setLoginStatus(boolean loginStatus) {
 	this.loginStatus = loginStatus;
 }
 }

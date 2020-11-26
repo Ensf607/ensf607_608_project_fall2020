@@ -6,14 +6,30 @@ import java.util.ArrayList;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+/**
+ * The type Customer list.
+ */
 /*
  * Not needed but makes Customer class less messy
  * 
  */
 public class CustomerList {
-	ArrayList<Customer> customerList=new ArrayList<Customer>();
-	ResultSet customers;
-	public CustomerList(ResultSet customers) {
+    /**
+     * The Customer list.
+     */
+    ArrayList<Customer> customerList=new ArrayList<Customer>();
+    /**
+     * The Customers.
+     */
+    ResultSet customers;
+
+    /**
+     * Instantiates a new Customer list.
+     *
+     * @param customers the customers
+     */
+    public CustomerList(ResultSet customers) {
 		this.customers=customers;
 		//traverse and update arraylist
 		  try {
@@ -29,7 +45,13 @@ public class CustomerList {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}}
-	public String toJSON(){
+
+    /**
+     * To json string.
+     *
+     * @return the string
+     */
+    public String toJSON(){
         String json = new String();
         
         ObjectMapper mapper = new ObjectMapper();

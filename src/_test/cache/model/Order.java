@@ -7,6 +7,7 @@ import java.util.Random;
 
 /**
  * The type Order.
+ *
  * @author stan chen
  * @version 1.0
  * @since Oct 13, 2020
@@ -16,20 +17,20 @@ public class Order {
 	private String orderDate = Calendar.getInstance().getTime().toString();
 	private ArrayList <OrderLine> orderLineArrayList = new ArrayList <OrderLine>();
 
-	/**
-	 * Sets date.
-	 */
-	public void setDate() {
+    /**
+     * Sets date.
+     */
+    public void setDate() {
 		Date today = Calendar.getInstance().getTime();
 		this.orderDate = today.toString();
 	}
 
-	/**
-	 * Check item.
-	 *
-	 * @param itemCheck the item to check
-	 */
-	public void checkItem(Item itemCheck) {
+    /**
+     * Check item.
+     *
+     * @param itemCheck the item to check
+     */
+    public void checkItem(Item itemCheck) {
 		OrderLine orderLine = new OrderLine();
 		orderLine.setItem(itemCheck);
 		orderLine.setAmount();
@@ -38,32 +39,32 @@ public class Order {
 		this.orderLineArrayList.add(orderLine);
 	}
 
-	/**
-	 * Gets order date.
-	 *
-	 * @return the order date
-	 */
-	public String getOrderDate() {
+    /**
+     * Gets order date.
+     *
+     * @return the order date
+     */
+    public String getOrderDate() {
 		return orderDate;
 	}
 
-	/**
-	 * Generate order id int.
-	 *
-	 * @return the int
-	 */
-	public int generateOrderID(){
+    /**
+     * Generate order id int.
+     *
+     * @return the int
+     */
+    public int generateOrderID(){
 		Random r = new Random( System.currentTimeMillis() );
 		return ((1 + r.nextInt(2)) * 10000 + r.nextInt(10000));
 	}
 
 
-	/**
-	 * Gets order line array list.
-	 *
-	 * @return the order line array list
-	 */
-	public ArrayList<OrderLine> getOrderLineArrayList() {
+    /**
+     * Gets order line array list.
+     *
+     * @return the order line array list
+     */
+    public ArrayList<OrderLine> getOrderLineArrayList() {
 		return orderLineArrayList;
 	}
 

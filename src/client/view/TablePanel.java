@@ -18,6 +18,9 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import client.controller.Observer;
 
+/**
+ * The type Table panel.
+ */
 public class TablePanel extends JPanel implements ListSelectionListener{
 
 	private JTable table;
@@ -26,7 +29,12 @@ public class TablePanel extends JPanel implements ListSelectionListener{
 	private DefaultTableModel tableModel;
 	private Observer mc;
 
-	public TablePanel(Observer mc) {
+    /**
+     * Instantiates a new Table panel.
+     *
+     * @param mc the mc
+     */
+    public TablePanel(Observer mc) {
 		this.mc=mc;
 		setBackground(SystemColor.inactiveCaption);
 		setLayout(new BorderLayout(0, 0));
@@ -52,7 +60,12 @@ public class TablePanel extends JPanel implements ListSelectionListener{
 	}
 
 
-public void populateTable(ObjectNode[] arrayNode) {
+    /**
+     * Populate table.
+     *
+     * @param arrayNode the array node
+     */
+    public void populateTable(ObjectNode[] arrayNode) {
 	tableModel.setRowCount(0);
 	for (int i=0;i<arrayNode.length;i++) {
 		String powerType="";//to display empty instead of null
@@ -62,11 +75,23 @@ public void populateTable(ObjectNode[] arrayNode) {
 		tableModel.insertRow(0, new Object [] {  arrayNode[i].get("ToolID").asInt(),arrayNode[i].get("Name").asText(),arrayNode[i].get("Type").asText()
 				,arrayNode[i].get("Quantity").asInt(),arrayNode[i].get("Price").asDouble(),arrayNode[i].get("SupplierID").asInt(),powerType});
 }}
-public void setCardLayout(CardLayout c) {
+
+    /**
+     * Sets card layout.
+     *
+     * @param c the c
+     */
+    public void setCardLayout(CardLayout c) {
 	this.c=c;
 	
 }
-public void setPanel(JPanel panel) {
+
+    /**
+     * Sets panel.
+     *
+     * @param panel the panel
+     */
+    public void setPanel(JPanel panel) {
 this.panel=panel;	
 }
 @Override
