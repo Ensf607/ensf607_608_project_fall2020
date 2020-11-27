@@ -134,6 +134,7 @@ public void actionPerformed(ActionEvent e) {
 			String request="{ \"type\" : \"GET\", \"table\" : \"TOOL\" , \"scope\":\"select\",\"field\":\"ToolID\",\"field_value\":\""+Integer.parseInt(searchField.getText())+"\"}";
 		
 			String response=mc.request(request);
+			System.err.println(response);
 			if (response.length()>3) {//for somereason len of response is 3 for tools not found
 				try {
 					arrayNode=mapper.readValue(response, ObjectNode[].class);
