@@ -5,13 +5,32 @@ This is a joint, cross-course project with ENSF 607/608. It is a classic Tool Sh
 
 Ziad Chemali, Stan Chen
 
+
+
+## Quick Start
+
+#### client and remote server
+
+1. fulfill dependencies in `pom.xml` if builds are missing packages
+2. making sure remote backend server is up and running. (See note below)
+3. to connect to the remote client, compile and run `src/client/main.java`
+
+#### client and local server
+
+1. fulfill dependencies in `pom.xml` if builds are missing packages
+2. to start the server, compile and run `src/server/startServerLocal.java` (See note below)
+3. to start the local client, compile and run `src/client/mainLocal.java` 
+
+
+
 ## Summary
 
 Inventory management system that has two functionalities:
 
 - Allows owner to add new customers/update their information and allows customers to search for tools from the data base and purchase.
-
 - If the quantity of an item goes below 40 items then the program automatically generates an order line for that item
+
+
 
 ## Architecture
 
@@ -85,6 +104,50 @@ Double check by searching for the newly added customer
 
 Customer successfully added
 
+
+
+## Back-End
+
+### How to start local backend server
+
+to start the local backend server, compile and run 
+
+```
+src/server/startServerLocal.java
+```
+
+if the console prints the following, it means the server is ready. 
+
+![image-20201126175849636](README.assets/image-20201126175849636.png)
+
+### How to start remote backend server
+
+Note: For temporary demo purpose, Prof & TA can access:  
+
+**Our jenkins build server http://54.185.156.100:8080/**
+
+**username: `ensf`  **
+
+**password: `ensf607`**
+
+
+
+If server is not running, build the job "Final Project Demo" to start the backend server. 
+
+![image-20201126175328739](README.assets/image-20201126175328739.png)
+
+click into the project
+
+![image-20201126175953375](README.assets/image-20201126175953375.png)
+
+In this job page, click `Console Output`, 
+
+![image-20201126180322322](README.assets/image-20201126180322322.png)
+
+If the end of the console log prints the logs as above, this means the server is ready to serve. 
+
+
+
 ## Testing
 
 Jenkins were introduced as a tool to help with the deployment/testing purposes. Script used for compiling and running the backend server in Jenkins build execute shell: 
@@ -104,12 +167,7 @@ mvn exec:java -Dexec.mainClass="server.controller.ServerController" -Dexec.class
 
 
 
-
-
-
-
 ## Develop setup
 
 1. this is classic java project. `jars/mysql-connector-java-8.0.22.jar` needs to be added to class path. 
 2. Alternatively, if using maven, just use pom.xml to fullfil the dependencies.
-3.  
