@@ -3,7 +3,9 @@ This is a joint, cross-course project with ENSF 607/608. It is a classic Tool Sh
 
 ## Contributors
 
-Ziad Chemali, Stan Chen
+Ziad Chemali 10109966
+
+Stanley Shizheng Chen 10084134
 
 
 
