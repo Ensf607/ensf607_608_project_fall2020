@@ -341,15 +341,21 @@ public class CMS extends JPanel implements ActionListener, ListSelectionListener
      * @throws JsonMappingException    the json mapping exception
      * @throws JsonProcessingException the json processing exception
      */
-    public void populateList(String json) throws JsonMappingException, JsonProcessingException {
-		array = mapper.readValue(json, ObjectNode[].class);
+    @SuppressWarnings({ "unchecked", "rawtypes", "serial" })
+	public void populateList(String json)  {
+		try {
+			array = mapper.readValue(json, ObjectNode[].class);
+		} catch (JsonProcessingException e) {
+			// TODO Auto-generated catch block
+		}
 		values = new ArrayList<String>();
 		for (int i = 0; i < array.length; i++) {
 			values.add(array[i].get("FName").asText() + " " + array[i].get("LName").asText() + " "
 					+ array[i].get("Type").asText());
 		}
-
+		try {
 		list.setModel(new AbstractListModel() {
+			
 			public int getSize() {
 				return values.size();
 			}
@@ -358,27 +364,22 @@ public class CMS extends JPanel implements ActionListener, ListSelectionListener
 				return values.get(index);
 			}
 		});
+		}catch(Exception e) {
+			
+		}
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == searchClient) {
-			try {
-				populateList("[]");
-			} catch (JsonProcessingException e2) {
-				e2.printStackTrace();
-			}
+			populateList("[]");
 			if (option == 1) {
 				// using ID
 				String request = "{\"type\":\"GET\",\"table\":\"CLIENT\",\"scope\":\"select\",\"field\":\"ClientID\",\"field_value\":\""
 						+ search.getText() + "\"}";
 				String response = mc.request(request);
 				if (response.length() > 3) {
-					try {
-						populateList(response);
-					} catch (JsonProcessingException e1) {
-						e1.printStackTrace();
-					}
+					populateList(response);
 				} else
 					JOptionPane.showMessageDialog(null, "Client Not Found");
 			} else if (option == 2) {
@@ -387,12 +388,7 @@ public class CMS extends JPanel implements ActionListener, ListSelectionListener
 						+ search.getText() + "\"}";
 				String response = mc.request(request);
 				if (response.length() > 3) {
-					try {
-						populateList(response);
-					} catch (JsonProcessingException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
+					populateList(response);
 				} else
 					JOptionPane.showMessageDialog(null, "Client Not Found");
 			} else if (option == 3) {
@@ -401,11 +397,7 @@ public class CMS extends JPanel implements ActionListener, ListSelectionListener
 						+ search.getText() + "\"}";
 				String response = mc.request(request);
 				if (response.length() > 3) {
-					try {
-						populateList(response);
-					} catch (JsonProcessingException e1) {
-						e1.printStackTrace();
-					}
+					populateList(response);
 				} else
 					JOptionPane.showMessageDialog(null, "Client Not Found!!");
 			} else {
@@ -432,11 +424,7 @@ public class CMS extends JPanel implements ActionListener, ListSelectionListener
 				phoneCMS.setText("");
 				comboBoxClientMgmnt.setSelectedIndex(-1);
 				JOptionPane.showMessageDialog(null, "Customer Updated");
-				try {
-					populateList("[]");
-				} catch (JsonProcessingException e1) {
-					e1.printStackTrace();
-				}
+				populateList("[]");
 			} else
 				JOptionPane.showMessageDialog(null, "Search for client first");
 		} else if (e.getSource() == deleteBtn) {
@@ -454,11 +442,7 @@ public class CMS extends JPanel implements ActionListener, ListSelectionListener
 				phoneCMS.setText("");
 				comboBoxClientMgmnt.setSelectedIndex(-1);
 				JOptionPane.showMessageDialog(null, "Customer Deleted");
-				try {
-					populateList("[]");
-				} catch (JsonProcessingException e1) {
-					e1.printStackTrace();
-				}
+				populateList("[]");
 
 			} else
 				JOptionPane.showMessageDialog(null, "Search for client first");
@@ -482,11 +466,7 @@ public class CMS extends JPanel implements ActionListener, ListSelectionListener
 		} else if (e.getSource() == clearSearch) {
 			empty = true;
 			search.setText("");
-			try {
-				populateList("[]");
-			} catch (JsonProcessingException e1) {
-				e1.printStackTrace();
-			}
+			populateList("[]");
 		} else if (e.getSource() == addCustomer) {
 			if (lNameCMS.getText().isEmpty() || fnameCMS.getText().isEmpty()
 					|| comboBoxClientMgmnt.getSelectedIndex() == -1 || phoneCMS.getText().isEmpty()

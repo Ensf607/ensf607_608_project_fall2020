@@ -186,6 +186,8 @@ public class PurchasePanel extends JPanel implements ActionListener{
 		//To check if the actual quatitiy is > than purchased quantity
 		qtyField.addCaretListener(new CaretListener() {
 			public void caretUpdate(CaretEvent e) {
+				
+			try{	
 				if(Integer.parseInt(qtyField.getText())>(Integer)variableList.get(3)) {
 					JOptionPane.showMessageDialog(null, "ERROR enter smaller number");
 				}
@@ -193,8 +195,10 @@ public class PurchasePanel extends JPanel implements ActionListener{
 				{	
 				Double n=Integer.parseInt(qtyField.getText())*(Double)variableList.get(4);
 				totalField.setText(n+"");
-				}	
+				}	}catch (Exception e1) {}
+				
 			}
+			
 		});
 		
 		JLabel lblCustomerInfo = new JLabel("Customer Info");

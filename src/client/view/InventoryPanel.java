@@ -111,6 +111,11 @@ private JComboBox comboBox;
 public void actionPerformed(ActionEvent e) {
 	if(e.getSource()==listTools)
 	{	
+		tablePanel = new TablePanel(mc);
+		displayPanel.add(tablePanel,"table");
+		tablePanel.setCardLayout(c);
+		tablePanel.setPanel(displayPanel);
+		
 		c.show(displayPanel, "table"); 
 		//String json;
 		  String json="{ \"type\" : \"GET\", \"table\" : \"TOOL\" , \"scope\":\"all\"}";
@@ -130,11 +135,16 @@ public void actionPerformed(ActionEvent e) {
 	else if (e.getSource()==search) {
 		if(comboBox.getSelectedItem().equals("Search by ToolID"))
 		{
+			try{
+				tablePanel = new TablePanel(mc);
+			displayPanel.add(tablePanel,"table");
+			tablePanel.setCardLayout(c);
+			tablePanel.setPanel(displayPanel);
+			
 			c.show(displayPanel, "table"); 
 			String request="{ \"type\" : \"GET\", \"table\" : \"TOOL\" , \"scope\":\"select\",\"field\":\"ToolID\",\"field_value\":\""+Integer.parseInt(searchField.getText())+"\"}";
 		
 			String response=mc.request(request);
-			System.err.println(response);
 			if (response.length()>3) {//for somereason len of response is 3 for tools not found
 				try {
 					arrayNode=mapper.readValue(response, ObjectNode[].class);
@@ -147,8 +157,16 @@ public void actionPerformed(ActionEvent e) {
 		
 		
 		
+		}catch (Exception e1) {
+			JOptionPane.showMessageDialog(null, "Please enter an Integer");
 		}
+			}
 		else  {
+			tablePanel = new TablePanel(mc);
+			displayPanel.add(tablePanel,"table");
+			tablePanel.setCardLayout(c);
+			tablePanel.setPanel(displayPanel);
+			
 			c.show(displayPanel, "table"); 
 			String request="{ \"type\" : \"GET\", \"table\" : \"TOOL\" , \"scope\":\"select\",\"field\":\"Name\",\"field_value\":\""+searchField.getText()+"\"}";
 		
@@ -161,7 +179,7 @@ public void actionPerformed(ActionEvent e) {
 					e1.printStackTrace();
 				}}
 				else 
-					JOptionPane.showMessageDialog(null, "Error reading tool list");
+					JOptionPane.showMessageDialog(null, "Tool Not Found");
 		}
 		}
 	}

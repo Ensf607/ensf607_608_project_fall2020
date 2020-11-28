@@ -74,12 +74,10 @@ private JPanel panel;
 
 @Override
 public void actionPerformed(ActionEvent e) {
-		System.err.println(userNameField.getText());
 		String request="{\"type\":\"GET\",\"table\":\"USER\",\"scope\":\"select\",\"field\":\"username\",\"field_value\":\""+userNameField.getText()+"\"}";
 		String response=mc.request(request);
 		if(response.length()>3) {
 			try {
-				System.err.println(response);
 				JsonNode node =new ObjectMapper().readTree(response);
 				
 				if(node.get("password").asText().equals(passwordField.getText()))

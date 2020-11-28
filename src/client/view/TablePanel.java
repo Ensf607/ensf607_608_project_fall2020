@@ -117,7 +117,6 @@ public void valueChanged(ListSelectionEvent e) {
 	 p.setCardLayout(c);
 	 p.setPanel(panel);
 	 c.show(panel, "purchase");
-	 table.getSelectionModel().clearSelection();
 	
 }
 }
